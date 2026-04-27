@@ -1,7 +1,7 @@
 /***********************************************
  * Objetivo: Arquivo de responsavel pela validação de conteudo do body
  * Autor: Gustavo de Paula Silva
- * Data: 24/04/2026
+ * Data: 24/04/2026 & 27/04/2026
  * Versão: 1.0
  ************************************************/
 
@@ -88,10 +88,58 @@ const validarDadosLista = async function(lista) {
         console.log(error)  
     }
 }
+const validarDadosInformacao = async function(informacao) {
+    try {
+        if(informacao.titulo == null || informacao.titulo == "" || informacao.titulo == undefined || informacao.titulo.length > 100){
+            return false
+        }else if(informacao.descricao == null || informacao.descricao == "" || informacao.descricao == undefined || informacao.descricao.length > 100){
+            return false
+        }else{
+            return true
+        }
+    } catch (error) {
+        console.log(error)  
+    }
+}
+const validarDadosFinancia = async function(financia) {
+    try {
+        if(financia.tipo == null || financia.tipo == "" || financia.tipo == undefined || financia.tipo.length > 100){
+            return false
+        }else if(financia.descricao == null || financia.descricao == "" || financia.descricao == undefined || financia.descricao.length > 100){
+            return false
+        }else if(financia.valor == null || financia.valor == "" || financia.valor == undefined || !isNaN(financia.valor)){
+            return false
+        }else if(financia.icone == null || financia.icone == "" || financia.icone == undefined || financia.icone.length > 100){
+            return false
+        }else{
+            return true
+        }
+    } catch (error) {
+        console.log(error)  
+    }
+}
+const validarDadosNotificacao = async function(notificacao) {
+    try {
+        if(notificacao.titulo == null || notificacao.titulo == "" || notificacao.titulo == undefined || notificacao.titulo.length > 100){
+            return false
+        }else if(notificacao.descricao == null || notificacao.descricao == "" || notificacao.descricao == undefined || notificacao.descricao.length > 100){
+            return false
+        }else if(notificacao.data == null || notificacao.data == "" || notificacao.data == undefined || notificacao.data.length > 100){
+            return false
+        }else{
+            return true
+        }
+    } catch (error) {
+        console.log(error)  
+    }
+}
 module.exports = {
     validarDadosUsuario,
     validarDadosFamilia,
     validarDadosEvento,
     validarDadosItens,
-    validarDadosLista
+    validarDadosLista,
+    validarDadosInformacao,
+    validarDadosFinancia,
+    validarDadosNotificacao
 }
