@@ -10,49 +10,54 @@ const mesagensDefault = require("../modulo/config_messages.js")
 const validarDados = require("../modulo/validar_dados.js")
 const validarAtributos = require("../modulo/validar_atributos.js")
 
-// GET
+// GET +
 const listarUsuarios = async function(){
     try {
         let result = await usuarioDAO.getAllUsers()
         if(result){
             if(result.length > 0){
+                // console.log(result.length)
                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                mesagensDefault.HEADER.Response.usuarios = result
+                mesagensDefault.HEADER.Response.usuarios = result[0]
+                console.log(mesagensDefault.HEADER.Response.usuarios)
+                return mesagensDefault.HEADER
             }else{
-                mesagensDefault.ERRO_NOT_FOUND
+                return mesagensDefault.ERRO_NOT_FOUND
             }  
         }else{
-            mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
         }
     } catch (error) {
-        mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
-// GET id
+// GET id + 
 const listarUsuarioID = async function(id){
     let idValidado = validarAtributos.validarValorId(id)
+    // console.log(idValidado)
     try {
-        if(idValidado){
+        if(!idValidado){
             let result = await usuarioDAO.getUserById(id)
+            // console.log(result)
             if(result){
                 if(result.length > 0){
                     mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                    mesagensDefault.HEADER.Response.usuario = result
+                    mesagensDefault.HEADER.Response.usuario = result[0]
+                    return mesagensDefault.HEADER
                 }else{
-                    mesagensDefault.ERRO_NOT_FOUND
+                    return mesagensDefault.ERRO_NOT_FOUND
                 }
             }else{
-                mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
             }    
         }else{
-            mesagensDefault.ERRO_INVALID_ID
+            return mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {
-        mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
-
 // POST
 const criarUsuario = async function(usuario, contentType) {
     let dadosValidados = validarDados.validarDadosUsuario(usuario)
@@ -65,20 +70,21 @@ const criarUsuario = async function(usuario, contentType) {
                     if(result.length > 0){
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
                         mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.message
+                        return mesagensDefault.HEADER
                     }else{
-                        mesagensDefault.ERRO_NOT_FOUND
+                        return mesagensDefault.ERRO_NOT_FOUND
                     }
                 }else{
-                    mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
             }else{
-                mesagensDefault.ERRO_REQUIRED_FIELDS
+                return mesagensDefault.ERRO_REQUIRED_FIELDS
             }
         }else{
-            mesagensDefault.ERRO_CONTENT_TYPE
+            return mesagensDefault.ERRO_CONTENT_TYPE
         }
     } catch (error) {
-        mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 

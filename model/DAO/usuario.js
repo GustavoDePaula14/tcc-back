@@ -9,34 +9,36 @@ const knexConfig = require("../database_config/knexfile");
 
 const knexDatabase = knex(knexConfig.development);
 
-//GET 
+//GET +
 const getAllUsers = async function(){
     try{
-        let sql = "select * from tbl_usuario"
+        let sql = "select * from tb_usuario"
         let result = await knexDatabase.raw(sql)
         if(Array.isArray(result[0])){
+            // console.log(result)
             return result
         }else{
             return false
         }
     }catch(error){
-        console.log(error)
-        return false
+        // console.log(error)
+        return error
     }   
 }
-//GET por id
+//GET por id +
 const getUserById = async function(id) {
     try{
         let sql = `select * from tb_usuario where id_usuario = ${id}`
         let result = await knexDatabase.raw(sql)
         if(Array.isArray(result[0])){
+            // console.log(result)
             return result
         }else{
             return false
         }
     }catch(error){
-        console.log(error)
-        return false
+        // console.log(error)
+        return error
     }   
 }
 //POST 
@@ -59,12 +61,13 @@ const setInsertUser = async function(usuario) {
                     )`
         let result = await knexDatabase.raw(sql)
         if(Array.isArray(result[0])){
+            console.log(result)
             return result
         }else{
             return false
         }
     }catch(error){
-        console.log(error)
+        // console.log(error)
         return false
     }   
 }

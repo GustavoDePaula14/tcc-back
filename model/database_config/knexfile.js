@@ -13,7 +13,7 @@ module.exports = {
             user: "root",
             password: "12345678",
             database: "familysync",
-            port: 8080,
+            port: 3306,
             charset: 'utf8mb4'
         },
         migrations: {

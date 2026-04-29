@@ -20,7 +20,7 @@ const validarContentType = function(contentType){
 
 const validarValorId = function(id){
     try {
-        if(id == null || id == undefined || !isNaN(id) || id == "" || id > 0){
+        if(id == null || id == undefined || !isNaN(id) || id == "" || id < 0){
             return false
         }else{
             return true

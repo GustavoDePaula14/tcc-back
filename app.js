@@ -6,7 +6,7 @@ const config = require('./model/database_config/knexfile');
 const app = express();
 const PORT = 3000;
 
-const db = knex(config.development);
+const routerUsuario = require('./routes/usuario/route_usuario.js')
 
 app.use(cors());
 app.use(express.json());
@@ -27,17 +27,7 @@ app.get('/teste-banco', async (req, res) => {
   }
 });
 
-app.get('/usuarios', async (req, res) => {
-  try {
-    const usuarios = await db('tb_usuario').select('*');
-    res.json(usuarios);
-  } catch (error) {
-    res.status(500).json({
-      message: 'Erro ao buscar usuários',
-      error: error.message
-    });
-  }
-});
+app.use('/v1/familysync', routerUsuario);
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
