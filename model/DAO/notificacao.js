@@ -15,13 +15,13 @@ const getAllNotifications = async function() {
         let sql = `select * from tb_notificacao`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         } 
     } catch (error) {
-        return false   
+        return error   
     }
 }
 //GET por id
@@ -30,13 +30,13 @@ const getNotificationById = async function(id) {
         let sql = `select * from tb_notificacao where id_notificacao = ${id}`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         } 
     } catch (error) {
-        return false   
+        return error
     }
 }
 //POST
@@ -52,13 +52,13 @@ const setInsertNotification = async function(notificacao) {
                         '${notificacao.data}'
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 //PUT
@@ -71,13 +71,13 @@ const setUpdateNotification = async function(notificacao) {
                     where id_notificacao = ${notificacao.id}
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 //DELETE
@@ -85,13 +85,13 @@ const setDeleteNotification = async function(id) {
     try {
         let = sql = `delete from tb_notificacao where id_notificacao = ${id}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 module.exports = {

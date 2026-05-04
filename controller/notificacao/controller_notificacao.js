@@ -17,15 +17,16 @@ const listarNotificacoes = async function () {
         if (result) {
             if (result.length > 0) {
                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                mesagensDefault.HEADER.Response.notificacoes = result
+                mesagensDefault.HEADER.Response.notificacoes = result[0]
+                return mesagensDefault.HEADER
             } else {
-                mesagensDefault.ERRO_NOT_FOUND
+                return mesagensDefault.ERRO_NOT_FOUND
             }
         } else {
-            mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
         }
     } catch (error) {
-        mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
@@ -38,18 +39,19 @@ const listarNotificacaoID = async function (id) {
             if (result) {
                 if (result.length > 0) {
                     mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                    mesagensDefault.HEADER.Response.notificacao = result
+                    mesagensDefault.HEADER.Response.notificacao = result[0]
+                    return mesagensDefault.HEADER
                 } else {
-                    mesagensDefault.ERRO_NOT_FOUND
+                    return mesagensDefault.ERRO_NOT_FOUND
                 }
             } else {
-                mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
             }
         } else {
-            mesagensDefault.ERRO_INVALID_ID
+            return mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {
-        mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
@@ -65,20 +67,21 @@ const criarNotificacao = async function (notificacao, contentType) {
                     if (result.length > 0) {
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
                         mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.message
+                        return mesagensDefault.HEADER
                     } else {
-                        mesagensDefault.ERRO_NOT_FOUND
+                        return mesagensDefault.ERRO_NOT_FOUND
                     }
                 } else {
-                    mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
             } else {
-                mesagensDefault.ERRO_REQUIRED_FIELDS
+                return mesagensDefault.ERRO_REQUIRED_FIELDS
             }
         } else {
-            mesagensDefault.ERRO_CONTENT_TYPE
+            return mesagensDefault.ERRO_CONTENT_TYPE
         }
     } catch (error) {
-        mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
@@ -99,24 +102,25 @@ const atulizarNotificacao = async function (notificacao, contentType, id) {
                             if (result.length > 0) {
                                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
                                 mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
+                                return mesagensDefault.HEADER
                             }
                         } else {
-                            mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                         }
                     } else {
                         return buscarId
                     }
                 } else {
-                    mesagensDefault.ERRO_REQUIRED_FIELDS
+                    return mesagensDefault.ERRO_REQUIRED_FIELDS
                 }
             } else {
-                mesagensDefault.ERRO_CONTENT_TYPE
+                return mesagensDefault.ERRO_CONTENT_TYPE
             }
         } else {
-            mesagensDefault.ERRO_INVALID_ID
+            return mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {
-        mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 // DELETE
@@ -131,18 +135,21 @@ const excluirNotificacao = async function (id) {
                     if (result.length > 0) {
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_DELETED_ITEM.StatusCode
                         mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_DELETED_ITEM.message
+                        return mesagensDefault.HEADER
+                    }else{
+                        return mesagensDefault.ERRO_NOT_FOUND
                     }
                 } else {
-                    mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
             } else {
                 return buscarId
             }
         } else {
-            mesagensDefault.ERRO_INVALID_ID
+            return mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {
-        mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 module.exports = {

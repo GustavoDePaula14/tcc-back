@@ -89,65 +89,69 @@ const criarUsuario = async function(usuario, contentType) {
 
 // PUT
 const atulizarUsuario = async function(usuario, contentType, id) {
-    let dadosValidados = validarDados.validarDadosUsuario(usuario)
-    let contentTypeValidado = validarAtributos.validarContentType(contentType)
-    let idValidado = validarAtributos.validarValorId(id)
     try {
-        if(idValidado){
+        let dadosValidados = validarDados.validarDadosUsuario(usuario)
+        let contentTypeValidado = validarAtributos.validarContentType(contentType)
+        let idValidado = validarAtributos.validarValorId(id)
+        if(!idValidado){
             let buscarId = usuarioDAO.getUserById(id)
             if(contentTypeValidado){
                 if(dadosValidados){
-                    if(buscarId.StatusCode == 200){
+                    if(buscarId){
                         usuario.id_usuario = parseInt(id)
                         let result = await usuarioDAO.setUpdateUser(usuario)
                         if(result){
                             if(result.length > 0){
                                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
                                 mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
+                                return mesagensDefault.HEADER
+                            }else{
+                                return mesagensDefault.ERRO_NOT_FOUND
                             }
                         }else{
-                            mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                         }
                     }else{
-                        return buscarId
+                        return mesagensDefault.ERRO_INVALID_ID
                     }
                 }else{
-                    mesagensDefault.ERRO_REQUIRED_FIELDS
+                    return mesagensDefault.ERRO_REQUIRED_FIELDS
                 }
             }else{
-                mesagensDefault.ERRO_CONTENT_TYPE
+                return mesagensDefault.ERRO_CONTENT_TYPE
             }
         }else{
-            mesagensDefault.ERRO_INVALID_ID
+            return mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {
-        mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 // DELETE
 const excluirUsuario = async function(id) {
     let idValidado = validarAtributos.validarValorId(id)
     try {
-        if(idValidado){
+        if(!idValidado){
             let buscarId = await usuarioDAO.getUserById(id)
-            if(buscarId.StatusCode == 200){
+            if(buscarId){
                 let result = await usuarioDAO.setDeleteUser(id)
                 if(result){
                     if(result.length > 0){
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_DELETED_ITEM.StatusCode
                         mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_DELETED_ITEM.message
+                        return mesagensDefault.HEADER
                     }
                 }else{
-                    mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
             }else{
                 return buscarId
             }
         }else{
-            mesagensDefault.ERRO_INVALID_ID
+            return mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {
-        mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 module.exports = {

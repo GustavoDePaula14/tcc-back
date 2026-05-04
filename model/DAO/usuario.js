@@ -58,7 +58,7 @@ const setInsertUser = async function(usuario) {
                         '${usuario.email}'
                     )`
         let result = await knexDatabase.raw(sql)
-        console.log(result)
+        // console.log(result)
         if(Array.isArray(result)){
             return result
         }else{
@@ -77,17 +77,16 @@ const setUpdateUser = async function(usuario) {
                         data_nascimento = '${usuario.data_nascimento}',
                         senha = '${usuario.senha}',
                         email = '${usuario.email}'
-                    where id_usuario = ${usuario.id_usuario}
-                    )`
+                    where id_usuario = ${usuario.id_usuario}`
+        // console.log(sql)
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     }catch(error){
-        console.log(error)
-        return false
+        return error
     }   
 }
 //DELETE
@@ -95,14 +94,13 @@ const setDeleteUser = async function(id) {
     try{
         let sql = `delete from tb_usuario where id_usuario = ${id}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     }catch(error){
-        console.log(error)
-        return false
+        return error
     }   
 }
 module.exports = {
