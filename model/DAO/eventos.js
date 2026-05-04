@@ -15,13 +15,13 @@ const getAllEvents = async function() {
         let sql = `select * from tb_eventos`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         } 
     } catch (error) {
-        return false   
+        return error
     }
 }
 //GET por id
@@ -30,13 +30,13 @@ const getEventById = async function(id) {
         let sql = `select * from tb_eventos where id_evento = ${id}`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         } 
     } catch (error) {
-        return false   
+        return error   
     }
 }
 //POST
@@ -52,13 +52,13 @@ const setInsertEvent = async function(evento) {
                         '${evento.data}'     
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 //PUT
@@ -71,13 +71,13 @@ const setUpdateEvent = async function(evento) {
                     where id_evento = ${evento.id_evento}
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 //DELETE
@@ -85,13 +85,13 @@ const setDeleteEvent = async function(id) {
     try {
         let = sql = `delete from tb_evento where id_evento = ${id}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 module.exports ={

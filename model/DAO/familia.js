@@ -14,14 +14,14 @@ const getAllFamilys = async function(){
     try{
         let sql = "select * from tb_familia"
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     }catch(error){
         console.log(error)
-        return false
+        return error
     }   
 }
 //GET por id
@@ -29,20 +29,20 @@ const getFamilyById = async function(id) {
     try{
         let sql = `select * from tb_familia where id_familia = ${id}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     }catch(error){
         console.log(error)
-        return false
+        return error
     }   
 }
 //POST
 const setInsertFamily = async function(familia) {
     try{
-        let sql = `insert into tb_usuario(
+        let sql = `insert into tb_familia(
                         nome,
                         telefone_residencial
                     )values(
@@ -50,33 +50,33 @@ const setInsertFamily = async function(familia) {
                         '${familia.telefone_residencial}'
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     }catch(error){
         console.log(error)
-        return false
+        return error
     }   
 }
 //PUT
 const setUpdateFamily = async function(familia) {
     try{
-        let sql = `update tb_usuario set
+        let sql = `update tb_familia set
                         nome = '${familia.nome}',
                         telefone_residencial = '${familia.telefone_residencial}'
                     where id_familia = ${familia.id_familia}
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     }catch(error){
         console.log(error)
-        return false
+        return error
     }   
 }
 //DELETE
@@ -84,14 +84,14 @@ const setDeleteFamily = async function(id) {
     try{
         let sql = `delete from tb_familia where id_familia = ${id}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     }catch(error){
         console.log(error)
-        return false
+        return error
     }   
 }
 module.exports = {

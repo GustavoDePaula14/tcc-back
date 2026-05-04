@@ -15,13 +15,13 @@ const getAllAddresses = async function() {
         let sql = `select * from tb_endereco`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         } 
     } catch (error) {
-        return false   
+        return error
     }
 }
 //GET por id
@@ -30,13 +30,13 @@ const getAddressById = async function(id) {
         let sql = `select * from tb_endereco where id_endereco = ${id}`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         } 
     } catch (error) {
-        return false   
+        return error
     }
 }
 //POST
@@ -60,13 +60,13 @@ const setInsertAddress = async function(endereco) {
                         ${endereco.numero}
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 //PUT
@@ -83,13 +83,13 @@ const setUpdateAddress = async function(endereco) {
                     where id_endereco = ${endereco.id}
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 //DELETE
@@ -97,13 +97,13 @@ const setDeleteAddress = async function(id) {
     try {
         let = sql = `delete from tb_endereco where id_endereco = ${id}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 module.exports ={

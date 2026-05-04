@@ -15,28 +15,28 @@ const getAllInformations = async function() {
         let sql = `select * from tb_informacao`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         } 
     } catch (error) {
-        return false   
+        return error
     }
 }
 //GET por id
 const getInformationById = async function(id) {
     try {
-        let sql = `select * from tb_informacao where id_informacao = ${id}`
+        let sql = `select * from tb_informacao where id_info = ${id}`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         } 
     } catch (error) {
-        return false   
+        return error
     }
 }
 //POST
@@ -50,13 +50,13 @@ const setInsertInformation = async function(informacao) {
                         '${informacao.descricao}'
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 //PUT
@@ -65,30 +65,30 @@ const setUpdateInformation = async function(informacao) {
         let sql = `update tb_informacao set
                         titulo = '${informacao.titulo}',
                         descricao = '${informacao.descricao}'
-                    where id_informacao = ${informacao.id}
+                    where id_info = ${informacao.id}
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 //DELETE
 const setDeleteInformation = async function(id) {
     try {
-        let = sql = `delete from tb_informacao where id_informacao = ${id}`
+        let = sql = `delete from tb_informacao where id_info = ${id}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 module.exports = {

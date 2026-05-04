@@ -9,35 +9,34 @@ const knexConfig = require("../database_config/knexfile");
 
 const knexDatabase = knex(knexConfig.development);
 
-//GET +
+//GET 
 const getAllUsers = async function(){
     try{
         let sql = "select * from tb_usuario"
         let result = await knexDatabase.raw(sql)
         if(Array.isArray(result)){
-            // console.log(result)
             return result
         }else{
             return false
         }
     }catch(error){
-        // console.log(error)
+        console.log(error)
         return error
     }   
 }
-//GET por id +
+//GET por id
 const getUserById = async function(id) {
     try{
         let sql = `select * from tb_usuario where id_usuario = ${id}`
         let result = await knexDatabase.raw(sql)
+        console.log(result)
         if(Array.isArray(result)){
-            // console.log(result)
             return result
         }else{
             return false
         }
     }catch(error){
-        // console.log(error)
+        console.log(error)
         return error
     }   
 }
@@ -58,13 +57,13 @@ const setInsertUser = async function(usuario) {
                         '${usuario.email}'
                     )`
         let result = await knexDatabase.raw(sql)
-        // console.log(result)
         if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     }catch(error){
+        console.log(error)
         return error
     }   
 }
@@ -77,8 +76,8 @@ const setUpdateUser = async function(usuario) {
                         data_nascimento = '${usuario.data_nascimento}',
                         senha = '${usuario.senha}',
                         email = '${usuario.email}'
-                    where id_usuario = ${usuario.id_usuario}`
-        // console.log(sql)
+                    where id_usuario = ${usuario.id_usuario}
+                    )`
         let result = await knexDatabase.raw(sql)
         if(Array.isArray(result)){
             return result
@@ -86,6 +85,7 @@ const setUpdateUser = async function(usuario) {
             return false
         }
     }catch(error){
+        console.log(error)
         return error
     }   
 }
@@ -100,6 +100,7 @@ const setDeleteUser = async function(id) {
             return false
         }
     }catch(error){
+        console.log(error)
         return error
     }   
 }

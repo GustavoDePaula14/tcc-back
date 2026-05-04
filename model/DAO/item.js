@@ -15,13 +15,13 @@ const getAllItens = async function() {
         let sql = `select * from tb_itens`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         } 
     } catch (error) {
-        return false   
+        return error
     }
 }
 //GET por id
@@ -30,13 +30,13 @@ const getItenById = async function(id) {
         let sql = `select * from tb_itens where id_item = ${id}`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         } 
     } catch (error) {
-        return false   
+        return error
     }
 }
 //POST
@@ -54,13 +54,13 @@ const setInsertIten = async function(item) {
                         ${item.comprado}
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 //PUT
@@ -74,13 +74,13 @@ const setUpdateIten = async function(item) {
                     where id_item = ${item.id_item}
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 //DELETE
@@ -88,13 +88,13 @@ const setDeleteIten = async function(id) {
     try {
         let = sql = `delete from tb_itens where id_item = ${id}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 module.exports = {

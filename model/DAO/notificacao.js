@@ -36,7 +36,7 @@ const getNotificationById = async function(id) {
             return false
         } 
     } catch (error) {
-        return error
+        return error   
     }
 }
 //POST

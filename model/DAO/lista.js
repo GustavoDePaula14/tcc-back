@@ -12,80 +12,80 @@ const knexDatabase = knex(knexConfig.development);
 //GET
 const getAllLists = async function() {
     try {
-        let sql = `select * from tb_listas`
+        let sql = `select * from tb_lista`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         } 
     } catch (error) {
-        return false   
+        return error   
     }
 }
 //GET por id
 const getListById = async function(id) {
     try {
-        let sql = `select * from tb_listas where id_lista = ${id}`
+        let sql = `select * from tb_lista where id_lista = ${id}`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         } 
     } catch (error) {
-        return false   
+        return error   
     }
 }
 //POST
 const setInsertList = async function(lista) {
     try {
-        let sql = `insert into tb_listas(
-                        nome_lista
+        let sql = `insert into tb_lista(
+                        nome
                     )values(
-                        '${lista.nome_lista}'
+                        '${lista.nome}'
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 //PUT
 const setUpdateList = async function(lista) {
     try {
-        let sql = `update tb_listas set
-                        nome_lista = '${lista.nome_lista}'
+        let sql = `update tb_lista set
+                        nome = '${lista.nome}'
                     where id_lista = ${lista.id_lista}
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 //DELETE
 const setDeleteList = async function(id) {
     try {
-        let = sql = `delete from tb_listas where id_lista = ${id}`
+        let = sql = `delete from tb_lista where id_lista = ${id}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result[0])){
+        if(Array.isArray(result)){
             return result
         }else{
             return false
         }
     } catch (error) {
-        return false
+        return error
     }
 }
 module.exports = {
