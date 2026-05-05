@@ -10,37 +10,37 @@ const knexConfig = require("../database_config/knexfile");
 const knexDatabase = knex(knexConfig.development);
 
 //GET 
-const getAllAddresses = async function() {
+const getAllAddresses = async function () {
     try {
         let sql = `select * from tb_endereco`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
-        } 
+        }
     } catch (error) {
         return error
     }
 }
 //GET por id
-const getAddressById = async function(id) {
+const getAddressById = async function (id) {
     try {
         let sql = `select * from tb_endereco where id_endereco = ${id}`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
-        } 
+        }
     } catch (error) {
         return error
     }
 }
 //POST
-const setInsertAddress = async function(endereco) {
+const setInsertAddress = async function (endereco) {
     try {
         let sql = `insert into tb_endereco(
                         cep,
@@ -60,9 +60,9 @@ const setInsertAddress = async function(endereco) {
                         ${endereco.numero}
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
     } catch (error) {
@@ -70,7 +70,7 @@ const setInsertAddress = async function(endereco) {
     }
 }
 //PUT
-const setUpdateAddress = async function(endereco) {
+const setUpdateAddress = async function (endereco) {
     try {
         let sql = `update tb_endereco set
                         cep = '${endereco.cep}',
@@ -80,12 +80,11 @@ const setUpdateAddress = async function(endereco) {
                         logradouro = '${endereco.logradouro}',
                         complemento = '${endereco.complemento}',
                         numero = ${endereco.numero}
-                    where id_endereco = ${endereco.id}
-                    )`
+                    where id_endereco = ${endereco.id}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
     } catch (error) {
@@ -93,20 +92,20 @@ const setUpdateAddress = async function(endereco) {
     }
 }
 //DELETE
-const setDeleteAddress = async function(id) {
+const setDeleteAddress = async function (id) {
     try {
         let = sql = `delete from tb_endereco where id_endereco = ${id}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
     } catch (error) {
         return error
     }
 }
-module.exports ={
+module.exports = {
     getAllAddresses,
     getAddressById,
     setUpdateAddress,

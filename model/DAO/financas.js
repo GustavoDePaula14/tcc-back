@@ -10,37 +10,37 @@ const knexConfig = require("../database_config/knexfile");
 const knexDatabase = knex(knexConfig.development);
 
 //GET 
-const getAllFinances = async function() {
+const getAllFinances = async function () {
     try {
         let sql = `select * from tb_financas`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
-        } 
+        }
     } catch (error) {
         return error
     }
 }
 //GET por id
-const getFinanceById = async function(id) {
+const getFinanceById = async function (id) {
     try {
         let sql = `select * from tb_financas where id_financas = ${id}`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
-        } 
+        }
     } catch (error) {
         return error
     }
 }
 //POST
-const setInsertFinance = async function(financas) {
+const setInsertFinance = async function (financas) {
     try {
         let sql = `insert into tb_financas(
                         tipo,
@@ -54,9 +54,9 @@ const setInsertFinance = async function(financas) {
                         '${financas.icone}'
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
     } catch (error) {
@@ -64,19 +64,18 @@ const setInsertFinance = async function(financas) {
     }
 }
 //PUT
-const setUpdateFinance = async function(financas) {
+const setUpdateFinance = async function (financas) {
     try {
         let sql = `update tb_financas set
                         tipo = '${financas.tipo}',
                         descricao = '${financas.descricao}',
                         valor = ${financas.valor},
                         icone = '${financas.icone}'
-                    where id_financas = ${financas.id}
-                    )`
+                    where id_financas = ${financas.id}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
     } catch (error) {
@@ -84,13 +83,13 @@ const setUpdateFinance = async function(financas) {
     }
 }
 //DELETE
-const setDeleteFinance = async function(id) {
+const setDeleteFinance = async function (id) {
     try {
         let = sql = `delete from tb_financas where id_financas = ${id}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
     } catch (error) {

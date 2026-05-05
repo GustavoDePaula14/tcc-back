@@ -10,39 +10,39 @@ const knexConfig = require("../database_config/knexfile");
 const knexDatabase = knex(knexConfig.development);
 
 //GET 
-const getAllUsers = async function(){
-    try{
+const getAllUsers = async function () {
+    try {
         let sql = "select * from tb_usuario"
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
-    }catch(error){
+    } catch (error) {
         console.log(error)
         return error
-    }   
+    }
 }
 //GET por id
-const getUserById = async function(id) {
-    try{
+const getUserById = async function (id) {
+    try {
         let sql = `select * from tb_usuario where id_usuario = ${id}`
         let result = await knexDatabase.raw(sql)
         console.log(result)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
-    }catch(error){
+    } catch (error) {
         console.log(error)
         return error
-    }   
+    }
 }
 //POST 
-const setInsertUser = async function(usuario) {
-    try{
+const setInsertUser = async function (usuario) {
+    try {
         let sql = `insert into tb_usuario(
                         nome,
                         cpf,
@@ -57,52 +57,51 @@ const setInsertUser = async function(usuario) {
                         '${usuario.email}'
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
-    }catch(error){
+    } catch (error) {
         console.log(error)
         return error
-    }   
+    }
 }
 //PUT
-const setUpdateUser = async function(usuario) {
-    try{
+const setUpdateUser = async function (usuario) {
+    try {
         let sql = `update tb_usuario set
                         nome = '${usuario.nome}',
                         cpf = '${usuario.cpf}',
                         data_nascimento = '${usuario.data_nascimento}',
                         senha = '${usuario.senha}',
                         email = '${usuario.email}'
-                    where id_usuario = ${usuario.id_usuario}
-                    )`
+                    where id_usuario = ${usuario.id_usuario}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
-    }catch(error){
+    } catch (error) {
         console.log(error)
         return error
-    }   
+    }
 }
 //DELETE
-const setDeleteUser = async function(id) {
-    try{
+const setDeleteUser = async function (id) {
+    try {
         let sql = `delete from tb_usuario where id_usuario = ${id}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
-    }catch(error){
+    } catch (error) {
         console.log(error)
         return error
-    }   
+    }
 }
 module.exports = {
     getAllUsers,

@@ -11,19 +11,19 @@ const validarDados = require("../modulo/validar_dados.js")
 const validarAtributos = require("../modulo/validar_atributos.js")
 
 // GET +
-const listarUsuarios = async function(){
+const listarUsuarios = async function () {
     try {
         let result = await usuarioDAO.getAllUsers()
-        if(result){
-            if(result.length > 0){
+        if (result) {
+            if (result.length > 0) {
                 // console.log(result.length)
                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
                 mesagensDefault.HEADER.Response = result[0]
                 return mesagensDefault.HEADER
-            }else{
+            } else {
                 return mesagensDefault.ERRO_NOT_FOUND
-            }  
-        }else{
+            }
+        } else {
             return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
         }
     } catch (error) {
@@ -32,25 +32,25 @@ const listarUsuarios = async function(){
 }
 
 // GET id + 
-const listarUsuarioID = async function(id){
+const listarUsuarioID = async function (id) {
     let idValidado = validarAtributos.validarValorId(id)
     // console.log(idValidado)
     try {
-        if(!idValidado){
+        if (!idValidado) {
             let result = await usuarioDAO.getUserById(id)
             // console.log(result)
-            if(result){
-                if(result.length > 0){
+            if (result) {
+                if (result.length > 0) {
                     mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
                     mesagensDefault.HEADER.Response = result[0]
                     return mesagensDefault.HEADER
-                }else{
+                } else {
                     return mesagensDefault.ERRO_NOT_FOUND
                 }
-            }else{
+            } else {
                 return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
-            }    
-        }else{
+            }
+        } else {
             return mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {
@@ -58,28 +58,28 @@ const listarUsuarioID = async function(id){
     }
 }
 // POST
-const criarUsuario = async function(usuario, contentType) {
+const criarUsuario = async function (usuario, contentType) {
     try {
         let dadosValidados = validarDados.validarDadosUsuario(usuario)
         let contentTypeValidado = validarAtributos.validarContentType(contentType)
-        if(contentTypeValidado){
-            if(dadosValidados){
+        if (contentTypeValidado) {
+            if (dadosValidados) {
                 let result = await usuarioDAO.setInsertUser(usuario)
-                if(result){
-                    if(result.length > 0){
+                if (result) {
+                    if (result.length > 0) {
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
                         mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.message
                         return mesagensDefault.HEADER
-                    }else{
+                    } else {
                         return mesagensDefault.ERRO_NOT_FOUND
                     }
-                }else{
+                } else {
                     return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
-            }else{
+            } else {
                 return mesagensDefault.ERRO_REQUIRED_FIELDS
             }
-        }else{
+        } else {
             return mesagensDefault.ERRO_CONTENT_TYPE
         }
     } catch (error) {
@@ -88,39 +88,40 @@ const criarUsuario = async function(usuario, contentType) {
 }
 
 // PUT
-const atulizarUsuario = async function(usuario, contentType, id) {
+const atulizarUsuario = async function (usuario, contentType, id) {
     try {
         let dadosValidados = validarDados.validarDadosUsuario(usuario)
         let contentTypeValidado = validarAtributos.validarContentType(contentType)
         let idValidado = validarAtributos.validarValorId(id)
-        if(!idValidado){
+        if (!idValidado) {
             let buscarId = usuarioDAO.getUserById(id)
-            if(contentTypeValidado){
-                if(dadosValidados){
-                    if(buscarId){
+            if (contentTypeValidado) {
+                if (dadosValidados) {
+                    if (buscarId) {
                         usuario.id_usuario = parseInt(id)
                         let result = await usuarioDAO.setUpdateUser(usuario)
-                        if(result){
-                            if(result.length > 0){
+                        console.log(result)
+                        if (result) {
+                            if (result.length > 0) {
                                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
                                 mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
                                 return mesagensDefault.HEADER
-                            }else{
+                            } else {
                                 return mesagensDefault.ERRO_NOT_FOUND
                             }
-                        }else{
+                        } else {
                             return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                         }
-                    }else{
+                    } else {
                         return mesagensDefault.ERRO_INVALID_ID
                     }
-                }else{
+                } else {
                     return mesagensDefault.ERRO_REQUIRED_FIELDS
                 }
-            }else{
+            } else {
                 return mesagensDefault.ERRO_CONTENT_TYPE
             }
-        }else{
+        } else {
             return mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {
@@ -128,26 +129,26 @@ const atulizarUsuario = async function(usuario, contentType, id) {
     }
 }
 // DELETE
-const excluirUsuario = async function(id) {
+const excluirUsuario = async function (id) {
     let idValidado = validarAtributos.validarValorId(id)
     try {
-        if(!idValidado){
+        if (!idValidado) {
             let buscarId = await usuarioDAO.getUserById(id)
-            if(buscarId){
+            if (buscarId) {
                 let result = await usuarioDAO.setDeleteUser(id)
-                if(result){
-                    if(result.length > 0){
+                if (result) {
+                    if (result.length > 0) {
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_DELETED_ITEM.StatusCode
                         mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_DELETED_ITEM.message
                         return mesagensDefault.HEADER
                     }
-                }else{
+                } else {
                     return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
-            }else{
+            } else {
                 return buscarId
             }
-        }else{
+        } else {
             return mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {

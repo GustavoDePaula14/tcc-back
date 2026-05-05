@@ -10,37 +10,37 @@ const knexConfig = require("../database_config/knexfile");
 const knexDatabase = knex(knexConfig.development);
 
 //GET
-const getAllItens = async function() {
+const getAllItens = async function () {
     try {
         let sql = `select * from tb_itens`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
-        } 
+        }
     } catch (error) {
         return error
     }
 }
 //GET por id
-const getItenById = async function(id) {
+const getItenById = async function (id) {
     try {
         let sql = `select * from tb_itens where id_item = ${id}`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
-        } 
+        }
     } catch (error) {
         return error
     }
 }
 //POST
-const setInsertIten = async function(item) {
+const setInsertIten = async function (item) {
     try {
         let sql = `insert into tb_itens(
                         nome_item,
@@ -54,9 +54,9 @@ const setInsertIten = async function(item) {
                         ${item.comprado}
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
     } catch (error) {
@@ -64,19 +64,18 @@ const setInsertIten = async function(item) {
     }
 }
 //PUT
-const setUpdateIten = async function(item) {
+const setUpdateIten = async function (item) {
     try {
         let sql = `update tb_itens set
                         nome_item = '${item.nome_item}}',
                         quantidade = ${item.quantidade},
                         valor_unitario = ${item.valor_unitario},
                         comprado = '${item.comprado}  
-                    where id_item = ${item.id_item}
-                    )`
+                    where id_item = ${item.id_item}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
     } catch (error) {
@@ -84,13 +83,13 @@ const setUpdateIten = async function(item) {
     }
 }
 //DELETE
-const setDeleteIten = async function(id) {
+const setDeleteIten = async function (id) {
     try {
         let = sql = `delete from tb_itens where id_item = ${id}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
     } catch (error) {

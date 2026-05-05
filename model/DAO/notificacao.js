@@ -10,37 +10,37 @@ const knexConfig = require("../database_config/knexfile");
 const knexDatabase = knex(knexConfig.development);
 
 //GET 
-const getAllNotifications = async function() {
+const getAllNotifications = async function () {
     try {
         let sql = `select * from tb_notificacao`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
-        } 
+        }
     } catch (error) {
-        return error   
+        return error
     }
 }
 //GET por id
-const getNotificationById = async function(id) {
+const getNotificationById = async function (id) {
     try {
         let sql = `select * from tb_notificacao where id_notificacao = ${id}`
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
-        } 
+        }
     } catch (error) {
-        return error   
+        return error
     }
 }
 //POST
-const setInsertNotification = async function(notificacao) {
+const setInsertNotification = async function (notificacao) {
     try {
         let sql = `insert into tb_notificacao(
                         titulo,
@@ -52,9 +52,9 @@ const setInsertNotification = async function(notificacao) {
                         '${notificacao.data}'
                     )`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
     } catch (error) {
@@ -62,18 +62,17 @@ const setInsertNotification = async function(notificacao) {
     }
 }
 //PUT
-const setUpdateNotification = async function(notificacao) {
+const setUpdateNotification = async function (notificacao) {
     try {
         let sql = `update tb_notificacao set
                         titulo = '${notificacao.titulo}',
                         descricao = '${notificacao.descricao}',
                         data = '${notificacao.data}'
-                    where id_notificacao = ${notificacao.id}
-                    )`
+                    where id_notificacao = ${notificacao.id}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
     } catch (error) {
@@ -81,13 +80,13 @@ const setUpdateNotification = async function(notificacao) {
     }
 }
 //DELETE
-const setDeleteNotification = async function(id) {
+const setDeleteNotification = async function (id) {
     try {
         let = sql = `delete from tb_notificacao where id_notificacao = ${id}`
         let result = await knexDatabase.raw(sql)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
     } catch (error) {
