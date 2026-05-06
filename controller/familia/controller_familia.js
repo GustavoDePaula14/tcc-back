@@ -91,7 +91,7 @@ const atulizarFamilia = async function (familia, contentType, id) {
             let buscarId = familiaDAO.getFamilyById(id)
             if (contentTypeValidado) {
                 if (dadosValidados) {
-                    if (buscarId.StatusCode != 200) {
+                    if (buscarId || buscarId.length === 0) {
                         familia.id_familia = parseInt(id)
                         let result = await familiaDAO.setUpdateFamily(familia)
                         if (result) {

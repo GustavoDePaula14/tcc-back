@@ -22,9 +22,6 @@ const validarDadosUsuario = async function (usuario) {
         } else if (usuario.email == null || usuario.email == "" || usuario.email == undefined || usuario.email.length > 100) {
             return false
 
-        } else if (usuario.is_admin == null || usuario.is_admin == undefined || usuario.is_admin != true || usuario.is_admin != false) {
-            return false
-
         } else {
             return true
         }
@@ -133,25 +130,25 @@ const validarDadosNotificacao = async function (notificacao) {
         console.log(error)
     }
 }
-const validarDadosEndereco = async function(endereco) {
+const validarDadosEndereco = async function (endereco) {
     try {
         if (endereco.cep == null || endereco.cep == "" || endereco.cep == undefined || !isNaN(endereco.cep)) {
             return false
-        }else if (endereco.estado == null || endereco.estado == "" || endereco.estado == undefined || endereco.estado.length > 100) {
+        } else if (endereco.estado == null || endereco.estado == "" || endereco.estado == undefined || endereco.estado.length > 100) {
             return false
-        }else if (endereco.cidade == null || endereco.cidade == "" || endereco.cidade == undefined || endereco.cidade.length > 100) {
+        } else if (endereco.cidade == null || endereco.cidade == "" || endereco.cidade == undefined || endereco.cidade.length > 100) {
             return false
-        }else if (endereco.bairro == null || endereco.bairro == "" || endereco.bairro == undefined || endereco.bairro.length > 100) {
+        } else if (endereco.bairro == null || endereco.bairro == "" || endereco.bairro == undefined || endereco.bairro.length > 100) {
             return false
-        }else if (endereco.logradouro == null || endereco.logradouro == "" || endereco.logradouro == undefined || endereco.logradouro.length > 100) {
+        } else if (endereco.logradouro == null || endereco.logradouro == "" || endereco.logradouro == undefined || endereco.logradouro.length > 100) {
             return false
-        }else if (endereco.complemento == null || endereco.complemento == "" || endereco.complemento == undefined || endereco.complemento.length > 100) {
+        } else if (endereco.complemento == null || endereco.complemento == "" || endereco.complemento == undefined || endereco.complemento.length > 100) {
             return false
-        }else if (endereco.numero == null || endereco.numero == "" || endereco.numero == undefined || !isNaN(endereco.numero)) {
+        } else if (endereco.numero == null || endereco.numero == "" || endereco.numero == undefined || !isNaN(endereco.numero)) {
             return false
         }
     } catch (error) {
-        
+
     }
 }
 module.exports = {

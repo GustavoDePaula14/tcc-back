@@ -60,10 +60,11 @@ const listarUsuarioID = async function (id) {
 // POST
 const criarUsuario = async function (usuario, contentType) {
     try {
-        let dadosValidados = validarDados.validarDadosUsuario(usuario)
+        let dadosValidados = await validarDados.validarDadosUsuario(usuario)
+        console.log(dadosValidados)
         let contentTypeValidado = validarAtributos.validarContentType(contentType)
         if (contentTypeValidado) {
-            if (dadosValidados) {
+            if (dadosValidados == true) {
                 let result = await usuarioDAO.setInsertUser(usuario)
                 if (result) {
                     if (result.length > 0) {
@@ -82,6 +83,7 @@ const criarUsuario = async function (usuario, contentType) {
         } else {
             return mesagensDefault.ERRO_CONTENT_TYPE
         }
+
     } catch (error) {
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
@@ -90,13 +92,13 @@ const criarUsuario = async function (usuario, contentType) {
 // PUT
 const atulizarUsuario = async function (usuario, contentType, id) {
     try {
-        let dadosValidados = validarDados.validarDadosUsuario(usuario)
+        let dadosValidados = await validarDados.validarDadosUsuario(usuario)
         let contentTypeValidado = validarAtributos.validarContentType(contentType)
         let idValidado = validarAtributos.validarValorId(id)
         if (!idValidado) {
             let buscarId = usuarioDAO.getUserById(id)
             if (contentTypeValidado) {
-                if (dadosValidados) {
+                if (dadosValidados == true) {
                     if (buscarId) {
                         usuario.id_usuario = parseInt(id)
                         let result = await usuarioDAO.setUpdateUser(usuario)
