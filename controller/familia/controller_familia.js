@@ -54,13 +54,15 @@ const listarFamiliaID = async function (id) {
 }
 //POST
 const criarFamilia = async function (familia, contentType) {
-    let dadosValidados = validarDados.validarDadosFamilia(familia)
-    let contentTypeValidado = validarAtributos.validarContentType(contentType)
     try {
+        let dadosValidados = validarDados.validarDadosFamilia(familia)
+        let contentTypeValidado = validarAtributos.validarContentType(contentType)
         if (contentTypeValidado) {
-            if (dadosValidados) {
+            console.log(dadosValidados)
+            if (dadosValidados == true) {
                 let result = await familiaDAO.setInsertFamily(familia)
                 if (result) {
+                    // console.log(result)
                     if (result.length > 0) {
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
                         mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.message
@@ -91,7 +93,11 @@ const atulizarFamilia = async function (familia, contentType, id) {
             let buscarId = familiaDAO.getFamilyById(id)
             if (contentTypeValidado) {
                 if (dadosValidados) {
+<<<<<<< HEAD
                     if (buscarId || buscarId.length === 0) {
+=======
+                    if (buscarId || buscarId.length !== 0) {
+>>>>>>> 43d22a2d71b0df34cebac99d9eb67f685c58415f
                         familia.id_familia = parseInt(id)
                         let result = await familiaDAO.setUpdateFamily(familia)
                         if (result) {
@@ -125,8 +131,9 @@ const excluirFamilia = async function (id) {
     try {
         if (!idValidado) {
             let buscarId = await familiaDAO.getFamilyById(id)
-            if (buscarId) {
+            if (buscarId || buscarId.length !== 0) {
                 let result = await familiaDAO.setDeleteFamily(id)
+                // console.log(result[0])
                 if (result) {
                     if (result.length > 0) {
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_DELETED_ITEM.StatusCode
@@ -137,7 +144,7 @@ const excluirFamilia = async function (id) {
                     return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
             } else {
-                return buscarId
+                return mesagensDefault.ERRO_NOT_FOUND
             }
         } else {
             return mesagensDefault.ERRO_INVALID_ID

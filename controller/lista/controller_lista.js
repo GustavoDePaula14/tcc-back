@@ -32,7 +32,7 @@ const listarListas = async function () {
 const listarListaID = async function (id) {
     let idValidado = validarAtributos.validarValorId(id)
     try {
-        if (idValidado) {
+        if (!idValidado) {
             let result = await listaDAO.getListById(id)
             if (result) {
                 if (result.length > 0) {
@@ -96,6 +96,7 @@ const atulizarLista = async function (lista, contentType, id) {
                     if (buscarId) {
                         lista.id_lista = parseInt(id)
                         let result = await listaDAO.setUpdateList(lista)
+                        console.log(result)
                         if (result) {
                             if (result.length > 0) {
                                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
@@ -125,7 +126,7 @@ const atulizarLista = async function (lista, contentType, id) {
 const excluirLista = async function (id) {
     let idValidado = validarAtributos.validarValorId(id)
     try {
-        if (idValidado) {
+        if (!idValidado) {
             let buscarId = await listaDAO.getListById(id)
             if (buscarId) {
                 let result = await listaDAO.setUpdateList(id)

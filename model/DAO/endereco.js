@@ -43,6 +43,7 @@ const getAddressById = async function (id) {
 const setInsertAddress = async function (endereco) {
     try {
         let sql = `insert into tb_endereco(
+                        id_familia,
                         cep,
                         estado,
                         cidade,
@@ -51,16 +52,20 @@ const setInsertAddress = async function (endereco) {
                         complemento,
                         numero
                     )values(
+                        ${endereco.id_familia},
                         '${endereco.cep}',
                         '${endereco.estado}',
                         '${endereco.cidade}',
                         '${endereco.bairro}',
                         '${endereco.logradouro}',
                         '${endereco.complemento}',
-                        ${endereco.numero}
+                        '${endereco.numero}'
                     )`
+
         let result = await knexDatabase.raw(sql)
+                    // console.log(result)
         if (Array.isArray(result)) {
+
             return result
         } else {
             return false
@@ -73,6 +78,7 @@ const setInsertAddress = async function (endereco) {
 const setUpdateAddress = async function (endereco) {
     try {
         let sql = `update tb_endereco set
+                        id_familia = ${endereco.id_familia},
                         cep = '${endereco.cep}',
                         estado = '${endereco.estado}',
                         cidade = '${endereco.cidade}',
@@ -80,7 +86,8 @@ const setUpdateAddress = async function (endereco) {
                         logradouro = '${endereco.logradouro}',
                         complemento = '${endereco.complemento}',
                         numero = ${endereco.numero}
-                    where id_endereco = ${endereco.id}`
+                    where id_endereco = ${endereco.id_endereco}`
+        // console.log(sql)
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {
             return result
