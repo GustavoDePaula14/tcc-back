@@ -5,10 +5,14 @@ const config = require('./model/database_config/knexfile');
 
 const app = express();
 const PORT = 3000;
+const URL_BASE = '/v1/familysync'
 
 const routerUsuario = require('./routes/usuario/route_usuario.js')
 const routerFamilia = require('./routes/familia/route_familia.js')
 const routerInformacao = require('./routes/informacao/informacao.js')
+const routerEndereco = require('./routes/endereco/router_endereco.js')
+const routerItem = require('./routes/item/route_item.js')
+const routerLista = require('./routes/lista/route_lista.js')
 
 app.use(cors());
 app.use(express.json());
@@ -29,9 +33,12 @@ app.get('/teste-banco', async (req, res) => {
   }
 });
 
-app.use('/v1/familysync', routerUsuario);
-app.use('/v1/familysync', routerFamilia);
-app.use('/v1/familysync', routerInformacao);
+app.use(URL_BASE, routerUsuario);
+app.use(URL_BASE, routerFamilia);
+app.use(URL_BASE, routerInformacao);
+app.use(URL_BASE, routerEndereco);
+app.use(URL_BASE, routerItem);
+app.use(URL_BASE, routerLista)
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);

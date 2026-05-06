@@ -1,7 +1,7 @@
 /***********************************************
- * Objetivo: Arquivo de responsavel pela manipulação de routas de item na API
+ * Objetivo: Arquivo de responsavel pela manipulação de routas de enderoco na API
  * Autor: Gustavo de Paula Silva
- * Data: 27/04/2026
+ * Data: 06/05/2026
  * Versão: 1.0
  ************************************************/
 
@@ -11,7 +11,7 @@ const bodyParser = require('body-parser')
 
 const bodyParserJSON = bodyParser.json()
 
-const controller = require('../../controller/item/controller_item.js')
+const controller = require('../../controller/endereco/controller_endereco.js')
 const router = express.Router()
 
 router.use((request, response, next) =>{
@@ -22,36 +22,35 @@ router.use((request, response, next) =>{
     next()
 })
 
-router.get("/itens", cors(), async function(request, response) {
-    let result = await controller.listarItens()
+router.get("/enderecos", cors(), async function(request, response) {
+    let result = await controller.listarEndereco()
     response.json(result)
 })
 
-router.get("/item/:id", cors(), async function(request, response) {
+router.get("/endereco/:id", cors(), async function(request, response) {
     let id = request.params.id
-    let result = await controller.listarItemID(id)
+    let result = await controller.listarEnderecoID(id)
     response.json(result)
 })
-router.delete("/item/:id", cors(), async function(request, response) {
+router.delete("/endereco/:id", cors(), async function(request, response) {
     let id = request.params.id
-    let result = await controller.excluirItem(id)
+    let result = await controller.excluirEndereco(id)
     response.json(result)
 })
 
-router.post("/item", cors(), bodyParserJSON, async function(request, response) {
+router.post("/endereco", cors(), bodyParserJSON, async function(request, response) {
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
 
-    let result = await controller.criarItem(dadosBody, contentType)
+    let result = await controller.criarEndereco(dadosBody, contentType)
     response.json(result)
 })
-router.put("/item/:id", cors(), async function(request, response) {
+router.put("/endereco/:id", cors(), async function(request, response) {
     let id = request.params.id
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
 
-    let result = await controller.atulizarItem(dadosBody, contentType, id)
+    let result = await controller.atualizarEndereco(dadosBody, contentType, id)
     response.json(result)
 })
-
 module.exports = router;

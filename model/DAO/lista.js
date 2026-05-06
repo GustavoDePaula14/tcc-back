@@ -43,8 +43,12 @@ const getListById = async function (id) {
 const setInsertList = async function (lista) {
     try {
         let sql = `insert into tb_lista(
+                        id_familia,
+                        id_usuario,
                         nome
                     )values(
+                        ${lista.id_familia},
+                        ${lista.id_usuario},
                         '${lista.nome}'
                     )`
         let result = await knexDatabase.raw(sql)
@@ -61,6 +65,8 @@ const setInsertList = async function (lista) {
 const setUpdateList = async function (lista) {
     try {
         let sql = `update tb_lista set
+                        id_familia = ${lista.id_familia},
+                        id_usuario = ${lista.id_usuario}
                         nome = '${lista.nome}'
                     where id_lista = ${lista.id_lista}`
         let result = await knexDatabase.raw(sql)
