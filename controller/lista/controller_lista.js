@@ -19,7 +19,7 @@ const listarListas = async function () {
                 mesagensDefault.HEADER.Response = result[0]
                 return mesagensDefault.HEADER
             } else {
-               return mesagensDefault.ERRO_NOT_FOUND
+                return mesagensDefault.ERRO_NOT_FOUND
             }
         } else {
             return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
@@ -59,7 +59,7 @@ const criarLista = async function (lista, contentType) {
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
     try {
         if (contentTypeValidado) {
-            if (dadosValidados) {
+            if (dadosValidados == true) {
                 let result = await listaDAO.setInsertList(lista)
                 if (result) {
                     if (result.length > 0) {

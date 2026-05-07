@@ -61,7 +61,7 @@ const criarEndereco = async function (endereco, contentType) {
         if (!contentTypeValidado)
             return mensagensDefault.ERRO_CONTENT_TYPE
 
-        if (!dadosValidados)
+        if (!dadosValidados == false)
             return mensagensDefault.ERRO_REQUIRED_FIELDS
 
         let result = await enderecoDAO.setInsertAddress(endereco)
@@ -91,7 +91,7 @@ const atualizarEndereco = async function (endereco, contentType, id) {
         if (!contentTypeValidado)
             return mensagensDefault.ERRO_CONTENT_TYPE
 
-        if (!dadosValidados)
+        if (!dadosValidados == false)
             return mensagensDefault.ERRO_REQUIRED_FIELDS
 
         let buscarId = await enderecoDAO.getAddressById(id)

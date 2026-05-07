@@ -10,18 +10,18 @@ const validarDados = require("../modulo/validar_dados.js")
 const validarAtributos = require("../modulo/validar_atributos.js")
 
 //GET
-const listarItens = async function() {
+const listarItens = async function () {
     try {
         let result = await itemDAO.getAllItens()
-        if(result){
-            if(result.length > 0){
+        if (result) {
+            if (result.length > 0) {
                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
                 mesagensDefault.HEADER.Response = result[0]
                 return mesagensDefault.HEADER
-            }else{
+            } else {
                 return mesagensDefault.ERRO_NOT_FOUND
-            }  
-        }else{
+            }
+        } else {
             return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
         }
     } catch (error) {
@@ -29,22 +29,22 @@ const listarItens = async function() {
     }
 }
 //GET id
-const listarItemID = async function(id) {
+const listarItemID = async function (id) {
     let idValidado = validarAtributos.validarValorId(id)
     try {
-        if(idValidado){
+        if (idValidado) {
             let result = await itemDAO.getItenById(id)
-            if(result){
-                if(result.length > 0){
+            if (result) {
+                if (result.length > 0) {
                     mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
                     mesagensDefault.HEADER.Response = result[0]
-                }else{
+                } else {
                     mesagensDefault.ERRO_NOT_FOUND
                 }
-            }else{
+            } else {
                 mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
-            }    
-        }else{
+            }
+        } else {
             mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {
@@ -53,27 +53,27 @@ const listarItemID = async function(id) {
 }
 
 // POST
-const criarItem = async function(item, contentType) {
+const criarItem = async function (item, contentType) {
     let dadosValidados = validarDados.validarDadosItens(item)
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
     try {
-        if(contentTypeValidado){
-            if(dadosValidados){
+        if (contentTypeValidado) {
+            if (dadosValidados == true) {
                 let result = await itemDAO.setInsertIten(item)
-                if(result){
-                    if(result.length > 0){
+                if (result) {
+                    if (result.length > 0) {
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
                         mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.message
-                    }else{
+                    } else {
                         mesagensDefault.ERRO_NOT_FOUND
                     }
-                }else{
+                } else {
                     mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
-            }else{
+            } else {
                 mesagensDefault.ERRO_REQUIRED_FIELDS
             }
-        }else{
+        } else {
             mesagensDefault.ERRO_CONTENT_TYPE
         }
     } catch (error) {
@@ -81,37 +81,37 @@ const criarItem = async function(item, contentType) {
     }
 }
 // PUT
-const atulizarItem = async function(item, contentType, id) {
+const atulizarItem = async function (item, contentType, id) {
     let dadosValidados = validarDados.validarDadosItens(item)
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
     let idValidado = validarAtributos.validarValorId(id)
 
     try {
-        if(idValidado){
+        if (idValidado) {
             let buscarId = itemDAO.getItenById(id)
-            if(contentTypeValidado){
-                if(dadosValidados){
-                    if(buscarId){
-                        item.id_item= parseInt(id)
+            if (contentTypeValidado) {
+                if (dadosValidados == true) {
+                    if (buscarId) {
+                        item.id_item = parseInt(id)
                         let result = await itemDAO.setUpdateIten(item)
-                        if(result){
-                            if(result.length > 0){
+                        if (result) {
+                            if (result.length > 0) {
                                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
                                 mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
                             }
-                        }else{
+                        } else {
                             mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                         }
-                    }else{
+                    } else {
                         return buscarId
                     }
-                }else{
+                } else {
                     mesagensDefault.ERRO_REQUIRED_FIELDS
                 }
-            }else{
+            } else {
                 mesagensDefault.ERRO_CONTENT_TYPE
             }
-        }else{
+        } else {
             mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {
@@ -119,25 +119,25 @@ const atulizarItem = async function(item, contentType, id) {
     }
 }
 // DELETE
-const excluirItem = async function(id) {
+const excluirItem = async function (id) {
     let idValidado = validarAtributos.validarValorId(id)
     try {
-        if(idValidado){
+        if (idValidado) {
             let buscarId = await itemDAO.getItenById(id)
-            if(buscarId.StatusCode == 200){
+            if (buscarId.StatusCode == 200) {
                 let result = await itemDAO.setDeleteIten(id)
-                if(result){
-                    if(result.length > 0){
+                if (result) {
+                    if (result.length > 0) {
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_DELETED_ITEM.StatusCode
                         mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_DELETED_ITEM.message
                     }
-                }else{
+                } else {
                     mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
-            }else{
+            } else {
                 return buscarId
             }
-        }else{
+        } else {
             mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {

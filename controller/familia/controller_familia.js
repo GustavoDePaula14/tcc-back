@@ -58,7 +58,6 @@ const criarFamilia = async function (familia, contentType) {
         let dadosValidados = validarDados.validarDadosFamilia(familia)
         let contentTypeValidado = validarAtributos.validarContentType(contentType)
         if (contentTypeValidado) {
-            console.log(dadosValidados)
             if (dadosValidados == true) {
                 let result = await familiaDAO.setInsertFamily(familia)
                 if (result) {
@@ -92,12 +91,8 @@ const atulizarFamilia = async function (familia, contentType, id) {
         if (!idValidado) {
             let buscarId = familiaDAO.getFamilyById(id)
             if (contentTypeValidado) {
-                if (dadosValidados) {
-<<<<<<< HEAD
-                    if (buscarId || buscarId.length === 0) {
-=======
+                if (dadosValidados == true) {
                     if (buscarId || buscarId.length !== 0) {
->>>>>>> 43d22a2d71b0df34cebac99d9eb67f685c58415f
                         familia.id_familia = parseInt(id)
                         let result = await familiaDAO.setUpdateFamily(familia)
                         if (result) {

@@ -11,17 +11,17 @@ const validarAtributos = require("../modulo/validar_atributos.js")
 
 
 // GET
-const listarEventos = async function(){
+const listarEventos = async function () {
     try {
         let result = await eventoDAO.getAllEvents()
-        if(result){
-            if(result.length > 0){
+        if (result) {
+            if (result.length > 0) {
                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
                 mesagensDefault.HEADER.Response.eventos = result
-            }else{
+            } else {
                 mesagensDefault.ERRO_NOT_FOUND
-            }  
-        }else{
+            }
+        } else {
             mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
         }
     } catch (error) {
@@ -29,22 +29,22 @@ const listarEventos = async function(){
     }
 }
 // GET id
-const listarEventoID = async function(id){
+const listarEventoID = async function (id) {
     let idValidado = validarAtributos.validarValorId(id)
     try {
-        if(idValidado){
+        if (idValidado) {
             let result = await eventoDAO.getEventById(id)
-            if(result){
-                if(result.length > 0){
+            if (result) {
+                if (result.length > 0) {
                     mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
                     mesagensDefault.HEADER.Response.evento = result
-                }else{
+                } else {
                     mesagensDefault.ERRO_NOT_FOUND
                 }
-            }else{
+            } else {
                 mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
-            }    
-        }else{
+            }
+        } else {
             mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {
@@ -52,27 +52,27 @@ const listarEventoID = async function(id){
     }
 }
 //POST
-const criarEvento = async function(evento, contentType) {
+const criarEvento = async function (evento, contentType) {
     let dadosValidados = validarDados.validarDadosEvento(evento)
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
     try {
-        if(contentTypeValidado){
-            if(dadosValidados){
+        if (contentTypeValidado) {
+            if (dadosValidados == true) {
                 let result = await eventoDAO.setInsertEvent(evento)
-                if(result){
-                    if(result.length > 0){
+                if (result) {
+                    if (result.length > 0) {
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
                         mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.message
-                    }else{
+                    } else {
                         mesagensDefault.ERRO_NOT_FOUND
                     }
-                }else{
+                } else {
                     mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
-            }else{
+            } else {
                 mesagensDefault.ERRO_REQUIRED_FIELDS
             }
-        }else{
+        } else {
             mesagensDefault.ERRO_CONTENT_TYPE
         }
     } catch (error) {
@@ -81,36 +81,36 @@ const criarEvento = async function(evento, contentType) {
 }
 
 // PUT
-const atulizarEvento = async function(evento, contentType, id) {
+const atulizarEvento = async function (evento, contentType, id) {
     let dadosValidados = validarDados.validarDadosEvento(evento)
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
     let idValidado = validarAtributos.validarValorId(id)
     try {
-        if(idValidado){
+        if (idValidado) {
             let buscarId = eventoDAO.getEventById(id)
-            if(contentTypeValidado){
-                if(dadosValidados){
-                    if(buscarId.StatusCode == 200){
+            if (contentTypeValidado) {
+                if (dadosValidados == true) {
+                    if (buscarId.StatusCode == 200) {
                         evento.id_evento = parseInt(id)
                         let result = await eventoDAO.setUpdateEvent(evento)
-                        if(result){
-                            if(result.length > 0){
+                        if (result) {
+                            if (result.length > 0) {
                                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
                                 mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
                             }
-                        }else{
+                        } else {
                             mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                         }
-                    }else{
+                    } else {
                         return buscarId
                     }
-                }else{
+                } else {
                     mesagensDefault.ERRO_REQUIRED_FIELDS
                 }
-            }else{
+            } else {
                 mesagensDefault.ERRO_CONTENT_TYPE
             }
-        }else{
+        } else {
             mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {
@@ -118,25 +118,25 @@ const atulizarEvento = async function(evento, contentType, id) {
     }
 }
 // DELETE
-const excluirEvento = async function(id) {
+const excluirEvento = async function (id) {
     let idValidado = validarAtributos.validarValorId(id)
     try {
-        if(idValidado){
+        if (idValidado) {
             let buscarId = await eventoDAO.getEventById(id)
-            if(buscarId.StatusCode == 200){
+            if (buscarId.StatusCode == 200) {
                 let result = await eventoDAO.setDeleteEvent(id)
-                if(result){
-                    if(result.length > 0){
+                if (result) {
+                    if (result.length > 0) {
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_DELETED_ITEM.StatusCode
                         mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_DELETED_ITEM.message
                     }
-                }else{
+                } else {
                     mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
-            }else{
+            } else {
                 return buscarId
             }
-        }else{
+        } else {
             mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {
@@ -148,5 +148,5 @@ module.exports = {
     listarEventos,
     criarEvento,
     excluirEvento,
-    atulizarEvento 
+    atulizarEvento
 }
