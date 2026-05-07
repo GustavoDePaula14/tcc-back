@@ -9,15 +9,13 @@ const loginDAO = require("../../model/DAO/login.js")
 const mesagensDefault = require("../modulo/config_messages.js")
 const validarDados = require("../modulo/validar_dados.js")
 const validarAtributos = require("../modulo/validar_atributos.js")
+const bcrypt = require('bcryptjs');
 
 const validarLogin = async function(login, contentType) {
     try {
+        // console.log(login.senha)
         let result = await loginDAO.getAutentication(login.email)           
-        if(result[0][0].senha == login.senha){
-            return true
-        }else{
-            return false
-        }
+        return bcrypt.compareSync(login.senha, result[0][0].senha);
     } catch (error) {
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }    

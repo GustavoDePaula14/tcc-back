@@ -9,6 +9,7 @@ const usuarioDAO = require("../../model/DAO/usuario.js")
 const mesagensDefault = require("../modulo/config_messages.js")
 const validarDados = require("../modulo/validar_dados.js")
 const validarAtributos = require("../modulo/validar_atributos.js")
+const bcrypt = require('bcryptjs');
 
 // GET +
 const listarUsuarios = async function () {
@@ -59,12 +60,15 @@ const listarUsuarioID = async function (id) {
 }
 // POST
 const criarUsuario = async function (usuario, contentType) {
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(usuario.senha, salt)
     try {
         let dadosValidados = await validarDados.validarDadosUsuario(usuario)
         console.log(dadosValidados)
         let contentTypeValidado = validarAtributos.validarContentType(contentType)
         if (contentTypeValidado) {
             if (dadosValidados == true) {
+                usuario.senha = hash
                 let result = await usuarioDAO.setInsertUser(usuario)
                 if (result) {
                     if (result.length > 0) {
@@ -91,6 +95,8 @@ const criarUsuario = async function (usuario, contentType) {
 
 // PUT
 const atulizarUsuario = async function (usuario, contentType, id) {
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(usuario.senha, salt); 
     try {
         let dadosValidados = await validarDados.validarDadosUsuario(usuario)
         let contentTypeValidado = validarAtributos.validarContentType(contentType)
@@ -100,6 +106,7 @@ const atulizarUsuario = async function (usuario, contentType, id) {
             if (contentTypeValidado) {
                 if (dadosValidados == true) {
                     if (buscarId) {
+                        usuario.senha = hash
                         usuario.id_usuario = parseInt(id)
                         let result = await usuarioDAO.setUpdateUser(usuario)
                         console.log(result)
