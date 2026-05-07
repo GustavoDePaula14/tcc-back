@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const knex = require('knex');
-const config = require('./model/database_config/knexfile');
+const config = require('./model/database_config/local/knexfile.js');
 
 const app = express();
 const PORT = 3000;
@@ -14,6 +14,7 @@ const routerEndereco = require('./routes/endereco/router_endereco.js')
 const routerItem = require('./routes/item/route_item.js')
 const routerLista = require('./routes/lista/route_lista.js')
 const routerFinancias = require('./routes/financias/router_financias.js')
+const routerLogin = require('./routes/login/router_login.js')
 
 app.use(cors());
 app.use(express.json());
@@ -40,7 +41,8 @@ app.use(URL_BASE, routerInformacao);
 app.use(URL_BASE, routerEndereco);
 app.use(URL_BASE, routerItem);
 app.use(URL_BASE, routerLista);
-app.use(URL_BASE, routerFinancias)
+app.use(URL_BASE, routerFinancias);
+app.use(URL_BASE, routerLogin);
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
