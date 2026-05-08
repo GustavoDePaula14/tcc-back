@@ -15,6 +15,7 @@ const routerItem = require('./routes/item/route_item.js')
 const routerLista = require('./routes/lista/route_lista.js')
 const routerFinancias = require('./routes/financias/router_financias.js')
 const routerLogin = require('./routes/login/router_login.js')
+const routerUsuarioInformacao = require('./routes/usuario/route_usuario_informacao.js')
 
 app.use(cors());
 app.use(express.json());
@@ -43,6 +44,7 @@ app.use(URL_BASE, routerItem);
 app.use(URL_BASE, routerLista);
 app.use(URL_BASE, routerFinancias);
 app.use(URL_BASE, routerLogin);
+app.use(URL_BASE, routerUsuarioInformacao)
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
