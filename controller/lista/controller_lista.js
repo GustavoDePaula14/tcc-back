@@ -58,8 +58,9 @@ const criarLista = async function (lista, contentType) {
     let dadosValidados = validarDados.validarDadosLista(lista)
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
     try {
-        if (contentTypeValidado) {
-            if (dadosValidados == true) {
+        if (contentTypeValidado == true) {
+            console.log(dadosValidados)
+            if (dadosValidados === true) {
                 let result = await listaDAO.setInsertList(lista)
                 if (result) {
                     if (result.length > 0) {

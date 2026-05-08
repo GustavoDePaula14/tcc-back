@@ -5,7 +5,7 @@
  * Versão: 1.0
  ************************************************/
 const knex = require("knex");
-const knexConfig = require("../database_config/local/knexfile.js");
+const knexConfig = require("../database_config/azure/knexfile.js");
 
 const knexDatabase = knex(knexConfig.development);
 
@@ -66,7 +66,7 @@ const setUpdateList = async function (lista) {
     try {
         let sql = `update tb_lista set
                         id_familia = ${lista.id_familia},
-                        id_usuario = ${lista.id_usuario}
+                        id_usuario = ${lista.id_usuario},
                         nome = '${lista.nome}'
                     where id_lista = ${lista.id_lista}`
         let result = await knexDatabase.raw(sql)

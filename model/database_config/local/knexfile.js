@@ -15,13 +15,6 @@ module.exports = {
             database: "familysync",
             port: 3306,
             charset: 'utf8mb4'
-        },
-        migrations: {
-            tableName: "knex_migrations",
-            diretory: "/db/migrations",
-        },
-        seeds: {
-            diretory: "./db/seeds"
         }
     }
 };

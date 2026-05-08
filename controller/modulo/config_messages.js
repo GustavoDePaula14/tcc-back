@@ -22,6 +22,7 @@ const ERRO_REQUIRED_FIELDS = {StatusCode: 400, message: "Erro em campos obrigato
 const ERRO_CONTENT_TYPE = {StatusCode: 415, message: "Body enviado de tipo diferente de Json"}
 const ERRO_RELATION_TABLE = {StatusCode: 200, message: "Erro em tabela de relacionamento"}
 const ERRO_INVALID_ID = {StatusCode: 400, message: "Erro em campo de id"}
+const ERRO_INVALID_PASSWORD = {StatusCode: 400, message: "Senha Invalida"}
 
 // MENSAGEM DE SUCESSO
 const SUCCESS_REQUEST = {StatusCode: 200, message: "Requisição bem sucedida"}
@@ -41,5 +42,6 @@ module.exports = {
     SUCCESS_CREATED_ITEM,
     SUCCESS_UPDATED_ITEM,
     SUCCESS_DELETED_ITEM,
-    ERRO_INVALID_ID
+    ERRO_INVALID_ID,
+    ERRO_INVALID_PASSWORD
 }

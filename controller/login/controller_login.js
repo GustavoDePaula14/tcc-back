@@ -12,11 +12,24 @@ const validarAtributos = require("../modulo/validar_atributos.js")
 const bcrypt = require('bcryptjs');
 
 const validarLogin = async function(login, contentType) {
+        let result = await loginDAO.getAutentication(login.email)    
+        let senhaComparada = bcrypt.compareSync(login.senha, result[0][0].senha);    
     try {
-        // console.log(login.senha)
-        let result = await loginDAO.getAutentication(login.email)           
-        return bcrypt.compareSync(login.senha, result[0][0].senha);
+        if(senhaComparada == true){
+            if (result && result.length > 0) {
+                mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
+                mesagensDefault.HEADER.Status = senhaComparada
+                mesagensDefault.HEADER.Response = result[0][0]
+                return mesagensDefault.HEADER
+            } else {
+                return mesagensDefault.ERRO_NOT_FOUND
+            }
+        }else{
+            return mesagensDefault.ERRO_INVALID_PASSWORD
+        }
+        return 
     } catch (error) {
+        console.log(error)
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }    
 }

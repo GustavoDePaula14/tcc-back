@@ -1,6 +1,6 @@
 /***********************************************
- * Objetivo: Arquivo de configuração do knex
- * Autor: Kauan Antunes Lima
+ * Objetivo: Arquivo de configuração do knex focado para Azure
+ * Autor: Gustavo de Paula Silva
  * Data: 27/04/2026
  * Versão: 1.2
  ************************************************/
@@ -9,19 +9,14 @@ module.exports = {
     development: {
         client: 'mysql2',
         connection: {
-            host: "localhost",
-            user: "root",
-            password: "12345678",
+            host: "family-sync.mysql.database.azure.com", // O endpoint do Azure
+            user: "familysync", // Ex: administrador
+            password: "Senai@2026",
             database: "familysync",
             port: 3306,
-            charset: 'utf8mb4'
-        },
-        migrations: {
-            tableName: "knex_migrations",
-            diretory: "/db/migrations",
-        },
-        seeds: {
-            diretory: "./db/seeds"
+            ssl: {
+                rejectUnauthorized: true 
+            }
         }
     }
 };

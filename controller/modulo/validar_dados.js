@@ -76,7 +76,11 @@ const validarDadosItens = async function (item) {
 }
 const validarDadosLista = async function (lista) {
     try {
-        if (lista.nome_lista == null || lista.nome_lista == "" || lista.nome_lista == undefined || lista.nome_lista.length > 100) {
+        if (lista.nome == null || lista.nome == "" || lista.nome == undefined || lista.nome.length > 100) {
+            return false
+        }else if(lista.id_usuario < 0 || isNaN(lista.id_usuario) || lista.id_familia == undefined || lista.id_familia == null){
+            return false
+        }else if(lista.id_familia < 0 || isNaN(lista.id_familia) || lista.id_familia == undefined || lista.id_familia == null){
             return false
         } else {
             return true
@@ -104,7 +108,7 @@ const validarDadosFinancia = async function (financia) {
             return false
         } else if (financia.descricao == null || financia.descricao == "" || financia.descricao == undefined || financia.descricao.length > 100) {
             return false
-        } else if (financia.valor == null || financia.valor == "" || financia.valor == undefined || !isNaN(financia.valor)) {
+        } else if (financia.valor == null || financia.valor == "" || financia.valor == undefined || isNaN(financia.valor)) {
             return false
         } else if (financia.icone == null || financia.icone == "" || financia.icone == undefined || financia.icone.length > 100) {
             return false

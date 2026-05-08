@@ -6,13 +6,13 @@
  ************************************************/
 
 const knex = require("knex");
-const knexConfig = require("../database_config/local/knexfile.js");
+const knexConfig = require("../database_config/azure/knexfile.js");
  
 const knexDatabase = knex(knexConfig.development);
 
 const getAutentication = async function(email) {
     try {
-        let sql = `select email, senha from tb_usuario where email = '${email}'`
+        let sql = `select id_usuario, email, senha, nome from tb_usuario where email = '${email}'`
         let result = await knexDatabase.raw(sql)
 
         if (Array.isArray(result)) {
