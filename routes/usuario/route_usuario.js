@@ -5,14 +5,31 @@
  * Versão: 1.0
  ************************************************/
 
-const express = require('express')
-const cors = require('cors')
-const bodyParser = require('body-parser')
+const express = require('express');
+const cors =  require('cors')
+const bodyParser = require('body-parser') 
 
 const bodyParserJSON = bodyParser.json()
 
 const controller = require('../../controller/usuario/controller_usuario.js')
+const jwt = require('jsonwebtoken');
 const router = express.Router()
+
+const verificarToken = function(request, response, next) {
+    const header = request.headers['authorization']
+    // console.log(header)
+
+    const token = header?.split(' ')[1]
+    // console.log(token)
+    try{
+        const tokenVerificado = jwt.verify(token, process.env.JWT_SECRET, (error, user) =>{
+            request.user = user
+            next()
+        })
+    } catch (error){
+        return error
+    }
+}
 
 router.use((request, response, next) =>{
     response.header('Access-Control-Allow-Origin', '*')
@@ -31,6 +48,10 @@ router.get("/usuario/:id", cors(), async function(request, response) {
     let id = request.params.id
     let result = await controller.listarUsuarioID(id)
     response.json(result)
+})
+
+router.get("/usuario" ,async function(request, response) {
+    console.log(verificarToken)
 })
 router.delete("/usuario/:id", cors(), async function(request, response) {
     let id = request.params.id

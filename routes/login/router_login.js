@@ -8,8 +8,10 @@
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-
+const jwt = require('jsonwebtoken');
 const bodyParserJSON = bodyParser.json()
+require('dotenv').config()
+
 
 const controller = require('../../controller/login/controller_login.js')
 const router = express.Router()
@@ -27,6 +29,10 @@ router.post("/login", cors(), bodyParserJSON, async function(request, response) 
     let contentType = request.headers["content-type"]
 
     let result = await controller.validarLogin(dadosBody, contentType)
+    let usuarioReduzido = result.Response
+    // delete usuarioReduzido.senha
+    let token = jwt.sign(usuarioReduzido, process.env.JWT_SECRETS, {expiresIn: '1h'})
+    // console.log(token)
     response.json(result)
 })
 

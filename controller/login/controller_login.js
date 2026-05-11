@@ -12,8 +12,8 @@ const validarAtributos = require("../modulo/validar_atributos.js")
 const bcrypt = require('bcryptjs');
 
 const validarLogin = async function(login, contentType) {
-        let result = await loginDAO.getAutentication(login.email)    
-        let senhaComparada = bcrypt.compareSync(login.senha, result[0][0].senha);    
+    let result = await loginDAO.getAutentication(login.email)    
+    let senhaComparada = bcrypt.compareSync(login.senha, result[0][0].senha);    
     try {
         if(senhaComparada == true){
             if (result && result.length > 0) {
@@ -33,6 +33,7 @@ const validarLogin = async function(login, contentType) {
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }    
 }
+
 module.exports = {
     validarLogin
 }
