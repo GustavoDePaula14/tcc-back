@@ -5,7 +5,7 @@
  * Versão: 1.0
  ************************************************/
 const knex = require("knex");
-const knexConfig = require("../database_config/azure/knexfile");
+const knexConfig = require("../database_config/knexfile");
 
 const knexDatabase = knex(knexConfig.development);
 

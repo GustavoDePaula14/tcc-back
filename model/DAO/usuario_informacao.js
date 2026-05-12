@@ -5,7 +5,7 @@
  * Versão: 1.0
  ************************************************/
 const knex = require("knex");
-const knexConfig = require("../database_config/azure/knexfile");
+const knexConfig = require("../database_config/knexfile");
 
 const knexDatabase = knex(knexConfig.development);
 
@@ -13,7 +13,17 @@ const knexDatabase = knex(knexConfig.development);
 // GET 
 const getAllUsersInformation = async function () {
     try {
-        let sql = `select * from tb_usuario_informacao order by id_usuario_informacao desc`
+        let sql = `SELECT
+                        u.id_usuario,
+                        u.nome,
+                        i.id_info,
+                        i.descricao
+                    FROM tb_usuario_informacao ui
+
+                    INNER JOIN tb_usuario u
+                        ON u.id_usuario = ui.id_usuario
+                    INNER JOIN tb_informacao i
+                        ON i.id_info = ui.id_info`   
         let result = await knexDatabase.raw(sql)
 
         return result[0] 
@@ -26,7 +36,19 @@ const getAllUsersInformation = async function () {
 // GET BY ID
 const getUsersInformationById = async function (id) {
     try {
-        let sql = `select * from tb_usuario_informacao where id_usuario_informacao = ?`
+        let sql = `SELECT
+                        u.id_usuario,
+                        u.nome,
+                        i.id_info,
+                        i.descricao
+                    FROM tb_usuario_informacao ui
+                    
+                    INNER JOIN tb_usuario u
+                        ON u.id_usuario = ui.id_usuario
+                    INNER JOIN tb_informacao i
+                        ON i.id_info = ui.id_info
+        
+                    WHERE ui.id_usuario_informacao = ?`
         let result = await knexDatabase.raw(sql, [id])
 
         return result[0]
