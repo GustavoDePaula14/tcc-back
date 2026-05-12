@@ -30,7 +30,24 @@ const validarValorId = function(id){
     }
 }
 
+const validarId = (id) => {
+    try {
+
+        if (id == null || id == "" || isNaN(id) || id <= 0) {
+            return false
+
+        } else {
+            return true
+        }
+
+    } catch (error) {
+        return false
+    }
+}
+
+
 module.exports = {
     validarContentType,
-    validarValorId
+    validarValorId,
+    validarId
 }
