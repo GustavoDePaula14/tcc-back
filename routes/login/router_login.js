@@ -31,6 +31,7 @@ router.post("/login", cors(), bodyParserJSON, async function(request, response) 
     let usuarioReduzido = result.Response
     delete usuarioReduzido.senha
     let token = jwt.getToken(usuarioReduzido)
+    console.log(token)
 })
 
 
