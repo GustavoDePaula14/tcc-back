@@ -14,6 +14,7 @@ const bodyParserJSON = bodyParser.json()
 const controller = require('../../controller/usuario/controller_usuario.js')
 const jwt = require('jsonwebtoken');
 const router = express.Router()
+const token = require('../login/router_login.js')
 
 const verificarToken = function(request, response, next) {
     const header = request.headers['authorization']
@@ -48,10 +49,6 @@ router.get("/usuario/:id", cors(), async function(request, response) {
     let id = request.params.id
     let result = await controller.listarUsuarioID(id)
     response.json(result)
-})
-
-router.get("/usuario" ,async function(request, response) {
-    console.log(verificarToken)
 })
 router.delete("/usuario/:id", cors(), async function(request, response) {
     let id = request.params.id

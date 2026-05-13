@@ -8,18 +8,16 @@
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-const jwt = require('jsonwebtoken');
 const bodyParserJSON = bodyParser.json()
-require('dotenv').config()
-
-
-const controller = require('../../controller/login/controller_login.js')
+const jwt = require('../../jwt/jwt_service.js')
+const controller = require('../../controller/login/controller_login.js');
 const router = express.Router()
+
 
 router.use((request, response, next) =>{
     response.header('Access-Control-Allow-Origin', '*')
     response.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-
+    
     router.use(cors())
     next()
 })
@@ -27,13 +25,16 @@ router.use((request, response, next) =>{
 router.post("/login", cors(), bodyParserJSON, async function(request, response) {
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
-
+    
     let result = await controller.validarLogin(dadosBody, contentType)
+    response.json(result)
     let usuarioReduzido = result.Response
     delete usuarioReduzido.senha
-    let token = jwt.sign(usuarioReduzido, process.env.JWT_SECRETS, {expiresIn: '1h'})
-    console.log(token)
-    response.json(result)
+    let token = jwt.getToken(usuarioReduzido)
 })
 
+
+router.get("/usuario", cors(), jwt.verificarToken,  async function(request, response) {
+    response.json(request.user)
+})
 module.exports = router;
