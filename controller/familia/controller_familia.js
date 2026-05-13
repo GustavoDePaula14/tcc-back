@@ -55,7 +55,7 @@ const listarFamiliaID = async function (id) {
 //POST
 const criarFamilia = async function (familia, contentType) {
     try {
-        let dadosValidados = validarDados.validarDadosFamilia(familia)
+        let dadosValidados = await validarDados.validarDadosFamilia(familia)
         let contentTypeValidado = validarAtributos.validarContentType(contentType)
         if (contentTypeValidado) {
             if (dadosValidados == true) {
@@ -73,7 +73,7 @@ const criarFamilia = async function (familia, contentType) {
                     return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
             } else {
-                return mesagensDefault.ERRO_REQUIRED_FIELDS
+                return dadosValidados
             }
         } else {
             return mesagensDefault.ERRO_CONTENT_TYPE

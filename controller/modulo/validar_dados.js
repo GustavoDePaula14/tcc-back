@@ -22,9 +22,6 @@ const validarDadosUsuario = async function (usuario) {
         } else if (usuario.email == null || usuario.email == "" || usuario.email == undefined || usuario.email.length > 100) {
             return false
 
-        } else if (usuario.is_admin == null || usuario.is_admin == undefined || usuario.is_admin != true || usuario.is_admin != false) {
-            return false
-
         } else {
             return true
         }
@@ -193,7 +190,6 @@ const validarUsuarioNotificacao = (usuarioNotificacao) => {
         return false;
     }
 }
-
 
 module.exports = {
     validarDadosUsuario,
