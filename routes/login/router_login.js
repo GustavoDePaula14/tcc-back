@@ -30,9 +30,9 @@ router.post("/login", cors(), bodyParserJSON, async function(request, response) 
 
     let result = await controller.validarLogin(dadosBody, contentType)
     let usuarioReduzido = result.Response
-    // delete usuarioReduzido.senha
+    delete usuarioReduzido.senha
     let token = jwt.sign(usuarioReduzido, process.env.JWT_SECRETS, {expiresIn: '1h'})
-    // console.log(token)
+    console.log(token)
     response.json(result)
 })
 
