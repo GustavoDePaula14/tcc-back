@@ -17,7 +17,7 @@ const listarInformacao = async function () {
         if (result) {
             if (result.length > 0) {
                 mensagensDefault.HEADER.StatusCode = mensagensDefault.SUCCESS_REQUEST.StatusCode
-                mensagensDefault.HEADER.Response = result
+                mensagensDefault.HEADER.Response = result[0]
                 return mensagensDefault.HEADER
             } else {
                 return mensagensDefault.ERRO_NOT_FOUND
@@ -64,7 +64,7 @@ const criarInformacao = async function (informacao, contentType) {
             return mensagensDefault.ERRO_CONTENT_TYPE
 
         if (!dadosValidados == false)
-            return mensagensDefault.ERRO_REQUIRED_FIELDS
+            return dadosValidados
 
         let result = await informacaoDAO.setInsertInformation(informacao)
 
@@ -94,8 +94,7 @@ const atualizarInformacao = async function (informacao, contentType, id) {
             return mensagensDefault.ERRO_CONTENT_TYPE
 
         if (!dadosValidados == false)
-            return mensagensDefault.ERRO_REQUIRED_FIELDS
-
+            return dadosValidados
         let buscarId = await informacaoDAO.getInformationById(id)
 
         if (!buscarId || buscarId.length === 0)

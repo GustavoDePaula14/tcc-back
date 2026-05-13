@@ -45,7 +45,6 @@ const listarFinancasID = async function (id) {
             } else {
                 return mensagensDefault.ERRO_NOT_FOUND
             }
-
         } else {
             return mensagensDefault.ERRO_INVALID_ID
         }
@@ -64,8 +63,7 @@ const criarFinancas = async function (financas, contentType) {
             return mensagensDefault.ERRO_CONTENT_TYPE
 
         if (!dadosValidados)
-            return mensagensDefault.ERRO_REQUIRED_FIELDS
-
+            return dadosValidados
         let result = await financasDAO.setInsertFinance(financas)
         console.log(result)
         if (result) {
@@ -94,7 +92,7 @@ const atualizarFinancas = async function (financas, contentType, id) {
             return mensagensDefault.ERRO_CONTENT_TYPE
 
         if (!dadosValidados)
-            return mensagensDefault.ERRO_REQUIRED_FIELDS
+            return dadosValidados
 
         let buscarId = await financasDAO.getFinanceById(id)
 

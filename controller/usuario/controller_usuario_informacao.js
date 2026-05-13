@@ -57,13 +57,14 @@ const listarUsuarioInformacaoID = async function (id) {
 }
 
 const criarUsuarioInformacao = async function (usuarioInformacao, contentType) {
+    let dadosValidados = validarDados.validarUsuarioInformacao(usuarioInformacao)
     try {
 
         if (!validarAtributos.validarContentType(contentType))
             return mensagensDefault.ERRO_CONTENT_TYPE
 
-        if (!validarDados.validarUsuarioInformacao(usuarioInformacao))
-            return mensagensDefault.ERRO_REQUIRED_FIELDS
+        if (dadosValidados == false)
+            return dadosValidados
 
         let result = await usuario_informacaoDAO.setInsertUsersInformation(usuarioInformacao)
 

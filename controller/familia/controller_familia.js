@@ -108,7 +108,7 @@ const atulizarFamilia = async function (familia, contentType, id) {
                         return mesagensDefault.ERRO_INVALID_ID
                     }
                 } else {
-                    return mesagensDefault.ERRO_REQUIRED_FIELDS
+                    return dadosValidados
                 }
             } else {
                 return mesagensDefault.ERRO_CONTENT_TYPE

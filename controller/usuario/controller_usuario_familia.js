@@ -50,12 +50,13 @@ const listarUsuarioFamiliaID = async function (id) {
 }
 
 const criarUsuarioFamilia = async function (usuarioFamilia, contentType) {
+    let dadosValidados = validarDados.validarUsuarioFamilia(usuarioFamilia)
     try {
         if (!validarAtributos.validarContentType(contentType))
             return mensagensDefault.ERRO_CONTENT_TYPE
 
-        if (!validarDados.validarUsuarioFamilia(usuarioFamilia))
-            return mensagensDefault.ERRO_REQUIRED_FIELDS
+        if (dadosValidados == false)
+            return dadosValidados
 
         let result = await usuario_familiaDAO.setInsertUsersFamily(usuarioFamilia)
 
@@ -72,6 +73,7 @@ const criarUsuarioFamilia = async function (usuarioFamilia, contentType) {
 }
 
 const atualizarUsuarioFamilia = async function (usuarioFamilia, contentType, id) {
+    let dadosValidados = validarDados.validarUsuarioFamilia(usuarioFamilia)
     try {
         if (!validarAtributos.validarId(id))
             return mensagensDefault.ERRO_INVALID_ID
@@ -79,8 +81,10 @@ const atualizarUsuarioFamilia = async function (usuarioFamilia, contentType, id)
         if (!validarAtributos.validarContentType(contentType))
             return mensagensDefault.ERRO_CONTENT_TYPE
 
-        if (!validarDados.validarUsuarioFamilia(usuarioFamilia))
-            return mensagensDefault.ERRO_REQUIRED_FIELDS
+
+        if (dadosValidados == false)
+            return dadosValidados
+
 
         let buscarId = await usuario_familiaDAO.getUsersFamilyById(id)
 

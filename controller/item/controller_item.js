@@ -38,17 +38,18 @@ const listarItemID = async function (id) {
                 if (result.length > 0) {
                     mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
                     mesagensDefault.HEADER.Response = result[0]
+                    return mesagensDefault.HEADER
                 } else {
-                    mesagensDefault.ERRO_NOT_FOUND
+                    return mesagensDefault.ERRO_NOT_FOUND
                 }
             } else {
-                mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
             }
         } else {
-            mesagensDefault.ERRO_INVALID_ID
+            return mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {
-        mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
@@ -64,20 +65,21 @@ const criarItem = async function (item, contentType) {
                     if (result.length > 0) {
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
                         mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.message
+                        return mesagensDefault.HEADER
                     } else {
-                        mesagensDefault.ERRO_NOT_FOUND
+                        return mesagensDefault.ERRO_NOT_FOUND
                     }
                 } else {
-                    mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
             } else {
-                mesagensDefault.ERRO_REQUIRED_FIELDS
+                return dadosValidados
             }
         } else {
-            mesagensDefault.ERRO_CONTENT_TYPE
+            return mesagensDefault.ERRO_CONTENT_TYPE
         }
     } catch (error) {
-        mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 // PUT
@@ -98,24 +100,25 @@ const atulizarItem = async function (item, contentType, id) {
                             if (result.length > 0) {
                                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
                                 mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
+                                return mesagensDefault.HEADER
                             }
                         } else {
-                            mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                         }
                     } else {
                         return buscarId
                     }
                 } else {
-                    mesagensDefault.ERRO_REQUIRED_FIELDS
+                    return dadosValidados
                 }
             } else {
-                mesagensDefault.ERRO_CONTENT_TYPE
+                return mesagensDefault.ERRO_CONTENT_TYPE
             }
         } else {
-            mesagensDefault.ERRO_INVALID_ID
+            return mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {
-        mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 // DELETE
@@ -130,18 +133,19 @@ const excluirItem = async function (id) {
                     if (result.length > 0) {
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_DELETED_ITEM.StatusCode
                         mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_DELETED_ITEM.message
+                        return mesagensDefault.HEADER
                     }
                 } else {
-                    mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
             } else {
                 return buscarId
             }
         } else {
-            mesagensDefault.ERRO_INVALID_ID
+            return mesagensDefault.ERRO_INVALID_ID
         }
     } catch (error) {
-        mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 module.exports = {

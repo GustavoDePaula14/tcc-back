@@ -5,7 +5,7 @@
  * Versão: 1.0
  ************************************************/
 const knex = require("knex");
-const knexConfig = require("../database_config/azure/knexfile.js");
+const knexConfig = require("../database_config/local/knexfile.js");
 
 const knexDatabase = knex(knexConfig.development);
 
@@ -29,7 +29,7 @@ const getUserById = async function (id) {
     try {
         let sql = `select * from tb_usuario where id_usuario = ${id}`
         let result = await knexDatabase.raw(sql)
-        console.log(result)
+        // console.log(result)
         if (Array.isArray(result)) {
             return result
         } else {
@@ -63,7 +63,7 @@ const setInsertUser = async function (usuario) {
             return false
         }
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return error
     }
 }

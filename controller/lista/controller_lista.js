@@ -59,7 +59,6 @@ const criarLista = async function (lista, contentType) {
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
     try {
         if (contentTypeValidado == true) {
-            console.log(dadosValidados)
             if (dadosValidados === true) {
                 let result = await listaDAO.setInsertList(lista)
                 if (result) {
@@ -74,7 +73,7 @@ const criarLista = async function (lista, contentType) {
                     return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
             } else {
-                return mesagensDefault.ERRO_REQUIRED_FIELDS
+                return dadosValidados
             }
         } else {
             return mesagensDefault.ERRO_CONTENT_TYPE
@@ -111,7 +110,7 @@ const atulizarLista = async function (lista, contentType, id) {
                         return buscarId
                     }
                 } else {
-                    return mesagensDefault.ERRO_REQUIRED_FIELDS
+                    return dadosValidados
                 }
             } else {
                 return mesagensDefault.ERRO_CONTENT_TYPE

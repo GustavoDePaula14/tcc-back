@@ -75,7 +75,7 @@ const criarNotificacao = async function (notificacao, contentType) {
                     return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
             } else {
-                return mesagensDefault.ERRO_REQUIRED_FIELDS
+                return dadosValidados
             }
         } else {
             return mesagensDefault.ERRO_CONTENT_TYPE
@@ -111,7 +111,7 @@ const atulizarNotificacao = async function (notificacao, contentType, id) {
                         return buscarId
                     }
                 } else {
-                    return mesagensDefault.ERRO_REQUIRED_FIELDS
+                    return dadosValidados
                 }
             } else {
                 return mesagensDefault.ERRO_CONTENT_TYPE

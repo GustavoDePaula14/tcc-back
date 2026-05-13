@@ -50,12 +50,13 @@ const listarUsuarioNotificacaoID = async function (id) {
 }
 
 const criarUsuarioNotificacao = async function (usuarioNotificacao, contentType) {
+    let dadosValidados = validarDados.validarUsuarioNotificacao(usuarioNotificacao)
     try {
         if (!validarAtributos.validarContentType(contentType))
             return mensagensDefault.ERRO_CONTENT_TYPE
 
-        if (!validarDados.validarUsuarioNotificacao(usuarioNotificacao))
-            return mensagensDefault.ERRO_REQUIRED_FIELDS
+        if (dadosValidados == false)
+            return dadosValidados
 
         let result = await usuario_notificacaoDAO.setInsertUsersNotification(usuarioNotificacao)
 
@@ -72,6 +73,7 @@ const criarUsuarioNotificacao = async function (usuarioNotificacao, contentType)
 }
 
 const atualizarUsuarioNotificacao = async function (usuarioNotificacao, contentType, id) {
+    let dadosValidados = validarDados.validarUsuarioNotificacao(usuarioNotificacao)
     try {
         if (!validarAtributos.validarId(id))
             return mensagensDefault.ERRO_INVALID_ID
@@ -79,9 +81,8 @@ const atualizarUsuarioNotificacao = async function (usuarioNotificacao, contentT
         if (!validarAtributos.validarContentType(contentType))
             return mensagensDefault.ERRO_CONTENT_TYPE
 
-        if (!validarDados.validarUsuarioNotificacao(usuarioNotificacao))
-            return mensagensDefault.ERRO_REQUIRED_FIELDS
-
+        if (dadosValidados == false)
+            return dadosValidados
         let buscarId = await usuario_notificacaoDAO.getUsersNotificationById(id)
 
         if (!buscarId || buscarId.length === 0)
