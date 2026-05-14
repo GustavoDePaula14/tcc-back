@@ -45,10 +45,107 @@ const listarFinancasID = async function (id) {
             } else {
                 return mensagensDefault.ERRO_NOT_FOUND
             }
+
         } else {
             return mensagensDefault.ERRO_INVALID_ID
         }
 
+    } catch (error) {
+        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
+const listarFinancasDiarias = async function (idFamilia) {
+
+    let idValidado = validarAtributos.validarId(idFamilia)
+    try {
+        if (idValidado) {
+            let result = await financasDAO.getDailyFinances(idFamilia)
+
+            if (result && result.length > 0) {
+                mensagensDefault.HEADER.StatusCode =
+                    mensagensDefault.SUCCESS_REQUEST.StatusCode
+                mensagensDefault.HEADER.Response = result[0]
+                return mensagensDefault.HEADER
+
+            } else {
+                return mensagensDefault.ERRO_NOT_FOUND
+            }
+        } else {
+            return mensagensDefault.ERRO_INVALID_ID
+        }
+    } catch (error) {
+        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
+const listarFinancasSemanais = async function (idFamilia) {
+
+    let idValidado = validarAtributos.validarId(idFamilia)
+    try {
+        if (idValidado) {
+            let result = await financasDAO.getWeekFinances(idFamilia)
+
+            if (result && result.length > 0) {
+                mensagensDefault.HEADER.StatusCode =
+                    mensagensDefault.SUCCESS_REQUEST.StatusCode
+                mensagensDefault.HEADER.Response = result[0]
+                return mensagensDefault.HEADER
+
+            } else {
+                return mensagensDefault.ERRO_NOT_FOUND
+            }
+        } else {
+            return mensagensDefault.ERRO_INVALID_ID
+        }
+    } catch (error) {
+        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
+const listarFinancasMensais = async function (idFamilia) {
+
+    let idValidado = validarAtributos.validarId(idFamilia)
+    try {
+        if (idValidado) {
+            let result = await financasDAO.getMonthFinances(idFamilia)
+
+            if (result && result.length > 0) {
+                mensagensDefault.HEADER.StatusCode =
+                    mensagensDefault.SUCCESS_REQUEST.StatusCode
+                mensagensDefault.HEADER.Response = result[0]
+                return mensagensDefault.HEADER
+
+            } else {
+                return mensagensDefault.ERRO_NOT_FOUND
+            }
+        } else {
+            return mensagensDefault.ERRO_INVALID_ID
+        }
+    } catch (error) {
+        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
+const listarFinancasAnuais = async function (idFamilia) {
+
+    let idValidado = validarAtributos.validarId(idFamilia)
+    try {
+        if (idValidado) {
+            let result = await financasDAO.getYearFinances(idFamilia)
+
+            if (result && result.length > 0) {
+                mensagensDefault.HEADER.StatusCode =
+                    mensagensDefault.SUCCESS_REQUEST.StatusCode
+                mensagensDefault.HEADER.Response = result[0]
+                return mensagensDefault.HEADER
+
+            } else {
+                return mensagensDefault.ERRO_NOT_FOUND
+            }
+        } else {
+            return mensagensDefault.ERRO_INVALID_ID
+        }
     } catch (error) {
         return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
@@ -62,8 +159,9 @@ const criarFinancas = async function (financas, contentType) {
         if (!contentTypeValidado)
             return mensagensDefault.ERRO_CONTENT_TYPE
 
-        if (!dadosValidados)
-            return dadosValidados
+        if (!dadosValidados == false)
+            return mensagensDefault.ERRO_REQUIRED_FIELDS
+
         let result = await financasDAO.setInsertFinance(financas)
         console.log(result)
         if (result) {
@@ -91,8 +189,8 @@ const atualizarFinancas = async function (financas, contentType, id) {
         if (!contentTypeValidado)
             return mensagensDefault.ERRO_CONTENT_TYPE
 
-        if (!dadosValidados)
-            return dadosValidados
+        if (!dadosValidados == false)
+            return mensagensDefault.ERRO_REQUIRED_FIELDS
 
         let buscarId = await financasDAO.getFinanceById(id)
 
@@ -146,6 +244,10 @@ const excluirFinancas = async function (id) {
 module.exports = {
     listarFinancas,
     listarFinancasID,
+    listarFinancasDiarias,
+    listarFinancasSemanais,
+    listarFinancasMensais,
+    listarFinancasAnuais,
     criarFinancas,
     atualizarFinancas,
     excluirFinancas,

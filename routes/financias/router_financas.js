@@ -11,7 +11,7 @@ const bodyParser = require('body-parser')
 
 const bodyParserJSON = bodyParser.json()
 
-const controller = require('../../controller/financias/controller_financias.js')
+const controller = require('../../controller/financas/controller_financas.js')
 const router = express.Router()
 
 router.use((request, response, next) =>{
@@ -32,6 +32,31 @@ router.get("/financas/:id", cors(), async function(request, response) {
     let result = await controller.listarFinancasID(id)
     response.json(result)
 })
+
+router.get("/financas/diarias/:id", cors(), async function(request, response){
+    let id = request.params.id
+    let result = await controller.listarFinancasDiarias(id)
+    response.json(result)
+})
+
+router.get("/financas/semanais/:id", cors(), async function(request, response){
+    let id = request.params.id
+    let result = await controller.listarFinancasSemanais(id)
+    response.json(result)
+})
+
+router.get("/financas/mensais/:id", cors(), async function(request, response){
+    let id = request.params.id
+    let result = await controller.listarFinancasMensais(id)
+    response.json(result)
+})
+
+router.get("/financas/anuais/:id", cors(), async function(request, response){
+    let id = request.params.id
+    let result = await controller.listarFinancasAnuais(id)
+    response.json(result)
+})
+
 router.delete("/financas/:id", cors(), async function(request, response) {
     let id = request.params.id
     let result = await controller.excluirFinancas(id)

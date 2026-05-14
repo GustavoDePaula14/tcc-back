@@ -1,5 +1,5 @@
 /***********************************************
- * Objetivo: Arquivo de responsavel pela manipulação de routas de usuario na API
+ * Objetivo: Arquivo de responsavel pela manipulação de routas de usuario_informacao na API
  * Autor: Kauan Antunes
  * Data: 07/05/2026
  * Versão: 1.0
@@ -39,6 +39,7 @@ router.delete("/usuario-informacao/:id", cors(), async function(request, respons
 })
 
 router.post("/usuario-informacao", cors(), bodyParserJSON, async function(request, response) {
+    console.log("BODY:", request.body)
     
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
@@ -46,7 +47,7 @@ router.post("/usuario-informacao", cors(), bodyParserJSON, async function(reques
     let result = await controller.criarUsuarioInformacao(dadosBody, contentType)
     response.json(result)
 })
-router.put("/usuario-informacao/:id", cors(), async function(request, response) {
+router.put("/usuario-informacao/:id", cors(), bodyParserJSON, async function(request, response) {
     let id = request.params.id
     let dadosBody = request.body
     let contentType = request.headers["content-type"]

@@ -5,7 +5,7 @@
  * Versão: 1.0
  ************************************************/
 const knex = require("knex");
-const knexConfig = require("../database_config/azure/knexfile");
+const knexConfig = require("../database_config/knexfile");
 
 const knexDatabase = knex(knexConfig.development);
 
@@ -14,6 +14,7 @@ const knexDatabase = knex(knexConfig.development);
 const getAllUsersInformation = async function () {
     try {
         let sql = `SELECT
+                        ui.id_usuario_informacao,
                         u.id_usuario,
                         u.nome,
                         i.id_info,
@@ -37,6 +38,7 @@ const getAllUsersInformation = async function () {
 const getUsersInformationById = async function (id) {
     try {
         let sql = `SELECT
+                        ui.id_usuario_informacao,
                         u.id_usuario,
                         u.nome,
                         i.id_info,

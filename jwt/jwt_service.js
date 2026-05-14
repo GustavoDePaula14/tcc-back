@@ -1,38 +1,38 @@
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 const getToken = (usuario) => {
-    return jwt.sign(usuario, process.env.JWT_SECRET, { expiresIn: '1h' });
+    return jwt.sign(usuario, process.env.JWT_SECRET, { expiresIn: '1h' })
 };
 
 const getDecodedToken = (token) => {
-    return jwt.decode(token);
+    return jwt.decode(token)
 };
 
 const verificarToken = function(request, response, next) {
-    const authHeader = request.headers['authorization'];
+    const authHeader = request.headers['authorization']
     if (!authHeader) {
         return response.status(401).json({ 
-            message: 'Acesso negado. Token não fornecido ou formato inválido.' 
+            message: 'Acesso negado' 
         });
     }
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(' ')[1]
 
     try {
         jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
             if (error) {
                 return response.status(403).json({ 
-                    message: 'Token inválido ou expirado.' 
-                });
+                    message: 'Token inválido' 
+                })
             }
 
-            request.user = decoded;
-            next();
-        });
+            request.user = decoded
+            next()
+        })
     } catch (err) {
         return response.status(500).json({ 
-            message: 'Erro interno ao processar a autenticação.' 
+            message: 'Erro interno' 
         });
     }
 }

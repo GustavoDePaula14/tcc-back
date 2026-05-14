@@ -50,7 +50,20 @@ const setInsertUsersFamily = async function (usuarioFamilia) {
         return false
     }
 }
+const setInsertUsersFamilyByUserEmail = async function (usuarioFamilia) {
+        try {
+        let sql = `insert into tb_usuario_familia (id_usuario, id_familia) values (?, ?)`
+        console.log(sql)
+        let result = await knexDatabase.raw(sql, [
+            usuarioFamilia.id_usuario,
+            usuarioFamilia.id_familia
+        ])
 
+        return !!result
+    } catch (error) {
+        return false
+    }
+}
 // PUT
 const setUpdateUsersFamily = async function (usuarioFamilia) {
     try {
