@@ -12,7 +12,7 @@ const knexDatabase = knex(knexConfig.development);
 //GET
 const getAllItens = async function () {
     try {
-        let sql = `select * from tb_itens`
+        let sql = `select * from tb_item`
         let result = await knexDatabase.raw(sql)
 
         if (Array.isArray(result)) {
@@ -27,7 +27,7 @@ const getAllItens = async function () {
 //GET por id
 const getItenById = async function (id) {
     try {
-        let sql = `select * from tb_itens where id_item = ${id}`
+        let sql = `select * from tb_item where id_item = ${id}`
         let result = await knexDatabase.raw(sql)
 
         if (Array.isArray(result)) {
@@ -42,16 +42,18 @@ const getItenById = async function (id) {
 //POST
 const setInsertIten = async function (item) {
     try {
-        let sql = `insert into tb_itens(
+        let sql = `insert into tb_item(
                         nome_item,
                         quantidade,
                         valor_unitario,
-                        comprado
+                        comprado,
+                        id_lista
                     )values(
                         '${item.nome_item}',
                         ${item.quantidade},
                         ${item.valor_unitario},
-                        ${item.comprado}
+                        ${item.comprado},
+                        ${item.id_lista}
                     )`
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {
@@ -66,11 +68,12 @@ const setInsertIten = async function (item) {
 //PUT
 const setUpdateIten = async function (item) {
     try {
-        let sql = `update tb_itens set
-                        nome_item = '${item.nome_item}}',
+        let sql = `update tb_item set
+                        nome_item = '${item.nome_item}',
                         quantidade = ${item.quantidade},
                         valor_unitario = ${item.valor_unitario},
-                        comprado = '${item.comprado}  
+                        comprado = ${item.comprado},
+                        id_lista= ${item.id_lista}
                     where id_item = ${item.id_item}`
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {
@@ -85,7 +88,7 @@ const setUpdateIten = async function (item) {
 //DELETE
 const setDeleteIten = async function (id) {
     try {
-        let = sql = `delete from tb_itens where id_item = ${id}`
+        let = sql = `delete from tb_item where id_item = ${id}`
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {
             return result

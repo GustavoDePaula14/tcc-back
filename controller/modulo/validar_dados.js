@@ -80,10 +80,16 @@ const validarDadosItens = async function (item) {
             mesagensDefault.ERRO_NOT_FOUND.campo = "quantidade"
             return mesagensDefault.ERRO_NOT_FOUND
         } else if (item.valor_unitario == null || item.valor_unitario == "" || item.valor_unitario == undefined || isNaN(item.valor_unitario)) {
-v        } else if (item.comprado == null || item.comprado == undefined || item.comprado != true || item.comprado != false) {
+            console.log(item.valor_unitario)
             mesagensDefault.ERRO_NOT_FOUND.campo = "valor_unitario"
+            return mesagensDefault.ERRO_NOT_FOUND          
+        } else if (item.comprado == null || item.comprado == undefined || typeof item.comprado !== "boolean") {
+            mesagensDefault.ERRO_NOT_FOUND.campo = "comprado"
             return mesagensDefault.ERRO_NOT_FOUND
-        } else {
+        } else if(item.id_lista == null || item.id_lista == "" || item.id_lista == undefined || isNaN(item.id_lista)){
+            mesagensDefault.ERRO_NOT_FOUND.campo = "id_lista"
+            return mesagensDefault.ERRO_NOT_FOUND
+        }else{
             return true
         }
     } catch (error) {
@@ -92,8 +98,14 @@ v        } else if (item.comprado == null || item.comprado == undefined || item.
 }
 const validarDadosLista = async function (lista) {
     try {
-        if (lista.nome_lista == null || lista.nome_lista == "" || lista.nome_lista == undefined || lista.nome_lista.length > 100) {
-            mesagensDefault.ERRO_NOT_FOUND.campo = "nome_lista"
+        if (lista.nome == null || lista.nome == "" || lista.nome == undefined || lista.nome.length > 100) {
+            mesagensDefault.ERRO_NOT_FOUND.campo = "nome"
+            return mesagensDefault.ERRO_NOT_FOUND
+        } else if (lista.id_usuario == null || lista.id_usuario == "" || isNaN(lista.id_usuario) || lista.id_usuario <= 0) {
+            mesagensDefault.ERRO_NOT_FOUND.campo = "id_usuario"
+            return mesagensDefault.ERRO_NOT_FOUND
+        } else if (lista.id_familia == null || lista.id_familia == "" || isNaN(lista.id_familia) || lista.id_familia <= 0) {
+            mesagensDefault.ERRO_NOT_FOUND.campo = "id_familia"
             return mesagensDefault.ERRO_NOT_FOUND
         } else {
             return true

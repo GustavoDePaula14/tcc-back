@@ -30,9 +30,9 @@ const listarListas = async function () {
 }
 //GET id
 const listarListaID = async function (id) {
-    let idValidado = validarAtributos.validarValorId(id)
+    let idValidado = await validarAtributos.validarValorId(id)
     try {
-        if (!idValidado) {
+        if (idValidado) {
             let result = await listaDAO.getListById(id)
             if (result) {
                 if (result.length > 0) {
@@ -55,12 +55,13 @@ const listarListaID = async function (id) {
 
 // POST
 const criarLista = async function (lista, contentType) {
-    let dadosValidados = validarDados.validarDadosLista(lista)
-    let contentTypeValidado = validarAtributos.validarContentType(contentType)
+    let dadosValidados = await validarDados.validarDadosLista(lista)
+    let contentTypeValidado = await validarAtributos.validarContentType(contentType)
     try {
-        if (contentTypeValidado == true) {
-            if (dadosValidados === true) {
+        if (contentTypeValidado) {
+            if (dadosValidados == true) {
                 let result = await listaDAO.setInsertList(lista)
+                console.log(result)
                 if (result) {
                     if (result.length > 0) {
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
@@ -84,19 +85,18 @@ const criarLista = async function (lista, contentType) {
 }
 // PUT
 const atulizarLista = async function (lista, contentType, id) {
-    let dadosValidados = validarDados.validarDadosLista(lista)
-    let contentTypeValidado = validarAtributos.validarContentType(contentType)
+    let dadosValidados = await validarDados.validarDadosLista(lista)
+    let contentTypeValidado = await validarAtributos.validarContentType(contentType)
     let idValidado = validarAtributos.validarValorId(id)
-
     try {
+
         if (idValidado) {
-            let buscarId = listaDAO.getListById(id)
+            let buscarId = await listaDAO.getListById(id)
             if (contentTypeValidado) {
-                if (dadosValidados) {
+                if (dadosValidados == true) {
                     if (buscarId) {
                         lista.id_lista = parseInt(id)
                         let result = await listaDAO.setUpdateList(lista)
-                        console.log(result)
                         if (result) {
                             if (result.length > 0) {
                                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
@@ -124,12 +124,13 @@ const atulizarLista = async function (lista, contentType, id) {
 }
 // DELETE
 const excluirLista = async function (id) {
-    let idValidado = validarAtributos.validarValorId(id)
+    let idValidado = await validarAtributos.validarValorId(id)
     try {
-        if (!idValidado) {
+        if (idValidado) {
             let buscarId = await listaDAO.getListById(id)
             if (buscarId) {
-                let result = await listaDAO.setUpdateList(id)
+                let result = await listaDAO.setDeleteList(id)
+
                 if (result) {
                     if (result.length > 0) {
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_DELETED_ITEM.StatusCode

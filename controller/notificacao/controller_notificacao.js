@@ -57,8 +57,8 @@ const listarNotificacaoID = async function (id) {
 
 // POST
 const criarNotificacao = async function (notificacao, contentType) {
-    let dadosValidados = validarDados.validarDadosNotificacao(notificacao)
-    let contentTypeValidado = validarAtributos.validarContentType(contentType)
+    let dadosValidados = await validarDados.validarDadosNotificacao(notificacao)
+    let contentTypeValidado = await validarAtributos.validarContentType(contentType)
     try {
         if (contentTypeValidado) {
             if (dadosValidados) {
@@ -87,15 +87,15 @@ const criarNotificacao = async function (notificacao, contentType) {
 
 // PUT
 const atulizarNotificacao = async function (notificacao, contentType, id) {
-    let dadosValidados = validarDados.validarDadosNotificacao(notificacao)
-    let contentTypeValidado = validarAtributos.validarContentType(contentType)
+    let dadosValidados = await validarDados.validarDadosNotificacao(notificacao)
+    let contentTypeValidado = await validarAtributos.validarContentType(contentType)
     let idValidado = validarAtributos.validarValorId(id)
     try {
         if (idValidado) {
             let buscarId = notificacaoDAO.getNotificationById(id)
             if (contentTypeValidado) {
                 if (dadosValidados) {
-                    if (buscarId.StatusCode == 200) {
+                    if (buscarId) {
                         notificacao.id_notificacao = parseInt(id)
                         let result = await notificacaoDAO.setUpdateNotification(notificacao)
                         if (result) {
@@ -125,11 +125,11 @@ const atulizarNotificacao = async function (notificacao, contentType, id) {
 }
 // DELETE
 const excluirNotificacao = async function (id) {
-    let idValidado = validarAtributos.validarValorId(id)
+    let idValidado = await validarAtributos.validarValorId(id)
     try {
         if (idValidado) {
             let buscarId = await notificacaoDAO.getNotificationById(id)
-            if (buscarId.StatusCode == 200) {
+            if (buscarId) {
                 let result = await notificacaoDAO.setDeleteNotification(id)
                 if (result) {
                     if (result.length > 0) {

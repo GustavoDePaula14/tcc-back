@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const knex = require('knex');
-const config = require('./model/database_config/local/knexfile.js');
 
 const app = express();
 const PORT = 3000;

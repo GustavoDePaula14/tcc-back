@@ -55,8 +55,8 @@ const listarItemID = async function (id) {
 
 // POST
 const criarItem = async function (item, contentType) {
-    let dadosValidados = validarDados.validarDadosItens(item)
-    let contentTypeValidado = validarAtributos.validarContentType(contentType)
+    let dadosValidados = await validarDados.validarDadosItens(item)
+    let contentTypeValidado = await validarAtributos.validarContentType(contentType)
     try {
         if (contentTypeValidado) {
             if (dadosValidados == true) {
@@ -84,13 +84,13 @@ const criarItem = async function (item, contentType) {
 }
 // PUT
 const atulizarItem = async function (item, contentType, id) {
-    let dadosValidados = validarDados.validarDadosItens(item)
-    let contentTypeValidado = validarAtributos.validarContentType(contentType)
+    let dadosValidados = await validarDados.validarDadosItens(item)
+    let contentTypeValidado = await validarAtributos.validarContentType(contentType)
     let idValidado = validarAtributos.validarValorId(id)
 
     try {
         if (idValidado) {
-            let buscarId = itemDAO.getItenById(id)
+            let buscarId = await itemDAO.getItenById(id)
             if (contentTypeValidado) {
                 if (dadosValidados == true) {
                     if (buscarId) {
@@ -127,7 +127,7 @@ const excluirItem = async function (id) {
     try {
         if (idValidado) {
             let buscarId = await itemDAO.getItenById(id)
-            if (buscarId.StatusCode == 200) {
+            if (buscarId) {
                 let result = await itemDAO.setDeleteIten(id)
                 if (result) {
                     if (result.length > 0) {
