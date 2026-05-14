@@ -14,7 +14,7 @@ const listarUsuarioFamilia = async function () {
     try {
         let result = await usuario_familiaDAO.getAllUsersFamily()
 
-        if (result && result.length > 0) {
+        if (result) {
             return {
                 status_code: mensagensDefault.SUCCESS_REQUEST.StatusCode,
                 dados: result 
@@ -35,10 +35,10 @@ const listarUsuarioFamiliaID = async function (id) {
 
         let result = await usuario_familiaDAO.getUsersFamilyById(id)
 
-        if (result && result.length > 0) {
+        if (result) {
             return {
                 status_code: mensagensDefault.SUCCESS_REQUEST.StatusCode,
-                dados: result[0]
+                dados: result
             }
         } else {
             return mensagensDefault.ERRO_NOT_FOUND
@@ -50,13 +50,12 @@ const listarUsuarioFamiliaID = async function (id) {
 }
 
 const criarUsuarioFamilia = async function (usuarioFamilia, contentType) {
-    let dadosValidados = validarDados.validarUsuarioFamilia(usuarioFamilia)
     try {
         if (!validarAtributos.validarContentType(contentType))
             return mensagensDefault.ERRO_CONTENT_TYPE
 
-        if (dadosValidados == false)
-            return dadosValidados
+        if (!validarDados.validarUsuarioFamilia(usuarioFamilia))
+            return mensagensDefault.ERRO_REQUIRED_FIELDS
 
         let result = await usuario_familiaDAO.setInsertUsersFamily(usuarioFamilia)
 
@@ -71,6 +70,8 @@ const criarUsuarioFamilia = async function (usuarioFamilia, contentType) {
         return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+
+
 const criarUsuarioFamiliaPorEmail = async function (usuarioFamilia, contentType) {
     try {
 
@@ -108,8 +109,8 @@ const criarUsuarioFamiliaPorEmail = async function (usuarioFamilia, contentType)
         return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+
 const atualizarUsuarioFamilia = async function (usuarioFamilia, contentType, id) {
-    let dadosValidados = validarDados.validarUsuarioFamilia(usuarioFamilia)
     try {
         if (!validarAtributos.validarId(id))
             return mensagensDefault.ERRO_INVALID_ID
@@ -117,14 +118,12 @@ const atualizarUsuarioFamilia = async function (usuarioFamilia, contentType, id)
         if (!validarAtributos.validarContentType(contentType))
             return mensagensDefault.ERRO_CONTENT_TYPE
 
-
-        if (dadosValidados == false)
-            return dadosValidados
-
+        if (!validarDados.validarUsuarioFamilia(usuarioFamilia))
+            return mensagensDefault.ERRO_REQUIRED_FIELDS
 
         let buscarId = await usuario_familiaDAO.getUsersFamilyById(id)
 
-        if (!buscarId || buscarId.length === 0)
+        if (!buscarId)
             return mensagensDefault.ERRO_NOT_FOUND
 
         usuarioFamilia.id_usuario_familia = parseInt(id)
@@ -149,7 +148,7 @@ const excluirUsuarioFamilia = async function (id) {
 
         let buscarId = await usuario_familiaDAO.getUsersFamilyById(id)
 
-        if (!buscarId || buscarId.length === 0)
+        if (!buscarId)
             return mensagensDefault.ERRO_NOT_FOUND
 
         let result = await usuario_familiaDAO.setDeleteUsersFamily(id)
@@ -169,7 +168,7 @@ module.exports = {
     listarUsuarioFamilia,
     listarUsuarioFamiliaID,
     criarUsuarioFamilia,
+    criarUsuarioFamiliaPorEmail,
     atualizarUsuarioFamilia,
-    excluirUsuarioFamilia,
-    criarUsuarioFamiliaPorEmail
+    excluirUsuarioFamilia
 }
