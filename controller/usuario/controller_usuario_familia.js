@@ -71,7 +71,43 @@ const criarUsuarioFamilia = async function (usuarioFamilia, contentType) {
         return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+const criarUsuarioFamiliaPorEmail = async function (usuarioFamilia, contentType) {
+    try {
 
+        if (!validarAtributos.validarContentType(contentType))
+            return mensagensDefault.ERRO_CONTENT_TYPE
+
+        if (!validarDados.validarUsuarioFamiliaPorEmail(usuarioFamilia))
+            return mensagensDefault.ERRO_REQUIRED_FIELDS
+
+        let result = await usuario_familiaDAO
+            .setInsertUsersFamilyByUserEmail(usuarioFamilia)
+
+        if (result == null) {
+            return {
+                status: 404,
+                message: "Usuário não encontrado."
+            }
+        }
+
+        if (result == "duplicado") {
+            return {
+                status: 409,
+                message: "Usuário já pertence à família."
+            }
+        }
+
+        if (result) {
+            return mensagensDefault.SUCCESS_CREATED_ITEM
+        } else {
+            return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+        }
+
+    } catch (error) {
+
+        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }
+}
 const atualizarUsuarioFamilia = async function (usuarioFamilia, contentType, id) {
     let dadosValidados = validarDados.validarUsuarioFamilia(usuarioFamilia)
     try {
@@ -134,5 +170,6 @@ module.exports = {
     listarUsuarioFamiliaID,
     criarUsuarioFamilia,
     atualizarUsuarioFamilia,
-    excluirUsuarioFamilia
+    excluirUsuarioFamilia,
+    criarUsuarioFamiliaPorEmail
 }

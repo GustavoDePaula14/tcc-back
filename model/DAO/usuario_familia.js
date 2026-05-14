@@ -50,20 +50,33 @@ const setInsertUsersFamily = async function (usuarioFamilia) {
         return false
     }
 }
+
 const setInsertUsersFamilyByUserEmail = async function (usuarioFamilia) {
-        try {
-        let sqlSelect = `select id_usuario`
-        let sql = `insert into tb_usuario_familia (id_usuario, id_familia) values (?, ?)`
-        console.log(sql)
-        let result = await knexDatabase.raw(sql, [
-            usuarioFamilia.id_usuario,
+    try {
+        let sqlSearch = `SELECT id_usuario FROM tb_usuario WHERE email = ?`
+        let user = await knexDatabase.raw(sqlSearch, [
+            usuarioFamilia.email
+        ])
+
+        if (user[0].length == 0)
+            return null
+
+        let sqlInsert = `INSERT INTO tb_usuario_familia (id_usuario,id_familia) VALUES (?, ?)`
+
+        let result = await knexDatabase.raw(sqlInsert, [
+            user[0][0].id_usuario,
             usuarioFamilia.id_familia
         ])
 
         return !!result
+
     } catch (error) {
-        return false
-    }
+    console.log(error)
+    if (error.code == "ER_DUP_ENTRY")
+        return "duplicado"
+
+    return false
+}
 }
 // PUT
 const setUpdateUsersFamily = async function (usuarioFamilia) {
