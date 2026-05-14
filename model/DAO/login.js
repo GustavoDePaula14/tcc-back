@@ -6,7 +6,7 @@
  ************************************************/
 
 const knex = require("knex");
-const knexConfig = require("../database_config/local/knexfile.js");
+const knexConfig = require("../database_config/azure/knexfile.js");
  
 const knexDatabase = knex(knexConfig.development);
 
