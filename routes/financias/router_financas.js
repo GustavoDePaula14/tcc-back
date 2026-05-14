@@ -11,7 +11,7 @@ const bodyParser = require('body-parser')
 
 const bodyParserJSON = bodyParser.json()
 
-const controller = require('../../controller/financas/controller_financas.js')
+const controller = require('../../controller/financias/controller_financas.js')
 const router = express.Router()
 
 router.use((request, response, next) =>{
