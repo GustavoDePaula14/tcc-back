@@ -14,6 +14,7 @@ const routerItem = require('./routes/item/route_item.js')
 const routerLista = require('./routes/lista/route_lista.js')
 const routerFinancias = require('./routes/financias/router_financas.js')
 const routerLogin = require('./routes/login/router_login.js')
+const routerEvento = require('./routes/evento/route_evento.js')
 const routerUsuarioInformacao = require('./routes/usuario/route_usuario_informacao.js')
 const routeUsuarioFamilia = require('./routes/usuario/route_usuario_familia.js')
 const routeUsuarioNotificacao = require('./routes/usuario/route_usuario_notificacao.js')
@@ -44,6 +45,7 @@ app.use(URL_BASE, routerEndereco);
 app.use(URL_BASE, routerItem);
 app.use(URL_BASE, routerLista);
 app.use(URL_BASE, routerFinancias);
+app.use(URL_BASE, routerEvento);
 app.use(URL_BASE, routerLogin);
 app.use(URL_BASE, routerUsuarioInformacao)
 app.use(URL_BASE, routeUsuarioFamilia)

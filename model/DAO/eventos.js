@@ -5,7 +5,7 @@
  * Versão: 1.0
  ************************************************/
 const knex = require("knex");
-const knexConfig = require("../database_config/azure/knexfile.js");
+const knexConfig = require("../database_config/local/knexfile.js");
 
 const knexDatabase = knex(knexConfig.development);
 
@@ -27,7 +27,7 @@ const getAllEvents = async function () {
 //GET por id
 const getEventById = async function (id) {
     try {
-        let sql = `select * from tb_eventos where id_evento = ${id}`
+        let sql = `select * from tb_eventos where id_eventos = ${id}`
         let result = await knexDatabase.raw(sql)
 
         if (Array.isArray(result)) {
@@ -42,14 +42,18 @@ const getEventById = async function (id) {
 //POST
 const setInsertEvent = async function (evento) {
     try {
-        let sql = `insert into tb_evento(
+        let sql = `insert into tb_eventos(
                         titulo,
                         descricao,
-                        data
+                        data,
+                        id_familia,
+                        id_usuario
                     )values(
                         '${evento.titulo}',
-                        '${evento.descricacao}',
-                        '${evento.data}'     
+                        '${evento.descricao}',
+                        '${evento.data}',
+                        ${evento.id_familia},
+                        ${evento.id_usuario}
                     )`
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {
@@ -64,11 +68,13 @@ const setInsertEvent = async function (evento) {
 //PUT
 const setUpdateEvent = async function (evento) {
     try {
-        let sql = `update tb_evento set
+        let sql = `update tb_eventos set
                         titulo = '${evento.titulo}',
-                        descricao = '${evento.descricacao}',
-                        data = '${evento.data}'  
-                    where id_evento = ${evento.id_evento}`
+                        descricao = '${evento.descricao}',
+                        data = '${evento.data}',
+                        id_familia = ${evento.id_familia},
+                        id_usuario = ${evento.id_usuario}
+                    where id_eventos = ${evento.id_evento}`
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {
             return result
@@ -82,7 +88,7 @@ const setUpdateEvent = async function (evento) {
 //DELETE
 const setDeleteEvent = async function (id) {
     try {
-        let = sql = `delete from tb_evento where id_evento = ${id}`
+        let = sql = `delete from tb_eventos where id_eventos = ${id}`
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {
             return result
