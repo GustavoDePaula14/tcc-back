@@ -68,7 +68,7 @@ const setUpdateNotification = async function (notificacao) {
                         titulo = '${notificacao.titulo}',
                         descricao = '${notificacao.descricao}',
                         data = '${notificacao.data}'
-                    where id_notificacao = ${notificacao.id}`
+                    where id_notificacao = ${notificacao.id_notificacao}`
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {
             return result

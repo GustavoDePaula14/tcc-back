@@ -17,7 +17,7 @@ const listarNotificacoes = async function () {
         if (result) {
             if (result.length > 0) {
                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                mesagensDefault.HEADER.Response.notificacoes = result[0]
+                mesagensDefault.HEADER.Response = result[0]
                 return mesagensDefault.HEADER
             } else {
                 return mesagensDefault.ERRO_NOT_FOUND
@@ -39,7 +39,7 @@ const listarNotificacaoID = async function (id) {
             if (result) {
                 if (result.length > 0) {
                     mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                    mesagensDefault.HEADER.Response.notificacao = result[0]
+                    mesagensDefault.HEADER.Response = result[0]
                     return mesagensDefault.HEADER
                 } else {
                     return mesagensDefault.ERRO_NOT_FOUND
@@ -61,7 +61,7 @@ const criarNotificacao = async function (notificacao, contentType) {
     let contentTypeValidado = await validarAtributos.validarContentType(contentType)
     try {
         if (contentTypeValidado) {
-            if (dadosValidados) {
+            if (dadosValidados == true) {
                 let result = await notificacaoDAO.setInsertNotification(notificacao)
                 if (result) {
                     if (result.length > 0) {
@@ -94,10 +94,11 @@ const atulizarNotificacao = async function (notificacao, contentType, id) {
         if (idValidado) {
             let buscarId = notificacaoDAO.getNotificationById(id)
             if (contentTypeValidado) {
-                if (dadosValidados) {
+                if (dadosValidados == true) {
                     if (buscarId) {
                         notificacao.id_notificacao = parseInt(id)
                         let result = await notificacaoDAO.setUpdateNotification(notificacao)
+                        console.log(result)
                         if (result) {
                             if (result.length > 0) {
                                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
@@ -131,6 +132,7 @@ const excluirNotificacao = async function (id) {
             let buscarId = await notificacaoDAO.getNotificationById(id)
             if (buscarId) {
                 let result = await notificacaoDAO.setDeleteNotification(id)
+                console.log(result)
                 if (result) {
                     if (result.length > 0) {
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_DELETED_ITEM.StatusCode
