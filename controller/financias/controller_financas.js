@@ -35,7 +35,7 @@ const listarFinancasID = async function (id) {
     let idValidado = validarAtributos.validarValorId(id)
 
     try {
-        if (!idValidado) {
+        if (idValidado) {
             let result = await financasDAO.getFinanceById(id)
 
             if (result && result.length > 0) {

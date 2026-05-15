@@ -32,7 +32,7 @@ const listarFamilias = async function () {
 const listarFamiliaID = async function (id) {
     let idValidado = validarAtributos.validarValorId(id)
     try {
-        if (!idValidado) {
+        if (idValidado) {
             let result = await familiaDAO.getFamilyById(id)
             if (result) {
                 if (result.length > 0) {
@@ -84,11 +84,11 @@ const criarFamilia = async function (familia, contentType) {
 }
 //PUT
 const atulizarFamilia = async function (familia, contentType, id) {
-    let dadosValidados = validarDados.validarDadosFamilia(familia)
+    let dadosValidados = await validarDados.validarDadosFamilia(familia)
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
     let idValidado = validarAtributos.validarValorId(id)
     try {
-        if (!idValidado) {
+        if (idValidado) {
             let buscarId = familiaDAO.getFamilyById(id)
             if (contentTypeValidado) {
                 if (dadosValidados == true) {
@@ -124,7 +124,7 @@ const atulizarFamilia = async function (familia, contentType, id) {
 const excluirFamilia = async function (id) {
     let idValidado = validarAtributos.validarValorId(id)
     try {
-        if (!idValidado) {
+        if (idValidado) {
             let buscarId = await familiaDAO.getFamilyById(id)
             if (buscarId || buscarId.length !== 0) {
                 let result = await familiaDAO.setDeleteFamily(id)
