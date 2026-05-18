@@ -41,7 +41,5 @@ router.post("/senha-nova", cors(), async function(request, response) {
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
     let result = await controller.validarTrocaSenha
-    
-
 })
 module.exports = router;
