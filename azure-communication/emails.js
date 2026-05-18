@@ -1,6 +1,6 @@
 const criarMessageNovaSenha = function(to_email){
     const message = {
-        senderAddress:"DoNotReply@<from_domain>",
+        senderAddress:"DoNotReply@c1c84fa9-5816-4316-9edd-ff82e6600114.azurecomm.net",
         content:{
             subject: "Troca de senha de usuario",
             plainText: "Troca de senha de usuario",
@@ -14,17 +14,17 @@ const criarMessageNovaSenha = function(to_email){
                 </html>`
         },
         recipients: {
-            to: [{ address: `${to_email}` }],
+            to: [{ address: to_email }],
         },
     }
     return message
 }
 const criarMessageLoginUsuarioFamilia = function(to_email){
     const message = {
-        senderAddress:"DoNotReply@<from_domain>",
+        senderAddress:"DoNotReply@c1c84fa9-5816-4316-9edd-ff82e6600114.azurecomm.net",
         content:{
-            subject: "",
-            plainText: "",
+            subject: "Troca de senha de usuario",
+            plainText: "Troca de senha de usuario",
             html:`
                 <html>
                     <body>
@@ -35,7 +35,7 @@ const criarMessageLoginUsuarioFamilia = function(to_email){
                 </html>`
         },
         recipients: {
-            to: [{ address: `${to_email}` }],
+            to: [{ address: to_email }],
         },
     }
     return message
