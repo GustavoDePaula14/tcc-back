@@ -37,7 +37,7 @@ const listarUsuarioID = async function (id) {
     let idValidado = validarAtributos.validarValorId(id)
     // console.log(idValidado)
     try {
-        if (!idValidado) {
+        if (idValidado) {
             let result = await usuarioDAO.getUserById(id)
             // console.log(result)
             if (result) {
@@ -101,7 +101,7 @@ const atulizarUsuario = async function (usuario, contentType, id) {
         let dadosValidados = await validarDados.validarDadosUsuario(usuario)
         let contentTypeValidado = validarAtributos.validarContentType(contentType)
         let idValidado = validarAtributos.validarValorId(id)
-        if (!idValidado) {
+        if (idValidado) {
             let buscarId = usuarioDAO.getUserById(id)
             if (contentTypeValidado) {
                 if (dadosValidados == true) {
@@ -141,7 +141,7 @@ const atulizarUsuario = async function (usuario, contentType, id) {
 const excluirUsuario = async function (id) {
     let idValidado = validarAtributos.validarValorId(id)
     try {
-        if (!idValidado) {
+        if (idValidado) {
             let buscarId = await usuarioDAO.getUserById(id)
             if (buscarId) {
                 let result = await usuarioDAO.setDeleteUser(id)
