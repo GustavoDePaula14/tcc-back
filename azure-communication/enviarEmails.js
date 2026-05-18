@@ -18,8 +18,6 @@ const enviarLoginUsuarioFamila = async function(destinatario) {
     const result = await poller.pollUntilDone();
 }
 
-enviarLoginUsuarioFamila("gustavodepaulasilva299@gmail.com");
-
 module.exports = {
     enviarLoginUsuarioFamila,
     enviarNovaSenha

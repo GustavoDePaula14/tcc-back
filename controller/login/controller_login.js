@@ -10,6 +10,7 @@ const mesagensDefault = require("../modulo/config_messages.js")
 const validarDados = require("../modulo/validar_dados.js")
 const validarAtributos = require("../modulo/validar_atributos.js")
 const bcrypt = require('bcryptjs');
+const emails = require('../../azure-communication/enviarEmails.js')
 
 const validarLogin = async function(login, contentType) {
     let result = await loginDAO.getAutentication(login.email)    
@@ -27,13 +28,26 @@ const validarLogin = async function(login, contentType) {
         }else{
             return mesagensDefault.ERRO_INVALID_PASSWORD
         }
-        return 
     } catch (error) {
         console.log(error)
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }    
 }
 
+const validarTrocaSenha = async function (email, contentType) {
+    let contentTypeValidado = await validarAtributos.validarContentType(contentType)
+    try {
+        if(contentTypeValidado){
+            let emailEnvidado = emails.enviarNovaSenha(email.email)
+            return emailEnvidado
+        }
+    } catch (error) {
+        console.log(error)
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }  
+}
+
 module.exports = {
-    validarLogin
+    validarLogin,
+    validarTrocaSenha
 }
