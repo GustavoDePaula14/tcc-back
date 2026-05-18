@@ -64,7 +64,6 @@ const criarUsuario = async function (usuario, contentType) {
     const hash = bcrypt.hashSync(usuario.senha, salt)
     try {
         let dadosValidados = await validarDados.validarDadosUsuario(usuario)
-        console.log(dadosValidados)
         let contentTypeValidado = validarAtributos.validarContentType(contentType)
         if (contentTypeValidado) {
             if (dadosValidados == true) {
