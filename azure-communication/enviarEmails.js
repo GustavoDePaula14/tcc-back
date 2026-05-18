@@ -3,7 +3,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const { EmailClient } = require("@azure/communication-email");
 
-const connectionString = COMMUNICATION_SERVICES_CONNECTION_STRING
+const connectionString = process.env['COMMUNICATION_SERVICES_CONNECTION_STRING']
 
 const client = new EmailClient(connectionString); 
 const emails = require('./emails.js');

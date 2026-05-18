@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 const getToken = (usuario) => {
-    return jwt.sign(usuario, JWT_SECRET, { expiresIn: '1h' })
+    return jwt.sign(usuario, process.env.JWT_SECRET, { expiresIn: '1h' })
 };
 
 const getDecodedToken = (token) => {
