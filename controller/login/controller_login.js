@@ -35,11 +35,21 @@ const validarLogin = async function(login, contentType) {
 }
 
 const validarTrocaSenha = async function (email, contentType) {
-    let contentTypeValidado = await validarAtributos.validarContentType(contentType)
+    let contentTypeValidado = validarAtributos.validarContentType(contentType)
     try {
         if(contentTypeValidado){
-            let emailEnvidado = emails.enviarNovaSenha(email.email)
-            return emailEnvidado
+            let emailEnvidado = await emails.enviarNovaSenha(email.email, email.remetente)
+            console.log(emailEnvidado)
+            if(emailEnvidado == true){
+                mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
+                mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_REQUEST.message
+                return mesagensDefault.HEADER
+            }else{
+                mesagensDefault.HEADER.StatusCode = mesagensDefault.ERRO_RELATION_TABLE.StatusCode
+                mesagensDefault.HEADER.Response = mesagensDefault.ERRO_RELATION_TABLE.message
+
+                return mesagensDefault.HEADER
+            }
         }
     } catch (error) {
         console.log(error)

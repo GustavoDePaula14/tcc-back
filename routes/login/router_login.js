@@ -40,6 +40,7 @@ router.get("/usuario", cors(), jwt.verificarToken,  async function(request, resp
 router.post("/senha-nova", cors(), async function(request, response) {
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
-    let result = await controller.validarTrocaSenha
+    let result = await controller.validarTrocaSenha(dadosBody, contentType)
+    response.json(result)
 })
 module.exports = router;
