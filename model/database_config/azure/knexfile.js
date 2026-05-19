@@ -9,8 +9,8 @@ module.exports = {
     development: {
         client: 'mysql2',
         connection: {
-            host: "family-sync.mysql.database.azure.com", // O endpoint do Azure
-            user: "familysync", // Ex: administrador
+            host: "family-sync.mysql.database.azure.com",
+            user: "familysync",
             password: "Senai@2026",
             database: "familysync",
             port: 3306,
