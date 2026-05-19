@@ -1,8 +1,15 @@
+/***********************************************
+ * Objetivo: Arquivo de responsavel pela manipulação de TOKEN
+ * Autor: Gustavo de Paula Silva
+ * Data: 14/05/2026
+ * Versão: 1.0
+ ************************************************/
+
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 const getToken = (usuario) => {
-    return jwt.sign(usuario, process.env.JWT_SECRET, { expiresIn: '1h' })
+    return jwt.sign(usuario, process.env.JWT_SECRET, { expiresIn: '168h' })
 };
 
 const getDecodedToken = (token) => {

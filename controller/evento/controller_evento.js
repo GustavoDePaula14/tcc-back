@@ -89,7 +89,7 @@ const criarEvento = async function (evento, contentType) {
 // PUT
 const atulizarEvento = async function (evento, contentType, id) {
     let dadosValidados = await validarDados.validarDadosEvento(evento)
-    let contentTypeValidado = await validarAtributos.validarContentType(contentType)
+    let contentTypeValidado = validarAtributos.validarContentType(contentType)
     let idValidado = validarAtributos.validarValorId(id)
     try {
         if (idValidado) {

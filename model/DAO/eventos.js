@@ -46,12 +46,14 @@ const setInsertEvent = async function (evento) {
                         titulo,
                         descricao,
                         data,
+                        hora,
                         id_familia,
                         id_usuario
                     )values(
                         '${evento.titulo}',
                         '${evento.descricao}',
                         '${evento.data}',
+                        '${evento.hora}',
                         ${evento.id_familia},
                         ${evento.id_usuario}
                     )`
@@ -73,7 +75,8 @@ const setUpdateEvent = async function (evento) {
                         descricao = '${evento.descricao}',
                         data = '${evento.data}',
                         id_familia = ${evento.id_familia},
-                        id_usuario = ${evento.id_usuario}
+                        id_usuario = ${evento.id_usuario},
+                        hora = '${evento.hora}'
                     where id_eventos = ${evento.id_evento}`
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {

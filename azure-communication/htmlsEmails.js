@@ -1,3 +1,10 @@
+/***********************************************
+ * Objetivo: Arquivo de responsavel pela construção do html presente no sistema de email
+ * Autor: Gustavo de Paula Silva
+ * Data: 14/05/2026
+ * Versão: 1.0
+ ************************************************/
+
 const joinFamilyHTML = function(dono_familia){
     const token_family = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c3VhcmlvIjo3LCJlbWFpbCI6InZpdG9yQGdtYWlsLmNvbSIsIm5vbWUiOiJWaXRvciBNaWd1ZWwiLCJpYXQiOjE3NzkxNTAzNzksImV4cCI6MTc3OTE1Mzk3OX0.g7LHXhMcqKSrNP0V1dUwZrm_PZnT_M-fWMC4ZgYHx-M";
     const url = `http://localhost:5173/auth/start/${token_family}`;

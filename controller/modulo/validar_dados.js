@@ -64,6 +64,9 @@ const validarDadosEvento = async function (evento) {
         } else if (evento.data == null || evento.data == "" || evento.data == undefined || evento.data.length > 100) {
             mesagensDefault.ERRO_NOT_FOUND.campo = "data"
             return mesagensDefault.ERRO_NOT_FOUND
+        }else if (evento.hora == null || evento.hora == "" || evento.hora == undefined || evento.hora.length > 100) {
+            mesagensDefault.ERRO_NOT_FOUND.campo = "hora"
+            return mesagensDefault.ERRO_NOT_FOUND
         } else {
             return true
         }

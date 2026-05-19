@@ -1,3 +1,10 @@
+/***********************************************
+ * Objetivo: Arquivo de responsavel pela construção do email
+ * Autor: Gustavo de Paula Silva
+ * Data: 18/05/2026
+ * Versão: 1.0
+ ************************************************/
+
 const html = require('./htmlsEmails')
 
 const criarMessageNovaSenha = function(to_email, remetente){
