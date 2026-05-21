@@ -37,6 +37,13 @@ router.delete("/familia/:id", cors(), async function(request, response) {
     let result = await controller.excluirFamilia(id)
     response.json(result)
 })
+router.post("/familia/endereco", cors(), bodyParserJSON, async function(request, response) {
+    let dadosBody = request.body
+    let contentType = request.headers["content-type"]
+
+    let result = await controller.criarFamiliaEndereco(dadosBody,contentType)
+    response.json(result)
+})
 
 router.post("/familia", cors(), bodyParserJSON, async function(request, response) {
     let dadosBody = request.body

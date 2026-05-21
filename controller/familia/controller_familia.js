@@ -52,6 +52,51 @@ const listarFamiliaID = async function (id) {
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+// POST PROCEDURE
+const criarFamiliaEndereco = async function(familia, contentType) {
+
+    let dadosValidados =
+        await validarDados.validarDadosFamiliaEndereco(familia)
+
+    let contentTypeValidado =
+        validarAtributos.validarContentType(contentType)
+
+    try {
+        if(contentTypeValidado){
+
+            if(dadosValidados){
+
+                let result =
+                    await familiaDAO.setInsertFamilyAddress(familia)
+
+                if(result){
+
+                    mesagensDefault.HEADER.StatusCode =
+                        mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
+
+                    mesagensDefault.HEADER.Response =
+                        mesagensDefault.SUCCESS_CREATED_ITEM.message
+
+                    return mesagensDefault.HEADER
+
+                }else{
+                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                }
+
+            }else{
+                return mesagensDefault.ERRO_REQUIRED_FIELDS
+            }
+
+        }else{
+            return mesagensDefault.ERRO_CONTENT_TYPE
+        }
+
+    } catch (error) {
+        console.log(error)
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
 //POST
 const criarFamilia = async function (familia, contentType) {
     try {
@@ -153,5 +198,6 @@ module.exports = {
     listarFamilias,
     criarFamilia,
     atulizarFamilia,
-    excluirFamilia
+    excluirFamilia,
+    criarFamiliaEndereco
 }

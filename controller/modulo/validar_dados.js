@@ -253,7 +253,50 @@ const validarUsuarioFamiliaPorEmail = function (usuarioFamilia) {
     } else {
         return true
     }
+}
+const validarDadosFamiliaEndereco = async function(familia) {
 
+    try {
+
+        if (
+            familia.nome == null || familia.nome == "" || familia.nome == undefined || familia.nome.length > 255
+        ) {
+            return false
+        } else if (
+            familia.telefone == null || familia.telefone == "" || familia.telefone == undefined || familia.telefone.length > 20
+        ) {
+            return false
+        } else if (
+            familia.cep == null || familia.cep == "" || familia.cep == undefined || familia.cep.length > 9
+        ) {
+            return false
+        } else if (
+            familia.logradouro == null || familia.logradouro == "" || familia.logradouro == undefined || familia.logradouro.length > 255
+        ) {
+            return false
+        } else if (
+            familia.bairro == null || familia.bairro == "" || familia.bairro == undefined || familia.bairro.length > 100
+        ) {
+            return false
+        } else if (
+            familia.cidade == null || familia.cidade == "" || familia.cidade == undefined || familia.cidade.length > 100
+        ) {
+            return false
+        } else if (
+            familia.estado == null || familia.estado == "" || familia.estado == undefined || familia.estado.length > 2
+        ) {
+            return false
+        } else if (
+            familia.numero == null || familia.numero == "" || familia.numero == undefined || familia.numero.length > 10
+        ) {
+            return false
+        } else {
+            return true
+        }
+    } catch (error) {
+        console.log(error)
+        return false
+    }
 }
 
 module.exports = {
@@ -269,5 +312,6 @@ module.exports = {
     validarUsuarioInformacao,
     validarUsuarioFamilia,
     validarUsuarioNotificacao,
-    validarUsuarioFamiliaPorEmail
+    validarUsuarioFamiliaPorEmail,
+    validarDadosFamiliaEndereco
 }

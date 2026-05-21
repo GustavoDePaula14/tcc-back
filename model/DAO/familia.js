@@ -39,6 +39,32 @@ const getFamilyById = async function (id) {
         return error
     }
 }
+const setInsertFamilyAddress = async function (familia) {
+    try {
+
+        let sql = 'CALL sp_cadastrar_familia_endereco(?,?,?,?,?,?,?,?,?)'
+
+        let result = await knexDatabase.raw(sql, [
+            familia.nome,
+            familia.telefone,
+            familia.cep,
+            familia.logradouro,
+            familia.bairro,
+            familia.complemento,
+            familia.cidade,
+            familia.estado,
+            familia.numero
+        ])
+
+        return result
+
+    } catch (error) {
+
+        console.log(error)
+
+        return false
+    }
+}
 //POST
 const setInsertFamily = async function (familia) {
     try {
@@ -98,5 +124,6 @@ module.exports = {
     getFamilyById,
     setInsertFamily,
     setUpdateFamily,
-    setDeleteFamily
+    setDeleteFamily,
+    setInsertFamilyAddress
 }
