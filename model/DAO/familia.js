@@ -65,6 +65,38 @@ const setInsertFamilyAddress = async function (familia) {
         return false
     }
 }
+const getFamilyComplete = async function(idFamilia) {
+    try {
+
+        let sqlFamilia = `SELECT * FROM tb_familia WHERE id_familia = ?`
+        let sqlEndereco = `SELECT * FROM tb_endereco WHERE id_familia = ?`
+        let sqlUsuarios = `SELECT u.*, uf.is_admin FROM tb_usuario u INNER JOIN tb_usuario_familia uf ON u.id_usuario = uf.id_usuario WHERE uf.id_familia = ?`
+        let sqlEventos = `SELECT * FROM tb_eventos WHERE id_familia = ?`
+        let sqlListas = `SELECT * FROM tb_lista WHERE id_familia = ?`
+        let sqlFinancas = `SELECT * FROM tb_financas WHERE id_familia = ?`
+
+        let familia = await knexDatabase.raw(sqlFamilia, [idFamilia])
+        let endereco = await knexDatabase.raw(sqlEndereco, [idFamilia])
+        let usuarios = await knexDatabase.raw(sqlUsuarios, [idFamilia])
+        let eventos = await knexDatabase.raw(sqlEventos, [idFamilia])
+        let listas = await knexDatabase.raw(sqlListas, [idFamilia])
+        let financas = await knexDatabase.raw(sqlFinancas, [idFamilia])
+
+        return {
+            familia: familia[0],
+            endereco: endereco[0],
+            usuarios: usuarios[0],
+            eventos: eventos[0],
+            listas: listas[0],
+            financas: financas[0]
+        }
+
+    } catch (error) {
+
+        console.log(error)
+        return false
+    }
+}
 //POST
 const setInsertFamily = async function (familia) {
     try {
@@ -125,5 +157,6 @@ module.exports = {
     setInsertFamily,
     setUpdateFamily,
     setDeleteFamily,
-    setInsertFamilyAddress
+    setInsertFamilyAddress,
+    getFamilyComplete
 }

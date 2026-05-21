@@ -52,6 +52,29 @@ const listarFamiliaID = async function (id) {
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+const listarFamiliaCompleta = async function(id) {
+    try {
+        let result = await familiaDAO.getFamilyComplete(id)
+
+        if(result){
+
+            mesagensDefault.HEADER.StatusCode =
+                mesagensDefault.SUCCESS_REQUEST.StatusCode
+
+            mesagensDefault.HEADER.Response = result
+
+            return mesagensDefault.HEADER
+
+        }else{
+
+            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+        }
+
+    } catch (error) {
+
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }
+}
 // POST PROCEDURE
 const criarFamiliaEndereco = async function(familia, contentType) {
 
@@ -199,5 +222,6 @@ module.exports = {
     criarFamilia,
     atulizarFamilia,
     excluirFamilia,
-    criarFamiliaEndereco
+    criarFamiliaEndereco,
+    listarFamiliaCompleta
 }

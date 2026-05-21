@@ -44,7 +44,11 @@ router.post("/familia/endereco", cors(), bodyParserJSON, async function(request,
     let result = await controller.criarFamiliaEndereco(dadosBody,contentType)
     response.json(result)
 })
-
+router.get("/familia/:id/completa", cors(), async function(request, response) {
+    let id = request.params.id
+    let result = await controller.listarFamiliaCompleta(id)
+    response.json(result)
+})
 router.post("/familia", cors(), bodyParserJSON, async function(request, response) {
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
