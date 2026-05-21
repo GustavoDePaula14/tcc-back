@@ -52,7 +52,20 @@ const listarListaID = async function (id) {
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
-
+const listarListaCompletaID = async function (id) {
+    try {
+        let result = await listaDAO.getAllItensListsById(id)
+        if (result) {
+            mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
+            mesagensDefault.HEADER.Response = result
+            return mesagensDefault.HEADER
+        } else {
+            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+        }
+    } catch (error) {
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }
+}
 // POST
 const criarLista = async function (lista, contentType) {
     let dadosValidados = await validarDados.validarDadosLista(lista)
@@ -155,5 +168,6 @@ module.exports = {
     listarListaID,
     criarLista,
     atulizarLista,
-    excluirLista
+    excluirLista,
+    listarListaCompletaID
 }

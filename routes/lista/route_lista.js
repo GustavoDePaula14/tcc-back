@@ -29,7 +29,7 @@ router.get("/listas", cors(), async function(request, response) {
 
 router.get("/lista/:id", cors(), async function(request, response) {
     let id = request.params.id
-    let result = await controller.listarListaID(id)
+    let result = await controller.listarListaCompletaID(id)
     response.json(result)
 })
 router.delete("/lista/:id", cors(), async function(request, response) {
