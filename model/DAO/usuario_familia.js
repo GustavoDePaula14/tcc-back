@@ -142,13 +142,13 @@ const setInsertUsersFamily = async function (usuarioFamilia) {
 
 //Email
 
-const setInsertUsersFamilyByUserEmail = async function (usuarioFamilia) {
+const setInsertUsersFamilyByUserEmail = async function (usuario , familia) {
     try {
         let sqlSearch = `SELECT id_usuario FROM tb_usuario WHERE email = ?`
         let user = await knexDatabase.raw(sqlSearch, [
-            usuarioFamilia.email
+            usuario
         ])
-
+        
         if (user[0].length == 0)
             return null
 
@@ -156,7 +156,7 @@ const setInsertUsersFamilyByUserEmail = async function (usuarioFamilia) {
 
         let result = await knexDatabase.raw(sqlInsert, [
             user[0][0].id_usuario,
-            usuarioFamilia.id_familia
+            familia
         ])
 
         return !!result

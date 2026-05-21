@@ -81,28 +81,30 @@ const criarUsuarioFamiliaPorEmail = async function (usuarioFamilia, contentType)
         if (!validarDados.validarUsuarioFamiliaPorEmail(usuarioFamilia))
             return mensagensDefault.ERRO_REQUIRED_FIELDS
 
-        let result = await usuario_familiaDAO
-            .setInsertUsersFamilyByUserEmail(usuarioFamilia)
+        usuarioFamilia.email.forEach(async usuario => {
+            let result = await usuario_familiaDAO
+                .setInsertUsersFamilyByUserEmail(usuario, usuarioFamilia.id_familia)
 
-        if (result == null) {
-            return {
-                status: 404,
-                message: "Usuário não encontrado."
+            if (result == null) {
+                return {
+                    status: 404,
+                    message: "Usuário não encontrado."
+                }
             }
-        }
 
-        if (result == "duplicado") {
-            return {
-                status: 409,
-                message: "Usuário já pertence à família."
+            if (result == "duplicado") {
+                return {
+                    status: 409,
+                    message: "Usuário já pertence à família."
+                }
             }
-        }
 
-        if (result) {
-            return mensagensDefault.SUCCESS_CREATED_ITEM
-        } else {
-            return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
-        }
+            if (result) {
+                return mensagensDefault.SUCCESS_CREATED_ITEM
+            } else {
+                return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            }
+    });
 
     } catch (error) {
 
@@ -125,6 +127,7 @@ const atualizarUsuarioFamilia = async function (usuarioFamilia, contentType, id)
 
         if (!buscarId)
             return mensagensDefault.ERRO_NOT_FOUND
+
 
         usuarioFamilia.id_usuario_familia = parseInt(id)
 
