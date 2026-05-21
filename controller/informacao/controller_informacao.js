@@ -63,7 +63,7 @@ const criarInformacao = async function (informacao, contentType) {
         if (!contentTypeValidado)
             return mensagensDefault.ERRO_CONTENT_TYPE
 
-        if (!dadosValidados == false)
+        if (!dadosValidados)
             return dadosValidados
 
         let result = await informacaoDAO.setInsertInformation(informacao)
