@@ -4,107 +4,167 @@
  * Data: 22/04/2026
  * Versão: 1.0
  ************************************************/
-const knex = require("knex");
-const knexConfig = require("../database_config/azure/knexfile.js");
 
-const knexDatabase = knex(knexConfig.development);
+const knex = require("knex")
+const knexConfig = require("../database_config/knexfile")
 
-//GET 
+const knexDatabase = knex(knexConfig.development)
+
+// GET
 const getAllEvents = async function () {
+
     try {
+
         let sql = `select * from tb_eventos`
+
         let result = await knexDatabase.raw(sql)
 
-        if (Array.isArray(result)) {
-            return result
-        } else {
-            return false
-        }
+        return result[0]
+
     } catch (error) {
-        return error
+
+        console.log(error)
+        return false
     }
 }
-//GET por id
+
+// GET BY ID
 const getEventById = async function (id) {
-    try {
-        let sql = `select * from tb_eventos where id_eventos = ${id}`
-        let result = await knexDatabase.raw(sql)
 
-        if (Array.isArray(result)) {
-            return result
-        } else {
-            return false
-        }
+    try {
+
+        let sql = `select * from tb_eventos where id_evento = ?`
+
+        let result = await knexDatabase.raw(sql, [id])
+
+        return result[0]
+
     } catch (error) {
-        return error
+
+        console.log(error)
+        return false
     }
 }
-//POST
+
+// GET EVENTOS POR FAMILIA
+const getEventsByFamily = async function(idFamilia) {
+
+    try {
+
+        let sql = `select * from tb_eventos where id_familia = ? order by data asc, hora asc`
+
+        let result = await knexDatabase.raw(sql, [idFamilia])
+
+        return result[0]
+
+    } catch (error) {
+
+        console.log(error)
+        return false
+    }
+}
+
+// POST
 const setInsertEvent = async function (evento) {
+
     try {
-        let sql = `insert into tb_eventos(
-                        titulo,
-                        descricao,
-                        data,
-                        hora,
-                        id_familia,
-                        id_usuario
-                    )values(
-                        '${evento.titulo}',
-                        '${evento.descricao}',
-                        '${evento.data}',
-                        '${evento.hora}',
-                        ${evento.id_familia},
-                        ${evento.id_usuario}
-                    )`
-        let result = await knexDatabase.raw(sql)
-        if (Array.isArray(result)) {
-            return result
-        } else {
-            return false
+
+        let sql = `
+            insert into tb_eventos (
+                id_familia,
+                id_usuario,
+                titulo,
+                descricao,
+                data,
+                hora
+            ) values (
+                ?, ?, ?, ?, ?, ?
+            )
+        `
+
+        let values = [
+            evento.id_familia,
+            evento.id_usuario,
+            evento.titulo,
+            evento.descricao,
+            evento.data,
+            evento.hora
+        ]
+
+        let result = await knexDatabase.raw(sql, values)
+
+        if (result) {
+
+            return result[0].insertId
         }
+
+        return false
+
     } catch (error) {
-        return error
+
+        console.log(error)
+        return false
     }
 }
-//PUT
+
+// PUT
 const setUpdateEvent = async function (evento) {
+
     try {
-        let sql = `update tb_eventos set
-                        titulo = '${evento.titulo}',
-                        descricao = '${evento.descricao}',
-                        data = '${evento.data}',
-                        id_familia = ${evento.id_familia},
-                        id_usuario = ${evento.id_usuario},
-                        hora = '${evento.hora}'
-                    where id_eventos = ${evento.id_evento}`
-        let result = await knexDatabase.raw(sql)
-        if (Array.isArray(result)) {
-            return result
-        } else {
-            return false
-        }
+
+        let sql = `
+            update tb_eventos set
+                titulo = ?,
+                descricao = ?,
+                data = ?,
+                hora = ?
+            where id_evento = ?
+        `
+
+        let values = [
+            evento.titulo,
+            evento.descricao,
+            evento.data,
+            evento.hora,
+            evento.id_evento
+        ]
+
+        let result = await knexDatabase.raw(sql, values)
+
+        return !!result
+
     } catch (error) {
-        return error
+
+        console.log(error)
+        return false
     }
 }
-//DELETE
+
+// DELETE
 const setDeleteEvent = async function (id) {
+
     try {
-        let = sql = `delete from tb_eventos where id_eventos = ${id}`
-        let result = await knexDatabase.raw(sql)
-        if (Array.isArray(result)) {
-            return result
-        } else {
-            return false
-        }
+
+        let sql = `
+            delete from tb_eventos
+            where id_evento = ?
+        `
+
+        let result = await knexDatabase.raw(sql, [id])
+
+        return !!result
+
     } catch (error) {
-        return error
+
+        console.log(error)
+        return false
     }
 }
+
 module.exports = {
     getAllEvents,
     getEventById,
+    getEventsByFamily,
     setInsertEvent,
     setUpdateEvent,
     setDeleteEvent
