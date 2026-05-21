@@ -57,7 +57,7 @@ const listarInformacaoID = async function (id) {
 
 const criarInformacao = async function (informacao, contentType) {
     try {
-        let dadosValidados = validarDados.validarDadosInformacao(informacao)
+        let dadosValidados = await validarDados.validarDadosInformacao(informacao)
         let contentTypeValidado = validarAtributos.validarContentType(contentType)
 
         if (!contentTypeValidado)
