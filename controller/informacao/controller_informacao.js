@@ -67,7 +67,7 @@ const criarInformacao = async function (informacao, contentType) {
             return dadosValidados
 
         let result = await informacaoDAO.setInsertInformation(informacao)
-
+        console.log(result)
         if (result) {
             mensagensDefault.HEADER.StatusCode = mensagensDefault.SUCCESS_CREATED_ITEM.StatusCode
             mensagensDefault.HEADER.Response = mensagensDefault.SUCCESS_CREATED_ITEM.message

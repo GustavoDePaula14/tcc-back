@@ -248,7 +248,7 @@ const validarUsuarioNotificacao = (usuarioNotificacao) => {
 }
 const validarUsuarioFamiliaPorEmail = function (usuarioFamilia) {
 
-    if (usuarioFamilia.email == '' || usuarioFamilia.email == undefined || usuarioFamilia.id_familia == '' || usuarioFamilia.id_familia == undefined) {
+    if (usuarioFamilia.email == undefined || usuarioFamilia.id_familia == '' || usuarioFamilia.id_familia == undefined) {
         return false
     } else {
         return true
