@@ -43,4 +43,10 @@ router.post("/senha-nova", cors(), async function(request, response) {
     let result = await controller.validarTrocaSenha(dadosBody, contentType)
     response.json(result)
 })
+router.post("/adicionar-familia", cors(), async function(request, response) {
+    let dadosBody = request.body
+    let contentType = request.headers["content-type"]
+    let result = await controller.validarEntradoFamilia(dadosBody, contentType)
+    response.json(result)
+})
 module.exports = router;
