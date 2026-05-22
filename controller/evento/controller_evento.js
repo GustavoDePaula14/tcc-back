@@ -179,7 +179,7 @@ const atualizarEvento = async function (evento, contentType, id) {
             validarAtributos.validarContentType(contentType)
 
         let idValidado =
-            validarAtributos.validarValorId(id)
+            validarAtributos.validarId(id)
 
         if (!idValidado) {
 
@@ -234,7 +234,7 @@ const atualizarEvento = async function (evento, contentType, id) {
 const excluirEvento = async function (id) {
 
     let idValidado =
-        validarAtributos.validarValorId(id)
+        validarAtributos.validarId(id)
 
     try {
 

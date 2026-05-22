@@ -73,7 +73,7 @@ router.delete("/evento/:id", cors(), async function (request, response) {
     response.json(result)
 })
 
-router.get("/familia/eventos/:idFamilia", cors(), async function(request, response) {
+router.get("/eventos/familia/:idFamilia", cors(), async function(request, response) {
 
     let idFamilia = request.params.idFamilia
 
