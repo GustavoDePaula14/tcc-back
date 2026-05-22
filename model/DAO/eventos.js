@@ -33,7 +33,7 @@ const getEventById = async function (id) {
 
     try {
 
-        let sql = `select * from tb_eventos where id_evento = ?`
+        let sql = `select * from tb_eventos where id_eventos = ?`
 
         let result = await knexDatabase.raw(sql, [id])
 
@@ -118,7 +118,7 @@ const setUpdateEvent = async function (evento) {
                 descricao = ?,
                 data = ?,
                 hora = ?
-            where id_evento = ?
+            where id_eventos = ?
         `
 
         let values = [
@@ -147,7 +147,7 @@ const setDeleteEvent = async function (id) {
 
         let sql = `
             delete from tb_eventos
-            where id_evento = ?
+            where id_eventos = ?
         `
 
         let result = await knexDatabase.raw(sql, [id])

@@ -104,7 +104,6 @@ const joinFamilyHTML = function(dono_familia){
 
   </body>
 </html>`;
-
     return html;
 }
 
