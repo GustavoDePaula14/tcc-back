@@ -30,7 +30,7 @@ const listarInformacao = async function () {
         return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
-
+ 
 const listarInformacaoID = async function (id) {
     let idValidado = validarAtributos.validarValorId(id)
 
