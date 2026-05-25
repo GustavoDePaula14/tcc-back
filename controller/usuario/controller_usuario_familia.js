@@ -9,6 +9,7 @@ const usuario_familiaDAO = require("../../model/DAO/usuario_familia.js")
 const mensagensDefault = require("../modulo/config_messages.js")
 const validarDados = require("../modulo/validar_dados.js")
 const validarAtributos = require("../modulo/validar_atributos.js")
+const enviarEmail = require("../login/controller_login.js")
 
 const listarUsuarioFamilia = async function () {
     try {
@@ -71,7 +72,6 @@ const criarUsuarioFamilia = async function (usuarioFamilia, contentType) {
     }
 }
 
-
 const criarUsuarioFamiliaPorEmail = async function (usuarioFamilia, contentType) {
     try {
 
@@ -81,31 +81,45 @@ const criarUsuarioFamiliaPorEmail = async function (usuarioFamilia, contentType)
         if (!validarDados.validarUsuarioFamiliaPorEmail(usuarioFamilia))
             return mensagensDefault.ERRO_REQUIRED_FIELDS
 
-        usuarioFamilia.email.forEach(async usuario => {
-            let result = await usuario_familiaDAO
-                .setInsertUsersFamilyByUserEmail(usuario, usuarioFamilia.id_familia)
-            
+        let remetente = await usuario_familiaDAO.getUserAdmFamilyById(usuarioFamilia.id_familia)
+        // console.log(remetente)
+        if(remetente != ""){
+            usuarioFamilia.email.forEach(async usuario => {
 
-            if (result == null) {
-                return {
-                    status: 404,
-                    message: "Usuário não encontrado."
+                let objUser = {
+                    "email" : usuario,
+                    "remetente" : remetente[0].nome_usuario,
                 }
-            }
-
-            if (result == "duplicado") {
-                return {
-                    status: 409,
-                    message: "Usuário já pertence à família."
+                let emailEnvidado = await enviarEmail.validarEntradoFamilia(objUser, contentType)
+                if(emailEnvidado){
+                    let result = await usuario_familiaDAO
+                        .setInsertUsersFamilyByUserEmail(usuario, usuarioFamilia.id_familia)
+                    
+        
+                    if (result == null) {
+                        return {
+                            status: 404,
+                            message: "Usuário não encontrado."
+                        }
+                    }
+        
+                    if (result == "duplicado") {
+                        return {
+                            status: 409,
+                            message: "Usuário já pertence à família."
+                        }
+                    }
+        
+                    if (result) {
+                        return mensagensDefault.SUCCESS_CREATED_ITEM
+                    } else {
+                        return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                    }
                 }
-            }
-
-            if (result) {
-                return mensagensDefault.SUCCESS_CREATED_ITEM
-            } else {
-                return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
-            }
-        });
+            });
+        }else{
+            return mensagensDefault.ERRO_ADM_NOT_FOUND
+        }
     } catch (error) {
 
         return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER

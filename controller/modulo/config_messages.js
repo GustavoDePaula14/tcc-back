@@ -23,6 +23,7 @@ const ERRO_CONTENT_TYPE = {StatusCode: 415, message: "Body enviado de tipo difer
 const ERRO_RELATION_TABLE = {StatusCode: 200, message: "Erro em tabela de relacionamento"}
 const ERRO_INVALID_ID = {StatusCode: 400, message: "Erro em campo de id"}
 const ERRO_INVALID_PASSWORD = {StatusCode: 400, message: "Senha invalida"}
+const ERRO_ADM_NOT_FOUND = {StatusCode: 400, message: "Administrador de familia não encontrado"}
 
 // MENSAGEM DE SUCESSO
 const SUCCESS_REQUEST = {StatusCode: 200, message: "Requisição bem sucedida"}
@@ -43,5 +44,6 @@ module.exports = {
     SUCCESS_UPDATED_ITEM,
     SUCCESS_DELETED_ITEM,
     ERRO_INVALID_ID,
-    ERRO_INVALID_PASSWORD
+    ERRO_INVALID_PASSWORD,
+    ERRO_ADM_NOT_FOUND
 }
