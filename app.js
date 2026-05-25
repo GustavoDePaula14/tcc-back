@@ -8,7 +8,7 @@ const URL_BASE = '/v1/familysync'
 
 const routerUsuario = require('./routes/usuario/route_usuario.js')
 const routerFamilia = require('./routes/familia/route_familia.js')
-const routerInformacao = require('./routes/informacao/informacao.js')
+const routerInformacao = require('./routes/informacao/router_informacao.js')
 const routerEndereco = require('./routes/endereco/router_endereco.js')
 const routerItem = require('./routes/item/route_item.js')
 const routerLista = require('./routes/lista/route_lista.js')
