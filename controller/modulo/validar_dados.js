@@ -125,6 +125,9 @@ const validarDadosInformacao = async function (informacao) {
         } else if (informacao.descricao == null || informacao.descricao == "" || informacao.descricao == undefined || informacao.descricao.length > 100) {
             mesagensDefault.ERRO_NOT_FOUND.campo = "descricao"
             return mesagensDefault.ERRO_NOT_FOUND
+        } else if (informacao.id_usuario == null || informacao.id_usuario == "" || informacao.id_usuario == undefined || isNaN(informacao.id_usuario)) {
+            mesagensDefault.ERRO_NOT_FOUND.campo = "id_usuario"
+            return mesagensDefault.ERRO_NOT_FOUND
         } else {
             return true
         }

@@ -84,6 +84,7 @@ const criarUsuarioFamiliaPorEmail = async function (usuarioFamilia, contentType)
         usuarioFamilia.email.forEach(async usuario => {
             let result = await usuario_familiaDAO
                 .setInsertUsersFamilyByUserEmail(usuario, usuarioFamilia.id_familia)
+            
 
             if (result == null) {
                 return {
@@ -104,8 +105,7 @@ const criarUsuarioFamiliaPorEmail = async function (usuarioFamilia, contentType)
             } else {
                 return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
             }
-    });
-
+        });
     } catch (error) {
 
         return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER

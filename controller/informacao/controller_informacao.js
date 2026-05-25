@@ -57,6 +57,7 @@ const listarInformacaoID = async function (id) {
 
 const criarInformacao = async function (informacao, contentType) {
     try {
+
         let dadosValidados = await validarDados.validarDadosInformacao(informacao)
         let contentTypeValidado = validarAtributos.validarContentType(contentType)
 
@@ -64,19 +65,36 @@ const criarInformacao = async function (informacao, contentType) {
             return mensagensDefault.ERRO_CONTENT_TYPE
 
         if (!dadosValidados)
-            return dadosValidados
+            return mensagensDefault.ERRO_REQUIRED_FIELDS
 
-        let result = await informacaoDAO.setInsertInformation(informacao)
+        let idInfo = await informacaoDAO.setInsertInformation(informacao)
 
-        if (result) {
-            mensagensDefault.HEADER.StatusCode = mensagensDefault.SUCCESS_CREATED_ITEM.StatusCode
-            mensagensDefault.HEADER.Response = mensagensDefault.SUCCESS_CREATED_ITEM.message
-            return mensagensDefault.HEADER
-        } else {
+        if (!idInfo)
             return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+
+        let usuarioInformacao = {
+            id_usuario: informacao.id_usuario,
+            id_info: idInfo
         }
 
+        let vinculo = await usuarioInformacaoDAO.setInsertUsersInformation(usuarioInformacao)
+
+        if (!vinculo)
+            return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+
+        mensagensDefault.HEADER.StatusCode =
+            mensagensDefault.SUCCESS_CREATED_ITEM.StatusCode
+
+        mensagensDefault.HEADER.Response = {
+            message: mensagensDefault.SUCCESS_CREATED_ITEM.message,
+            id_info: idInfo,
+            id_usuario: informacao.id_usuario
+        }
+
+        return mensagensDefault.HEADER
+
     } catch (error) {
+        console.log(error)
         return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
