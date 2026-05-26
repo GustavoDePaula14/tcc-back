@@ -26,13 +26,26 @@ const getAllLists = async function () {
 }
 const getAllItensListsById= async function(idFamilia) {
     try {
-        let sqlUsuarios = `SELECT id_usuario, nome as nome_criado FROM tb_usuario where id_usuario = ?`
+        let sqlUsuarios = `SELECT
+                f.id_familia,
+                f.nome AS nome_familia,
+                u.id_usuario,
+                u.nome AS nome_usuario,
+                u.email,
+                uf.is_admin
+            FROM tb_usuario_familia uf
+            INNER JOIN tb_usuario u
+                ON u.id_usuario = uf.id_usuario
+            INNER JOIN tb_familia f
+                ON f.id_familia = uf.id_familia
+            WHERE f.id_familia = ?`
+            
         let sqlListas = `SELECT * FROM tb_lista WHERE id_familia = ?`
         let sqlItem = `SELECT * FROM tb_item WHERE id_lista = ?`
 
         let listas = await knexDatabase.raw(sqlListas, [idFamilia])
         // console.log(listas)
-        let usuarios = await knexDatabase.raw(sqlUsuarios, [listas[0][0].id_usuario])
+        let usuarios = await knexDatabase.raw(sqlUsuarios, [idFamilia])
         // console.log(usuarios)
         let items = await knexDatabase.raw(sqlItem, [listas[0][0].id_lista])
         // console.log(items)
