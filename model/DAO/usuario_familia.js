@@ -27,7 +27,45 @@ const isFirstUserInFamily = async function (id_familia) {
     }
 };
 
+const getUserAdmFamilyById = async function (id) {
+    try {
 
+        let sql = `
+            SELECT
+                f.id_familia,
+                f.nome AS nome_familia,
+                u.id_usuario,
+                u.nome AS nome_usuario,
+                u.email,
+                uf.is_admin
+
+            FROM tb_usuario_familia uf
+
+            INNER JOIN tb_usuario u
+                ON u.id_usuario = uf.id_usuario
+
+            INNER JOIN tb_familia f
+                ON f.id_familia = uf.id_familia
+
+            WHERE f.id_familia = ? AND is_admin = 1
+        `
+
+        let result = await knexDatabase.raw(sql, [id])
+        let dados = result[0]
+
+        if (dados.length == 0)
+            return false
+
+
+        return dados
+
+    } catch (error) {
+
+        console.log(error)
+
+        return false
+    }
+}
 // GET ALL
 const getAllUsersFamily = async function () {
     try {
@@ -262,4 +300,5 @@ module.exports = {
     setInsertUsersFamilyByUserEmail,
     setUpdateUsersFamily,
     setDeleteUsersFamily,
+    getUserAdmFamilyById
 };
