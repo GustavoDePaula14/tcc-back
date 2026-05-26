@@ -12,7 +12,7 @@ const uploadFiles = async function (file) {
     let allowedFileTypes = ['JPG', 'PNG', 'JPEG']
     let mineType = String(file.minetype).split('/')[1].toUpperCase()
     let lengthFile = Number(file.size) / 1024
-    if(arrayAllowTypes.indexOf(mimeType) != -1 && lengthFile.toFixed(1) <= 5000){
+    if(arrayAllowTypes.indexOf(mineType) != -1 && lengthFile.toFixed(1) <= 5000){
         let fileName = Date.now() + file.originalname
         let urlFile = `https://${AZURE.ACCOUNT}.blob.core.windows.net/${AZURE.CONTAINER}/${fileName}`
         let urlFileToken = `${urlFile}?${ZURE.TOKEN}`

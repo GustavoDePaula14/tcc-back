@@ -7,6 +7,7 @@
 const knex = require("knex");
 const knexConfig = require("../database_config/azure/knexfile");
 
+
 const knexDatabase = knex(knexConfig.development);
 
 //GET 
@@ -152,7 +153,7 @@ const setUpdateFinance = async function(financas) {
 //DELETE
 const setDeleteFinance = async function(id) {
     try {
-        let = sql = `delete from tb_financas where id_financas = ${id}`
+        let sql = `delete from tb_financas where id_financas = ${id}`
         let result = await knexDatabase.raw(sql)
         if(Array.isArray(result)){
             return result
