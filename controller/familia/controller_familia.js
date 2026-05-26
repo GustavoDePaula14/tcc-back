@@ -30,7 +30,7 @@ const listarFamilias = async function () {
 }
 //GET id
 const listarFamiliaID = async function (id) {
-    let idValidado = validarAtributos.validarValorId(id)
+    let idValidado = validarAtributos.validarId(id)
     try {
         if (idValidado) {
             let result = await familiaDAO.getFamilyById(id)
@@ -52,6 +52,7 @@ const listarFamiliaID = async function (id) {
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+
 const listarFamiliaCompleta = async function(id) {
     try {
         let result = await familiaDAO.getFamilyComplete(id)
@@ -75,6 +76,37 @@ const listarFamiliaCompleta = async function(id) {
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+//POST
+const criarFamilia = async function (familia, contentType) {
+    try {
+        let dadosValidados = await validarDados.validarDadosFamilia(familia)
+        let contentTypeValidado = validarAtributos.validarContentType(contentType)
+        if (contentTypeValidado) {
+            if (dadosValidados == true) {
+                let result = await familiaDAO.setInsertFamily(familia)
+                if (result) {
+                    // console.log(result)
+                    if (result.length > 0) {
+                        mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
+                        mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.message
+                        return mesagensDefault.HEADER
+                    } else {
+                        return mesagensDefault.ERRO_NOT_FOUND
+                    }
+                } else {
+                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                }
+            } else {
+                return dadosValidados
+            }
+        } else {
+            return mesagensDefault.ERRO_CONTENT_TYPE
+        }
+    } catch (error) {
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
 // POST PROCEDURE
 const criarFamiliaEndereco = async function(familia, contentType) {
 
@@ -120,36 +152,6 @@ const criarFamiliaEndereco = async function(familia, contentType) {
     }
 }
 
-//POST
-const criarFamilia = async function (familia, contentType) {
-    try {
-        let dadosValidados = await validarDados.validarDadosFamilia(familia)
-        let contentTypeValidado = validarAtributos.validarContentType(contentType)
-        if (contentTypeValidado) {
-            if (dadosValidados == true) {
-                let result = await familiaDAO.setInsertFamily(familia)
-                if (result) {
-                    // console.log(result)
-                    if (result.length > 0) {
-                        mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
-                        mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.message
-                        return mesagensDefault.HEADER
-                    } else {
-                        return mesagensDefault.ERRO_NOT_FOUND
-                    }
-                } else {
-                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
-                }
-            } else {
-                return dadosValidados
-            }
-        } else {
-            return mesagensDefault.ERRO_CONTENT_TYPE
-        }
-    } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
-    }
-}
 //PUT
 const atulizarFamilia = async function (familia, contentType, id) {
     let dadosValidados = await validarDados.validarDadosFamilia(familia)
@@ -188,9 +190,62 @@ const atulizarFamilia = async function (familia, contentType, id) {
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+
+const atualizarFamiliaEndereco = async function (
+    familia,
+    contentType,
+    id
+) {
+
+    try {
+
+        let dadosValidados =
+            await validarDados.validarDadosFamiliaEndereco(familia)
+
+        let contentTypeValidado =
+            validarAtributos.validarContentType(contentType)
+
+        let idValidado =
+            validarAtributos.validarId(id)
+
+        if (!idValidado)
+            return mesagensDefault.ERRO_INVALID_ID
+
+        if (!contentTypeValidado)
+            return mesagensDefault.ERRO_CONTENT_TYPE
+
+        if (!dadosValidados)
+            return mesagensDefault.ERRO_REQUIRED_FIELDS
+
+        familia.id_familia = parseInt(id)
+
+        let result =
+            await familiaDAO.setUpdateFamilyAddress(familia)
+
+        if (result) {
+
+            mesagensDefault.HEADER.StatusCode =
+                mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
+
+            mesagensDefault.HEADER.Response =
+                mesagensDefault.SUCCESS_UPDATED_ITEM.message
+
+            return mesagensDefault.HEADER
+
+        }
+
+        return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+
+    } catch (error) {
+
+        console.log(error)
+
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }
+}
 //DELETE
 const excluirFamilia = async function (id) {
-    let idValidado = validarAtributos.validarValorId(id)
+    let idValidado = validarAtributos.validarId(id)
     try {
         if (idValidado) {
             let buscarId = await familiaDAO.getFamilyById(id)
@@ -216,12 +271,48 @@ const excluirFamilia = async function (id) {
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+
+const excluirFamiliaEndereco = async function (id) {
+
+    try {
+
+        let idValidado =
+            validarAtributos.validarId(id)
+
+        if (!idValidado)
+            return mesagensDefault.ERRO_INVALID_ID
+
+        let result =
+            await familiaDAO.setDeleteFamilyAddress(id)
+
+        if (result) {
+
+            mesagensDefault.HEADER.StatusCode =
+                mesagensDefault.SUCCESS_DELETED_ITEM.StatusCode
+
+            mesagensDefault.HEADER.Response =
+                mesagensDefault.SUCCESS_DELETED_ITEM.message
+
+            return mesagensDefault.HEADER
+        }
+
+        return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+
+    } catch (error) {
+
+        console.log(error)
+
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }
+}
 module.exports = {
     listarFamiliaID,
     listarFamilias,
+    listarFamiliaCompleta,
     criarFamilia,
-    atulizarFamilia,
-    excluirFamilia,
     criarFamiliaEndereco,
-    listarFamiliaCompleta
+    atulizarFamilia,
+    atualizarFamiliaEndereco,
+    excluirFamilia,
+    excluirFamiliaEndereco
 }

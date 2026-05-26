@@ -34,8 +34,7 @@ const listarUsuarioInformacaoID = async function (id) {
             return mensagensDefault.ERRO_INVALID_ID
 
         let result = await usuario_informacaoDAO.getUsersInformationById(id)
-        console.log(result)
-
+        
         if (result && result.length > 0) {
             return {
                 status_code: mensagensDefault.SUCCESS_REQUEST.StatusCode,
@@ -46,6 +45,46 @@ const listarUsuarioInformacaoID = async function (id) {
         }
 
     } catch (error) {
+        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
+const listarUsuarioInformacaoPorUsuario = async function (idUsuario) {
+
+    try {
+
+        if (!validarAtributos.validarId(idUsuario))
+            return mensagensDefault.ERRO_INVALID_ID
+
+        let dados =
+            await usuario_informacaoDAO.getUsersInformationByUser(idUsuario)
+
+        if (!dados || dados.length === 0)
+            return mensagensDefault.ERRO_NOT_FOUND
+
+        const usuario = {
+            id_usuario: dados[0].id_usuario,
+            nome_usuario: dados[0].nome_usuario,
+            informacoes: []
+        }
+
+        dados.forEach(item => {
+            usuario.informacoes.push({
+                id_info: item.id_info,
+                titulo: item.titulo,
+                descricao: item.descricao_informacao
+            })
+        })
+
+        return {
+            status_code: mensagensDefault.SUCCESS_REQUEST.StatusCode,
+            dados: usuario
+        }
+
+    } catch (error) {
+
+        console.log(error)
+
         return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
@@ -129,6 +168,7 @@ const excluirUsuarioInformacao = async function (id) {
 module.exports = {
     listarUsuarioInformacao,
     listarUsuarioInformacaoID,
+    listarUsuarioInformacaoPorUsuario,
     criarUsuarioInformacao,
     atualizarUsuarioInformacao,
     excluirUsuarioInformacao

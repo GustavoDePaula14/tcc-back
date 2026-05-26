@@ -39,8 +39,7 @@ router.delete("/usuario-informacao/:id", cors(), async function(request, respons
 })
 
 router.post("/usuario-informacao", cors(), bodyParserJSON, async function(request, response) {
-    console.log("BODY:", request.body)
-    
+  
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
 
@@ -53,6 +52,13 @@ router.put("/usuario-informacao/:id", cors(), bodyParserJSON, async function(req
     let contentType = request.headers["content-type"]
 
     let result = await controller.atualizarUsuarioInformacao(dadosBody, contentType, id)
+    response.json(result)
+})
+router.get("/usuario-informacao/usuario/:id", cors(), async function(request, response) {
+    let idUsuario = request.params.id
+    let result = await controller.listarUsuarioInformacaoPorUsuario(idUsuario)
+
+    response.status(result.status_code)
     response.json(result)
 })
 module.exports = router;

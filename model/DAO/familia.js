@@ -9,7 +9,6 @@ const knexConfig = require("../database_config/azure/knexfile.js");
 
 const knexDatabase = knex(knexConfig.development);
 
-//GET  
 const getAllFamilys = async function () {
     try {
         let sql = "select * from tb_familia"
@@ -39,32 +38,7 @@ const getFamilyById = async function (id) {
         return error
     }
 }
-const setInsertFamilyAddress = async function (familia) {
-    try {
 
-        let sql = 'CALL sp_cadastrar_familia_endereco(?,?,?,?,?,?,?,?,?)'
-
-        let result = await knexDatabase.raw(sql, [
-            familia.nome,
-            familia.telefone,
-            familia.cep,
-            familia.logradouro,
-            familia.bairro,
-            familia.complemento,
-            familia.cidade,
-            familia.estado,
-            familia.numero
-        ])
-
-        return result
-
-    } catch (error) {
-
-        console.log(error)
-
-        return false
-    }
-}
 const getFamilyComplete = async function(idFamilia) {
     try {
 
@@ -118,6 +92,34 @@ const setInsertFamily = async function (familia) {
         return error
     }
 }
+
+const setInsertFamilyAddress = async function (familia) {
+    try {
+
+        let sql = 'CALL sp_cadastrar_familia_endereco(?,?,?,?,?,?,?,?,?)'
+
+        let result = await knexDatabase.raw(sql, [
+            familia.nome,
+            familia.telefone,
+            familia.cep,
+            familia.logradouro,
+            familia.bairro,
+            familia.complemento,
+            familia.cidade,
+            familia.estado,
+            familia.numero
+        ])
+
+        return result
+
+    } catch (error) {
+
+        console.log(error)
+
+        return false
+    }
+}
+
 //PUT
 const setUpdateFamily = async function (familia) {
     try {
@@ -136,6 +138,33 @@ const setUpdateFamily = async function (familia) {
         return error
     }
 }
+
+const setUpdateFamilyAddress = async function (familia) {
+    try {
+
+        let sql = 'CALL sp_atualizar_familia_endereco(?,?,?,?,?,?,?,?,?,?)'
+
+        let result = await knexDatabase.raw(sql, [
+            familia.id_familia,
+            familia.nome,
+            familia.telefone,
+            familia.cep,
+            familia.logradouro,
+            familia.bairro,
+            familia.complemento,
+            familia.cidade,
+            familia.estado,
+            familia.numero
+        ])
+
+        return result
+
+    } catch (error) {
+
+        console.log(error)
+        return false
+    }
+}
 //DELETE
 const setDeleteFamily = async function (id) {
     try {
@@ -151,12 +180,30 @@ const setDeleteFamily = async function (id) {
         return error
     }
 }
+
+const setDeleteFamilyAddress = async function (idFamilia) {
+    try {
+
+        let sql = 'CALL sp_excluir_familia_endereco(?)'
+
+        let result = await knexDatabase.raw(sql, [idFamilia])
+
+        return result
+
+    } catch (error) {
+
+        console.log(error)
+        return false
+    }
+}
 module.exports = {
     getAllFamilys,
     getFamilyById,
+    getFamilyComplete,
     setInsertFamily,
-    setUpdateFamily,
-    setDeleteFamily,
     setInsertFamilyAddress,
-    getFamilyComplete
+    setUpdateFamily,
+    setUpdateFamilyAddress,
+    setDeleteFamily,
+    setDeleteFamilyAddress
 }

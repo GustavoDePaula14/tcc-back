@@ -44,30 +44,36 @@ const getFinanceById = async function(id) {
 //GET Financas por dia
 const getDailyFinances = async function(idFamilia) {
     try {
-        let sql = `select * from vw_financas_diarias WHERE id_familia = ${idFamilia} ORDER BY ano, mes, dia`
+        let sql = `SELECT * FROM vw_financas_diarias WHERE id_familia = ${idFamilia}ORDER BY data_movimentacao`
+
         let result = await knexDatabase.raw(sql)
 
         if(Array.isArray(result)){
             return result
         }else{
             return false
-        } 
+        }
     } catch (error) {
         return error
     }
 }
 
-//GET Financas por semana
+// GET Financas por semana
 const getWeekFinances = async function(idFamilia) {
     try {
-        let sql = `select * from vw_financas_semanais WHERE id_familia = ${idFamilia} ORDER BY ano, mes, semana`
+        let sql = `
+            SELECT *
+            FROM vw_financas_semanais
+            WHERE id_familia = ${idFamilia}
+        `
+
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
-        } 
+        }
     } catch (error) {
         return error
     }
@@ -89,17 +95,18 @@ const getMonthFinances = async function(idFamilia) {
     }
 }
 
-//GET Financas por mes
+// GET Financas por ano
 const getYearFinances = async function(idFamilia) {
     try {
-        let sql = `select * from vw_financas_anuais WHERE id_familia = ${idFamilia} ORDER BY ano`
+        let sql = `SELECT * FROM vw_financas_anuais WHERE id_familia = ${idFamilia}`
+
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
-        } 
+        }
     } catch (error) {
         return error
     }
@@ -108,13 +115,8 @@ const getYearFinances = async function(idFamilia) {
 //POST
 const setInsertFinance = async function(financas) {
     try {
-        let sql = `insert into tb_financas(
-                        id_familia,
-                        tipo,
-                        descricao,
-                        valor,
-                        icone
-                    )values(
+        let sql = `insert into tb_financas(id_familia,tipo,descricao,valor,icone
+                        )values(
                         ${financas.id_familia},
                         '${financas.tipo}',
                         '${financas.descricao}',
