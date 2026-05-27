@@ -19,6 +19,7 @@ const routerNotificacao = require('./routes/notificacao/router_notificacao.js')
 const routerUsuarioInformacao = require('./routes/usuario/route_usuario_informacao.js')
 const routeUsuarioFamilia = require('./routes/usuario/route_usuario_familia.js')
 const routeUsuarioNotificacao = require('./routes/usuario/route_usuario_notificacao.js')
+const routerPermissao = require('./routes/permissao/route_permissao.js')
 
 app.use(cors());
 app.use(express.json());
@@ -52,6 +53,7 @@ app.use(URL_BASE, routerNotificacao);
 app.use(URL_BASE, routerUsuarioInformacao)
 app.use(URL_BASE, routeUsuarioFamilia)
 app.use(URL_BASE, routeUsuarioNotificacao)
+app.use(URL_BASE, routerPermissao);
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);

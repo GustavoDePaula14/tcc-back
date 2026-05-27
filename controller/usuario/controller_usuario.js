@@ -6,10 +6,12 @@
  ************************************************/
 
 const usuarioDAO = require("../../model/DAO/usuario.js")
+const uploadDAO = require("../upload/upload_file.js")
 const mesagensDefault = require("../modulo/config_messages.js")
 const validarDados = require("../modulo/validar_dados.js")
 const validarAtributos = require("../modulo/validar_atributos.js")
 const bcrypt = require('bcryptjs');
+const { json } = require("express")
 
 // GET +
 const listarUsuarios = async function () {
@@ -59,26 +61,35 @@ const listarUsuarioID = async function (id) {
     }
 }
 // POST
-const criarUsuario = async function (usuario, contentType) {
+const criarUsuario = async function (usuario, foto, contentType) {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(usuario.senha, salt)
     try {
         let dadosValidados = await validarDados.validarDadosUsuario(usuario)
-        let contentTypeValidado = validarAtributos.validarContentType(contentType)
+        let contentTypeValidado = validarAtributos.validarContentTypeFormData(contentType)
+        let imagemEnvida = await uploadDAO.uploadFiles(foto)
+        console.log(imagemEnvida)
         if (contentTypeValidado) {
             if (dadosValidados == true) {
-                usuario.senha = hash
-                let result = await usuarioDAO.setInsertUser(usuario)
-                if (result) {
-                    if (result.length > 0) {
-                        mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
-                        mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.message
-                        return mesagensDefault.HEADER
+                if(typeof(imagemEnvida) != false){
+                    usuario.senha = hash
+                    usuario.foto = imagemEnvida
+                    console.log(usuario)
+                    let result = await usuarioDAO.setInsertUser(usuario)
+                    if (result) {
+                        if (result.length > 0) {
+                            mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
+                            mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.message
+                            return mesagensDefault.HEADER
+                        } else {
+                            return mesagensDefault.ERRO_NOT_FOUND
+                        }
                     } else {
-                        return mesagensDefault.ERRO_NOT_FOUND
+                        return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                     }
-                } else {
-                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                }else{
+                    mesagensDefault.HEADER.Response = mesagensDefault.ERRO_REQUIRED_FIELDS
+                    return mesagensDefault.HEADER
                 }
             } else {
                 return dadosValidados
@@ -100,25 +111,31 @@ const atulizarUsuario = async function (usuario, contentType, id) {
         let dadosValidados = await validarDados.validarDadosUsuario(usuario)
         let contentTypeValidado = validarAtributos.validarContentType(contentType)
         let idValidado = validarAtributos.validarValorId(id)
+        let imagemEnvida = await uploadDAO.uploadFiles(usuario.foto)
         if (idValidado) {
             let buscarId = usuarioDAO.getUserById(id)
             if (contentTypeValidado) {
                 if (dadosValidados == true) {
                     if (buscarId) {
-                        usuario.senha = hash
-                        usuario.id_usuario = parseInt(id)
-                        let result = await usuarioDAO.setUpdateUser(usuario)
-                        console.log(result)
-                        if (result) {
-                            if (result.length > 0) {
-                                mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
-                                mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
-                                return mesagensDefault.HEADER
+                        if(ypeof(imagemEnvida) != false){
+                            usuario.senha = hash
+                            usuario.id_usuario = parseInt(id)
+                            let result = await usuarioDAO.setUpdateUser(usuario)
+                            console.log(result)
+                            if (result) {
+                                if (result.length > 0) {
+                                    mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
+                                    mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
+                                    return mesagensDefault.HEADER
+                                } else {
+                                    return mesagensDefault.ERRO_NOT_FOUND
+                                }
                             } else {
-                                return mesagensDefault.ERRO_NOT_FOUND
+                                return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                             }
-                        } else {
-                            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                        }else{
+                            mesagensDefault.HEADER.Response = mesagensDefault.ERRO_REQUIRED_FIELDS
+                            return mesagensDefault.HEADER
                         }
                     } else {
                         return mesagensDefault.ERRO_INVALID_ID

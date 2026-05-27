@@ -62,7 +62,7 @@ const getDailyFinances = async function(idFamilia) {
 const getWeekFinances = async function(idFamilia) {
     try {
         let sql = `
-            SELECT *
+            SELECT * 
             FROM vw_financas_semanais
             WHERE id_familia = ${idFamilia}
         `

@@ -16,6 +16,9 @@ const jwt = require('jsonwebtoken');
 const router = express.Router()
 const token = require('../login/router_login.js')
 
+const multer = require('multer');
+const upload = multer();
+
 const verificarToken = function(request, response, next) {
     const header = request.headers['authorization']
     // console.log(header)
@@ -56,11 +59,12 @@ router.delete("/usuario/:id", cors(), async function(request, response) {
     response.json(result)
 })
 
-router.post("/usuario", cors(), bodyParserJSON, async function(request, response) {
+router.post("/usuario", cors(), upload.single('foto'), async function(request, response) {
     let dadosBody = request.body
+    let file = request.file
     let contentType = request.headers["content-type"]
 
-    let result = await controller.criarUsuario(dadosBody, contentType)
+    let result = await controller.criarUsuario(dadosBody, file, contentType)
     response.json(result)
 })
 router.put("/usuario/:id", cors(), async function(request, response) {

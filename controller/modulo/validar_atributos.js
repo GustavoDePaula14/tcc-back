@@ -17,6 +17,17 @@ const validarContentType = function(contentType){
         console.log(error)
     }
 }
+const validarContentTypeFormData = function(contentType){
+    try {
+        if(String(contentType).toLowerCase().includes('multipart/form-data')){
+            return true
+        }else{
+            return false
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 const validarValorId = function(id){
     try {
@@ -49,5 +60,6 @@ const validarId = (id) => {
 module.exports = {
     validarContentType,
     validarValorId,
-    validarId
+    validarId,
+    validarContentTypeFormData
 }

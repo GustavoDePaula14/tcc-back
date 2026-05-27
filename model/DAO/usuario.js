@@ -48,13 +48,15 @@ const setInsertUser = async function (usuario) {
                         cpf,
                         data_nascimento,
                         senha,
-                        email
+                        email,
+                        foto
                     )values(
                         '${usuario.nome}',
                         '${usuario.cpf}',
                         '${usuario.data_nascimento}',
                         '${usuario.senha}',
-                        '${usuario.email}'
+                        '${usuario.email}',
+                        '${usuario.foto}'
                     )`
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {
@@ -75,7 +77,8 @@ const setUpdateUser = async function (usuario) {
                         cpf = '${usuario.cpf}',
                         data_nascimento = '${usuario.data_nascimento}',
                         senha = '${usuario.senha}',
-                        email = '${usuario.email}'
+                        email = '${usuario.email}',
+                        foto = '${usuario.foto}'
                     where id_usuario = ${usuario.id_usuario}`
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {
