@@ -5,7 +5,7 @@
  * Versão: 1.0
  ************************************************/
 const knex = require("knex");
-const knexConfig = require("../database_config/azure/knexfile");
+const knexConfig = require("../database_config/knexfile");
 
 const knexDatabase = knex(knexConfig.development);
 
@@ -45,6 +45,41 @@ const getUsersInformationByUser = async function (idUsuario) {
         `
 
         let result = await knexDatabase.raw(sql, [idUsuario])
+
+        return result[0]
+
+    } catch (error) {
+        return false
+    }
+}
+
+const getAllUsersInformationByFamilies = async function () {
+    try {
+        let sql = `
+            SELECT *
+            FROM vw_usuario_informacao
+            ORDER BY id_familia, id_usuario, id_info
+        `
+
+        let result = await knexDatabase.raw(sql)
+
+        return result[0]
+
+    } catch (error) {
+        return false
+    }
+}
+
+const getUsersInformationByFamily = async function (idFamilia) {
+    try {
+        let sql = `
+            SELECT *
+            FROM vw_usuario_informacao
+            WHERE id_familia = ?
+            ORDER BY id_usuario, id_info
+        `
+
+        let result = await knexDatabase.raw(sql, [idFamilia])
 
         return result[0]
 
@@ -105,6 +140,8 @@ module.exports = {
     getAllUsersInformation,
     getUsersInformationById,
     getUsersInformationByUser,
+    getAllUsersInformationByFamilies,
+    getUsersInformationByFamily,
     setInsertUsersInformation,
     setUpdateUsersInformation,
     setDeleteUsersInformation,

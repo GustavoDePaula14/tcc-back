@@ -26,34 +26,49 @@ const getAllLists = async function () {
 }
 const getAllItensListsById= async function(idFamilia) {
     try {
-        let sqlUsuarios = `SELECT
+        let sql = `
+            SELECT
                 f.id_familia,
                 f.nome AS nome_familia,
+
                 u.id_usuario,
                 u.nome AS nome_usuario,
                 u.email,
-                uf.is_admin
-            FROM tb_usuario_familia uf
+                uf.is_admin,
+
+                l.id_lista,
+                l.nome AS nome_lista,
+
+                i.id_item,
+                i.nome_item,
+                i.quantidade,
+                i.valor_unitario,
+                i.valor_total,
+                i.comprado
+
+            FROM tb_familia f
+
+            INNER JOIN tb_usuario_familia uf
+                ON uf.id_familia = f.id_familia
+
             INNER JOIN tb_usuario u
                 ON u.id_usuario = uf.id_usuario
-            INNER JOIN tb_familia f
-                ON f.id_familia = uf.id_familia
-            WHERE f.id_familia = ?`
-            
-        let sqlListas = `SELECT * FROM tb_lista WHERE id_familia = ?`
-        let sqlItem = `SELECT * FROM tb_item WHERE id_lista = ?`
 
-        let listas = await knexDatabase.raw(sqlListas, [idFamilia])
-        // console.log(listas)
-        let usuarios = await knexDatabase.raw(sqlUsuarios, [idFamilia])
-        // console.log(usuarios)
-        let items = await knexDatabase.raw(sqlItem, [listas[0][0].id_lista])
-        // console.log(items)
-        return {
-            usuarios: usuarios[0],
-            listas: listas[0],
-            items: items[0]
-        }
+            LEFT JOIN tb_lista l
+                ON l.id_familia = f.id_familia
+                AND l.id_usuario = u.id_usuario
+
+            LEFT JOIN tb_item i
+                ON i.id_lista = l.id_lista
+
+            WHERE f.id_familia = ?
+
+            ORDER BY u.id_usuario, l.id_lista, i.id_item
+        `
+
+        let result = await knexDatabase.raw(sql, [idFamilia])
+
+        return result[0]
 
     } catch (error) {
         console.log(error)

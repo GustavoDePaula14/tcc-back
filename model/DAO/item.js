@@ -9,96 +9,100 @@ const knexConfig = require("../database_config/azure/knexfile.js");
 
 const knexDatabase = knex(knexConfig.development);
 
-//GET
+// GET
 const getAllItens = async function () {
     try {
-        let sql = `select * from tb_item`
+        let sql = `SELECT * FROM tb_item`
         let result = await knexDatabase.raw(sql)
 
-        if (Array.isArray(result)) {
-            return result
-        } else {
-            return false
-        }
+        return result[0]
     } catch (error) {
-        return error
+        console.log(error)
+        return false
     }
 }
-//GET por id
+
+// GET por id
 const getItenById = async function (id) {
     try {
-        let sql = `select * from tb_item where id_item = ${id}`
-        let result = await knexDatabase.raw(sql)
+        let sql = `SELECT * FROM tb_item WHERE id_item = ?`
+        let result = await knexDatabase.raw(sql, [id])
 
-        if (Array.isArray(result)) {
-            return result
-        } else {
-            return false
-        }
+        return result[0]
     } catch (error) {
-        return error
+        console.log(error)
+        return false
     }
 }
-//POST
+
+// POST
 const setInsertIten = async function (item) {
     try {
-        let sql = `insert into tb_item(
-                        nome_item,
-                        quantidade,
-                        valor_unitario,
-                        comprado,
-                        id_lista
-                    )values(
-                        '${item.nome_item}',
-                        ${item.quantidade},
-                        ${item.valor_unitario},
-                        ${item.comprado},
-                        ${item.id_lista}
-                    )`
-        let result = await knexDatabase.raw(sql)
-        if (Array.isArray(result)) {
-            return result
-        } else {
-            return false
-        }
+        let sql = `
+            INSERT INTO tb_item (
+                id_lista,
+                nome_item,
+                quantidade,
+                valor_unitario,
+                comprado
+            ) VALUES (?, ?, ?, ?, ?)
+        `
+
+        let result = await knexDatabase.raw(sql, [
+            item.id_lista,
+            item.nome_item,
+            item.quantidade,
+            item.valor_unitario,
+            item.comprado
+        ])
+
+        return !!result
     } catch (error) {
-        return error
+        console.log(error)
+        return false
     }
 }
-//PUT
+
+// PUT sem id_lista
 const setUpdateIten = async function (item) {
     try {
-        let sql = `update tb_item set
-                        nome_item = '${item.nome_item}',
-                        quantidade = ${item.quantidade},
-                        valor_unitario = ${item.valor_unitario},
-                        comprado = ${item.comprado},
-                        id_lista= ${item.id_lista}
-                    where id_item = ${item.id_item}`
-        let result = await knexDatabase.raw(sql)
-        if (Array.isArray(result)) {
-            return result
-        } else {
-            return false
-        }
+        let sql = `
+            UPDATE tb_item SET
+                nome_item = ?,
+                quantidade = ?,
+                valor_unitario = ?,
+                comprado = ?
+            WHERE id_item = ?
+        `
+
+        let result = await knexDatabase.raw(sql, [
+            item.nome_item,
+            item.quantidade,
+            item.valor_unitario,
+            item.comprado,
+            item.id_item
+        ])
+
+        return !!result
     } catch (error) {
-        return error
+        console.log(error)
+        return false
     }
 }
-//DELETE
+
+// DELETE
 const setDeleteIten = async function (id) {
     try {
-        let = sql = `delete from tb_item where id_item = ${id}`
-        let result = await knexDatabase.raw(sql)
-        if (Array.isArray(result)) {
-            return result
-        } else {
-            return false
-        }
+        let sql = `DELETE FROM tb_item WHERE id_item = ?`
+        let result = await knexDatabase.raw(sql, [id])
+
+        return !!result
     } catch (error) {
-        return error
+        console.log(error)
+        return false
     }
 }
+
 module.exports = {
     getAllItens,
     getItenById,

@@ -30,7 +30,7 @@ const listarItens = async function () {
 }
 //GET id
 const listarItemID = async function (id) {
-    let idValidado = validarAtributos.validarValorId(id)
+    let idValidado = validarAtributos.validarId(id)
     try {
         if (idValidado) {
             let result = await itemDAO.getItenById(id)
@@ -86,7 +86,7 @@ const criarItem = async function (item, contentType) {
 const atulizarItem = async function (item, contentType, id) {
     let dadosValidados = await validarDados.validarDadosItens(item)
     let contentTypeValidado = await validarAtributos.validarContentType(contentType)
-    let idValidado = validarAtributos.validarValorId(id)
+    let idValidado = validarAtributos.validarId(id)
 
     try {
         if (idValidado) {
@@ -123,7 +123,7 @@ const atulizarItem = async function (item, contentType, id) {
 }
 // DELETE
 const excluirItem = async function (id) {
-    let idValidado = validarAtributos.validarValorId(id)
+    let idValidado = validarAtributos.validarId(id)
     try {
         if (idValidado) {
             let buscarId = await itemDAO.getItenById(id)
