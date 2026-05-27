@@ -64,13 +64,16 @@ const getAllItensListsById= async function(idFamilia) {
 //GET por id
 const getListById = async function (id) {
     try {
-        let sql = `select * from tb_lista where id_lista = ${id}`
-        let result = await knexDatabase.raw(sql)
+        let sqlLista = `select * from tb_lista where id_lista = ?`
+        let sqlItem = `select * from tb_item where id_lista = ?`
 
-        if (Array.isArray(result)) {
-            return result
-        } else {
-            return false
+
+        let listas = await knexDatabase.raw(sqlLista, [id])
+        let items = await knexDatabase.raw(sqlItem, [id])
+        // console.log(items)
+        return {
+            listas: listas[0],
+            items: items[0]
         }
     } catch (error) {
         return error
