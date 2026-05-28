@@ -15,7 +15,7 @@ const getAllItens = async function () {
         let sql = `SELECT * FROM tb_item`
         let result = await knexDatabase.raw(sql)
 
-        return result[0]
+        return result
     } catch (error) {
         console.log(error)
         return false
@@ -55,6 +55,7 @@ const setInsertIten = async function (item) {
             item.valor_unitario,
             item.comprado
         ])
+        console.log(result)
 
         return !!result
     } catch (error) {
