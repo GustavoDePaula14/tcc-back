@@ -34,6 +34,13 @@ router.get('/lista/completa/familia/:idFamilia', async function(request, respons
     response.status(result.StatusCode || result.status_code)
     response.json(result)
 })
+router.get('/lista-favorita/completa/familia/:idFamilia', async function(request, response) {
+    let idFamilia = request.params.idFamilia
+    let result = await controller.listarListaFavoritaCompletaPorFamilia(idFamilia)
+    
+    response.status(result.StatusCode || result.status_code)
+    response.json(result)
+})
 router.delete("/lista/:id", cors(), async function(request, response) {
     let id = request.params.id
     let result = await controller.excluirLista(id)

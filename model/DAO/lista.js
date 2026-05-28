@@ -81,7 +81,63 @@ const getAllItensListsByFamily = async function(idFamilia) {
         return false
     }
 }
+const getFavoriteItensListsByFamily = async function(idFamilia) {
+    try {
+        let sql = `
+            SELECT
+                f.id_familia,
+                f.nome AS nome_familia,
 
+                u.id_usuario,
+                u.nome AS nome_usuario,
+                u.email,
+                uf.is_admin,
+
+                l.id_lista,
+                l.nome AS nome_lista,
+                l.favorita,
+
+                i.id_item,
+                i.nome_item,
+                i.quantidade,
+                i.valor_unitario,
+                i.valor_total,
+                i.comprado
+
+            FROM tb_familia f
+
+            INNER JOIN tb_usuario_familia uf
+                ON uf.id_familia = f.id_familia
+
+            INNER JOIN tb_usuario u
+                ON u.id_usuario = uf.id_usuario
+
+            LEFT JOIN tb_lista l
+                ON l.id_familia = f.id_familia
+                AND l.id_usuario = u.id_usuario
+
+            LEFT JOIN tb_item i
+                ON i.id_lista = l.id_lista
+
+            WHERE f.id_familia = ? and l.favorita = 1
+
+            ORDER BY 
+                l.favorita DESC,
+                l.nome ASC,
+                u.id_usuario,
+                l.id_lista,
+                i.id_item
+        `
+
+        let result = await knexDatabase.raw(sql, [idFamilia])
+
+        return result[0]
+
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
 //GET por id
 const getListById = async function (id) {
     try {
@@ -187,5 +243,6 @@ module.exports = {
     setUpdateList,
     setFavoriteList,
     setInsertList,
-    getAllItensListsByFamily
+    getAllItensListsByFamily,
+    getFavoriteItensListsByFamily
 }

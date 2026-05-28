@@ -57,7 +57,7 @@ const setInsertIten = async function (item) {
         ])
         console.log(result)
 
-        return !!result
+        return result
     } catch (error) {
         console.log(error)
         return false
