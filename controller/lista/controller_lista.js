@@ -96,6 +96,7 @@ const listarListaCompletaPorFamilia = async function (idFamilia) {
                     lista = {
                         id_lista: item.id_lista,
                         nome_lista: item.nome_lista,
+                        favorita : item.favorita,
                         itens: []
                     }
 
