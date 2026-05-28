@@ -91,6 +91,22 @@ const setUpdateUser = async function (usuario) {
         return error
     }
 }
+const setUpdadeUserPasswordByEmail = async function(email, senha) {
+    try {
+        let sql = `update tb_usuario set
+                        senha = '${senha}'
+                    where email = ${email}`
+        let result = await knexDatabase.raw(sql)
+        if (Array.isArray(result)) {
+            return result
+        } else {
+            return false
+        }
+    } catch (error) {
+        console.log(error)
+        return error
+    }
+}
 //DELETE
 const setDeleteUser = async function (id) {
     try {
@@ -111,5 +127,6 @@ module.exports = {
     getUserById,
     setInsertUser,
     setUpdateUser,
-    setDeleteUser
+    setDeleteUser,
+    setUpdadeUserPasswordByEmail
 }

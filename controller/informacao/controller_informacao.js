@@ -77,7 +77,7 @@ const criarInformacao = async function (informacao, contentType) {
             id_info: idInfo
         }
 
-        let vinculo = await usuarioInformacaoDAO.setInsertUsersInformation(usuarioInformacao)
+        let vinculo = await informacaoDAO.setInsertInformation(informacao)
 
         if (!vinculo)
             return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL

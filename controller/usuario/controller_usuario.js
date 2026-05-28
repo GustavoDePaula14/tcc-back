@@ -104,14 +104,14 @@ const criarUsuario = async function (usuario, foto, contentType) {
 }
 
 // PUT
-const atulizarUsuario = async function (usuario, contentType, id) {
+const atulizarUsuario = async function (usuario, foto, contentType, id) {
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(usuario.senha, salt); 
     try {
         let dadosValidados = await validarDados.validarDadosUsuario(usuario)
-        let contentTypeValidado = validarAtributos.validarContentType(contentType)
+        let contentTypeValidado = validarAtributos.validarContentTypeFormData(contentType)
         let idValidado = validarAtributos.validarValorId(id)
-        let imagemEnvida = await uploadDAO.uploadFiles(usuario.foto)
+        let imagemEnvida = await uploadDAO.uploadFiles(foto)
         if (idValidado) {
             let buscarId = usuarioDAO.getUserById(id)
             if (contentTypeValidado) {
@@ -120,6 +120,7 @@ const atulizarUsuario = async function (usuario, contentType, id) {
                         if(ypeof(imagemEnvida) != false){
                             usuario.senha = hash
                             usuario.id_usuario = parseInt(id)
+                            usuario.foto = imagemEnvida
                             let result = await usuarioDAO.setUpdateUser(usuario)
                             console.log(result)
                             if (result) {
