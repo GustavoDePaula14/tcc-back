@@ -107,6 +107,12 @@ const joinFamilyHTML = function(dono_familia){
     return html;
 }
 
+const newPasswordHTML = function(){
+    let html = ``;
+    return html;
+}
+
 module.exports = {
-    joinFamilyHTML
+    joinFamilyHTML,
+    newPasswordHTML
 };

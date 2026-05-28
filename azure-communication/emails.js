@@ -13,7 +13,7 @@ const criarMessageNovaSenha = function(to_email){
         content:{
             subject: "Troca de senha de usuario",
             plainText: "Troca de senha de usuario",
-            html:html
+            html:html.newPasswordHTML()
         },
         recipients: {
             to: [{ address: to_email }],
