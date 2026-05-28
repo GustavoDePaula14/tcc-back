@@ -24,7 +24,7 @@ const getAllLists = async function () {
         return error
     }
 }
-const getAllItensListsById= async function(idFamilia) {
+const getAllItensListsByFamily = async function(idFamilia) {
     try {
         let sql = `
             SELECT
@@ -38,6 +38,7 @@ const getAllItensListsById= async function(idFamilia) {
 
                 l.id_lista,
                 l.nome AS nome_lista,
+                l.favorita,
 
                 i.id_item,
                 i.nome_item,
@@ -63,7 +64,12 @@ const getAllItensListsById= async function(idFamilia) {
 
             WHERE f.id_familia = ?
 
-            ORDER BY u.id_usuario, l.id_lista, i.id_item
+            ORDER BY 
+                l.favorita DESC,
+                l.nome ASC,
+                u.id_usuario,
+                l.id_lista,
+                i.id_item
         `
 
         let result = await knexDatabase.raw(sql, [idFamilia])
@@ -75,20 +81,17 @@ const getAllItensListsById= async function(idFamilia) {
         return false
     }
 }
-// getAllItensListsById(1)
+
 //GET por id
 const getListById = async function (id) {
     try {
-        let sqlLista = `select * from tb_lista where id_lista = ?`
-        let sqlItem = `select * from tb_item where id_lista = ?`
+        let sql = `select * from tb_lista where id_lista = ${id}`
+        let result = await knexDatabase.raw(sql)
 
-
-        let listas = await knexDatabase.raw(sqlLista, [id])
-        let items = await knexDatabase.raw(sqlItem, [id])
-        // console.log(items)
-        return {
-            listas: listas[0],
-            items: items[0]
+        if (Array.isArray(result)) {
+            return result
+        } else {
+            return false
         }
     } catch (error) {
         return error
@@ -134,6 +137,29 @@ const setUpdateList = async function (lista) {
         return error
     }
 }
+
+const setFavoriteList = async function(id, favorita) {
+    try {
+
+        let sql = `
+            UPDATE tb_lista
+            SET favorita = ${favorita}
+            WHERE id_lista = ${id}
+        `
+
+        let result = await knexDatabase.raw(sql)
+
+        if(result){
+            return true
+        }else{
+            return false
+        }
+
+    } catch(error){
+        return false
+    }
+}
+
 //DELETE
 const setDeleteList = async function (id) {
     try {
@@ -153,6 +179,7 @@ module.exports = {
     getListById,
     setDeleteList,
     setUpdateList,
+    setFavoriteList,
     setInsertList,
-    getAllItensListsById
+    getAllItensListsByFamily
 }

@@ -27,14 +27,11 @@ router.get("/listas", cors(), async function(request, response) {
     response.json(result)
 })
 
-router.get("/lista-familia/:id", cors(), async function(request, response) {
-    let id = request.params.id
-    let result = await controller.listarListaCompletaID(id)
-    response.json(result)
-})
-router.get("/lista/:id", cors(), async function(request, response) {
-    let id = request.params.id
-    let result = await controller.listarListaID(id)
+router.get('/lista/completa/familia/:idFamilia', async function(request, response) {
+    let idFamilia = request.params.idFamilia
+    let result = await controller.listarListaCompletaPorFamilia(idFamilia)
+    
+    response.status(result.StatusCode || result.status_code)
     response.json(result)
 })
 router.delete("/lista/:id", cors(), async function(request, response) {
@@ -56,6 +53,13 @@ router.put("/lista/:id", cors(), async function(request, response) {
     let contentType = request.headers["content-type"]
 
     let result = await controller.atulizarLista(dadosBody, contentType, id)
+    response.json(result)
+})
+router.put("/lista/favorita/:id", cors(), bodyParserJSON, async function(request, response){
+    let id = request.params.id
+    let favorita = request.body.favorita
+
+    let result = await controller.favoritarLista(id, favorita)
     response.json(result)
 })
 module.exports = router;
