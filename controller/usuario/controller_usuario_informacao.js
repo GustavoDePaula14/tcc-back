@@ -28,6 +28,115 @@ const listarUsuarioInformacao = async function () {
     }
 }
 
+const listarUsuarioInformacaoPorFamilias = async function () {
+    try {
+        let dados = await usuario_informacaoDAO.getAllUsersInformationByFamilies();
+
+        if (!dados || dados.length === 0)
+            return mensagensDefault.ERRO_NOT_FOUND;
+
+        const familias = [];
+
+        dados.forEach(item => {
+
+            let familia = familias.find(f => f.id_familia === item.id_familia);
+
+            if (!familia) {
+                familia = {
+                    id_familia: item.id_familia,
+                    nome_familia: item.nome_familia,
+                    usuarios: []
+                };
+
+                familias.push(familia);
+            }
+
+            let usuario = familia.usuarios.find(u => u.id_usuario === item.id_usuario);
+
+            if (!usuario) {
+                usuario = {
+                    id_usuario: item.id_usuario,
+                    nome_usuario: item.nome_usuario,
+                    email: item.email,
+                    is_admin: item.is_admin,
+                    informacoes: []
+                };
+
+                familia.usuarios.push(usuario);
+            }
+
+            if (item.id_info) {
+                usuario.informacoes.push({
+                    id_usuario_informacao: item.id_usuario_informacao,
+                    id_info: item.id_info,
+                    titulo: item.titulo,
+                    descricao: item.descricao_informacao
+                });
+            }
+        });
+
+        return {
+            status_code: mensagensDefault.SUCCESS_REQUEST.StatusCode,
+            dados: familias
+        };
+
+    } catch (error) {
+        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER;
+    }
+};
+
+const listarUsuarioInformacaoPorFamilia = async function (idFamilia) {
+    try {
+        if (!validarAtributos.validarId(idFamilia))
+            return mensagensDefault.ERRO_INVALID_ID
+
+        let dados = await usuario_informacaoDAO.getUsersInformationByFamily(idFamilia)
+
+        if (!dados || dados.length === 0)
+            return mensagensDefault.ERRO_NOT_FOUND
+
+        const familia = {
+            id_familia: dados[0].id_familia,
+            nome_familia: dados[0].nome_familia,
+            usuarios: []
+        }
+
+        dados.forEach(item => {
+            let usuario = familia.usuarios.find(u => u.id_usuario === item.id_usuario)
+
+            if (!usuario) {
+                usuario = {
+                    id_usuario: item.id_usuario,
+                    nome_usuario: item.nome_usuario,
+                    email: item.email,
+                    is_admin: item.is_admin,
+                    informacoes: []
+                }
+
+                familia.usuarios.push(usuario)
+            }
+
+            if (item.id_info) {
+                usuario.informacoes.push({
+                    id_usuario_informacao: item.id_usuario_informacao,
+                    id_info: item.id_info,
+                    titulo: item.titulo,
+                    descricao: item.descricao_informacao
+                })
+            }
+        })
+
+        return {
+            status_code: mensagensDefault.SUCCESS_REQUEST.StatusCode,
+            dados: familia
+        }
+
+    } catch (error) {
+        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
+
 const listarUsuarioInformacaoID = async function (id) {
     try {
         if (!validarAtributos.validarId(id))
@@ -167,6 +276,8 @@ const excluirUsuarioInformacao = async function (id) {
 
 module.exports = {
     listarUsuarioInformacao,
+    listarUsuarioInformacaoPorFamilias,
+    listarUsuarioInformacaoPorFamilia,
     listarUsuarioInformacaoID,
     listarUsuarioInformacaoPorUsuario,
     criarUsuarioInformacao,
