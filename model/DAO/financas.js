@@ -59,22 +59,25 @@ const getDailyFinances = async function(idFamilia) {
 }
 
 // GET Financas por semana
-const getDailyFinances = async function(idFamilia) {
+const getWeekFinances = async function(idFamilia) {
     try {
-        let sql = `SELECT * FROM vw_financas_diarias WHERE id_familia = ${idFamilia} ORDER BY data_movimentacao`
+        let sql = `
+            SELECT *
+            FROM vw_financas_semanais
+            WHERE id_familia = ${idFamilia}
+        `
 
         let result = await knexDatabase.raw(sql)
 
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             return result
-        }else{
+        } else {
             return false
         }
     } catch (error) {
         return error
     }
 }
-
 //GET Financas por mes
 const getMonthFinances = async function(idFamilia) {
     try {
