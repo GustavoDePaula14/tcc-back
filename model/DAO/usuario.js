@@ -40,6 +40,21 @@ const getUserById = async function (id) {
         return error
     }
 }
+const getUserByEmail = async function (email) {
+    try {
+        let sql = `select * from tb_usuario where email = ${email}`
+        let result = await knexDatabase.raw(sql)
+        // console.log(result)
+        if (Array.isArray(result)) {
+            return true
+        } else {
+            return false
+        }
+    } catch (error) {
+        console.log(error)
+        return error
+    }
+}
 //POST 
 const setInsertUser = async function (usuario) {
     try {
@@ -91,11 +106,11 @@ const setUpdateUser = async function (usuario) {
         return error
     }
 }
-const setUpdadeUserPasswordByEmail = async function(email, senha) {
+const setUpdadeUserPasswordByEmail = async function(usuario) {
     try {
         let sql = `update tb_usuario set
-                        senha = '${senha}'
-                    where email = ${email}`
+                        senha = '${usuario.senha}'
+                    where email = ${usuario.email}`
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {
             return result
@@ -125,6 +140,7 @@ const setDeleteUser = async function (id) {
 module.exports = {
     getAllUsers,
     getUserById,
+    getUserByEmail,
     setInsertUser,
     setUpdateUser,
     setDeleteUser,

@@ -154,6 +154,33 @@ const atulizarUsuario = async function (usuario, foto, contentType, id) {
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+const atulizarSenhaUsuario = async function(usuario, contentType) {
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(usuario.senha, salt); 
+    let emailValidado = await usuarioDAO.getUserByEmail(usuario.email)
+    let contentTypeValidado = validarAtributos.validarContentType(contentType)
+    try {
+        if(emailValidado == true){
+            if(contentType){
+                usuario.senha = hash
+                let result = await usuarioDAO.setUpdadeUserPasswordByEmail(usuario)
+                if(result){
+                    mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
+                    mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
+                    return mesagensDefault.HEADER
+                }else{
+                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                }
+            }else{
+                return contentTypeValidado
+            }
+        }else{
+            return mesagensDefault.ERRO_NOT_FOUND
+        }
+    } catch (error) {
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }
+}
 // DELETE
 const excluirUsuario = async function (id) {
     let idValidado = validarAtributos.validarValorId(id)
@@ -187,4 +214,5 @@ module.exports = {
     excluirUsuario,
     atulizarUsuario,
     criarUsuario,
+    atulizarSenhaUsuario
 }

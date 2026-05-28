@@ -47,6 +47,11 @@ router.get("/usuarios", cors(), async function(request, response) {
     let result = await controller.listarUsuarios()
     response.json(result)
 })
+router.put("/usuario/trocar-senha", cors(), async function(request, response) {
+    let dadosBody = request.body
+    let contentType = request.headers["content-type"]
+    let result = await controller.atulizarSenhaUsuario(dadosBody, contentType)
+})
 
 router.get("/usuario/:id", cors(), async function(request, response) {
     let id = request.params.id
