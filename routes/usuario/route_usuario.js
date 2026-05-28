@@ -67,12 +67,13 @@ router.post("/usuario", cors(), upload.single('foto'), async function(request, r
     let result = await controller.criarUsuario(dadosBody, file, contentType)
     response.json(result)
 })
-router.put("/usuario/:id", cors(), async function(request, response) {
+router.put("/usuario/:id", cors(), upload.single('foto'), async function(request, response) {
     let id = request.params.id
     let dadosBody = request.body
+    let file = request.file
     let contentType = request.headers["content-type"]
 
-    let result = await controller.atulizarUsuario(dadosBody, contentType, id)
+    let result = await controller.atulizarUsuario(dadosBody, file, contentType, id)
     response.json(result)
 })
 module.exports = router;

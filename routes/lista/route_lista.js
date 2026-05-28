@@ -39,6 +39,11 @@ router.delete("/lista/:id", cors(), async function(request, response) {
     let result = await controller.excluirLista(id)
     response.json(result)
 })
+router.get("/lista/:id", cors(), async function(request, response) {
+    let id = request.params.id
+    let result = await controller.listarListaID(id)
+    response.json(result)
+})
 
 router.post("/lista", cors(), bodyParserJSON, async function(request, response) {
     let dadosBody = request.body
