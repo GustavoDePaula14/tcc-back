@@ -10,8 +10,6 @@ const knexConfig = require("../database_config/azure/knexfile");
 
 const knexDatabase = knex(knexConfig.development);
 
-const knexDatabase = knex(knexConfig.development);
-
 // Função auxiliar para retornar família + array de finanças
 const getFamiliaComFinancas = async function(idFamilia, view, orderBy = "") {
     try {
