@@ -48,7 +48,7 @@ const listarFinancas = async function () {
 const listarFinancasID = async function (id) {
 
     let idValidado =
-        validarAtributos.validarValorId(id)
+        validarAtributos.validarId(id)
 
     try {
 
@@ -87,160 +87,132 @@ const listarFinancasID = async function (id) {
 
 const listarFinancasDiarias = async function (idFamilia) {
 
-    let idValidado =
-        validarAtributos.validarValorId(idFamilia)
+    let idValidado = validarAtributos.validarId(idFamilia)
 
     try {
 
         if (idValidado) {
 
-            let result =
-                await financasDAO.getDailyFinances(idFamilia)
+            let result = await financasDAO.getDailyFinances(idFamilia)
 
-            if (result && result.length > 0) {
+            if (result && result.financas && result.financas.length > 0) {
 
                 mensagensDefault.HEADER.StatusCode =
                     mensagensDefault.SUCCESS_REQUEST.StatusCode
 
-                mensagensDefault.HEADER.Response =
-                    result[0]
+                mensagensDefault.HEADER.Response = result
 
                 return mensagensDefault.HEADER
 
             } else {
-
                 return mensagensDefault.ERRO_NOT_FOUND
             }
 
         } else {
-
             return mensagensDefault.ERRO_INVALID_ID
         }
 
     } catch (error) {
-
         console.log(error)
-
         return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
 const listarFinancasSemanais = async function (idFamilia) {
 
-    let idValidado =
-        validarAtributos.validarValorId(idFamilia)
+    let idValidado = validarAtributos.validarId(idFamilia)
 
     try {
 
         if (idValidado) {
 
-            let result =
-                await financasDAO.getWeekFinances(idFamilia)
+            let result = await financasDAO.getWeekFinances(idFamilia)
 
-            if (result && result.length > 0) {
+            if (result && result.financas && result.financas.length > 0) {
 
                 mensagensDefault.HEADER.StatusCode =
                     mensagensDefault.SUCCESS_REQUEST.StatusCode
 
-                mensagensDefault.HEADER.Response =
-                    result[0]
+                mensagensDefault.HEADER.Response = result
 
                 return mensagensDefault.HEADER
 
             } else {
-
                 return mensagensDefault.ERRO_NOT_FOUND
             }
 
         } else {
-
             return mensagensDefault.ERRO_INVALID_ID
         }
 
     } catch (error) {
-
         console.log(error)
-
         return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
 const listarFinancasMensais = async function (idFamilia) {
 
-    let idValidado =
-        validarAtributos.validarValorId(idFamilia)
+    let idValidado = validarAtributos.validarId(idFamilia)
 
     try {
 
         if (idValidado) {
 
-            let result =
-                await financasDAO.getMonthFinances(idFamilia)
+            let result = await financasDAO.getMonthFinances(idFamilia)
 
-            if (result && result.length > 0) {
+            if (result && result.financas && result.financas.length > 0) {
 
                 mensagensDefault.HEADER.StatusCode =
                     mensagensDefault.SUCCESS_REQUEST.StatusCode
 
-                mensagensDefault.HEADER.Response =
-                    result[0]
+                mensagensDefault.HEADER.Response = result
 
                 return mensagensDefault.HEADER
 
             } else {
-
                 return mensagensDefault.ERRO_NOT_FOUND
             }
 
         } else {
-
             return mensagensDefault.ERRO_INVALID_ID
         }
 
     } catch (error) {
-
         console.log(error)
-
         return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
 const listarFinancasAnuais = async function (idFamilia) {
 
-    let idValidado =
-        validarAtributos.validarValorId(idFamilia)
+    let idValidado = validarAtributos.validarId(idFamilia)
 
     try {
 
         if (idValidado) {
 
-            let result =
-                await financasDAO.getYearFinances(idFamilia)
+            let result = await financasDAO.getYearFinances(idFamilia)
 
-            if (result && result.length > 0) {
+            if (result && result.financas && result.financas.length > 0) {
 
                 mensagensDefault.HEADER.StatusCode =
                     mensagensDefault.SUCCESS_REQUEST.StatusCode
 
-                mensagensDefault.HEADER.Response =
-                    result[0]
+                mensagensDefault.HEADER.Response = result
 
                 return mensagensDefault.HEADER
 
             } else {
-
                 return mensagensDefault.ERRO_NOT_FOUND
             }
 
         } else {
-
             return mensagensDefault.ERRO_INVALID_ID
         }
 
     } catch (error) {
-
         console.log(error)
-
         return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
