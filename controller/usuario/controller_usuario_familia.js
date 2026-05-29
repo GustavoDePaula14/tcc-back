@@ -107,7 +107,7 @@ const enviarEmailUsuarioFamiliaPorEmail = async function (usuarioFamilia, conten
 }
 const criarUsuarioFamiliaPorEmail = async function (usuarioFamilia, contentType) {
     try {
-
+        console.log(usuarioFamilia)
         if (!validarAtributos.validarContentType(contentType))
             return mensagensDefault.ERRO_CONTENT_TYPE
 
@@ -116,7 +116,7 @@ const criarUsuarioFamiliaPorEmail = async function (usuarioFamilia, contentType)
 
         let result = await usuario_familiaDAO
             .setInsertUsersFamilyByUserEmail(usuarioFamilia)
-        
+        console.log(result)
 
         if (result == null) {
             return {
