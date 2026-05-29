@@ -21,13 +21,13 @@ const criarMessageNovaSenha = function(to_email){
     }
     return message
 }
-const criarMessageLoginUsuarioFamilia = function(to_email, remetente){
+const criarMessageLoginUsuarioFamilia = function(to_email, remetente, id){
     const message = {
         senderAddress:"DoNotReply@c1c84fa9-5816-4316-9edd-ff82e6600114.azurecomm.net",
         content:{
             subject: `${remetente} quer adicionar você para a familia dele`,
             plainText: `${remetente} quer adicionar você para a familia dele`,
-            html:html.joinFamilyHTML(remetente)
+            html:html.joinFamilyHTML(to_email, remetente, id)
         },
         recipients: {
             to: [{ address: to_email }],

@@ -55,11 +55,11 @@ const validarTrocaSenha = async function (email, contentType) {
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }  
 }
-const validarEntradoFamilia = async function (email, contentType) {
+const validarEntradoFamilia = async function (email, contentType,id) {
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
     try {
         if(contentTypeValidado){
-            let emailEnvidado = await emails.enviarLoginUsuarioFamila(email.email, email.remetente)
+            let emailEnvidado = await emails.enviarLoginUsuarioFamila(email.email, email.remetente, id)
             if(emailEnvidado == true){
                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
                 mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_REQUEST.message

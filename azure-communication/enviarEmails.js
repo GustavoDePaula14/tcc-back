@@ -20,8 +20,8 @@ const enviarNovaSenha = async function(destinatario){
     return true
 }
 
-const enviarLoginUsuarioFamila = async function(destinatario, remetente) {
-    const poller = await client.beginSend(emails.criarMessageLoginUsuarioFamilia(destinatario, remetente));
+const enviarLoginUsuarioFamila = async function(destinatario, remetente, id) {
+    const poller = await client.beginSend(emails.criarMessageLoginUsuarioFamilia(destinatario, remetente, id));
     const result = await poller.pollUntilDone();
     return true
 }

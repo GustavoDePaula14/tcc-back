@@ -10,7 +10,7 @@ const mensagensDefault = require("../modulo/config_messages.js")
 const validarDados = require("../modulo/validar_dados.js")
 const validarAtributos = require("../modulo/validar_atributos.js")
 const enviarEmail = require("../login/controller_login.js")
-
+const usuarioDAO = require('../../model/DAO/usuario.js')
 const listarUsuarioFamilia = async function () {
     try {
         let result = await usuario_familiaDAO.getAllUsersFamily()
@@ -72,7 +72,8 @@ const criarUsuarioFamilia = async function (usuarioFamilia, contentType) {
     }
 }
 
-const criarUsuarioFamiliaPorEmail = async function (usuarioFamilia, contentType) {
+
+const enviarEmailUsuarioFamiliaPorEmail = async function (usuarioFamilia, contentType) {
     try {
 
         if (!validarAtributos.validarContentType(contentType))
@@ -85,36 +86,15 @@ const criarUsuarioFamiliaPorEmail = async function (usuarioFamilia, contentType)
         // console.log(remetente)
         if(remetente != ""){
             usuarioFamilia.email.forEach(async usuario => {
-
-                let objUser = {
-                    "email" : usuario,
-                    "remetente" : remetente[0].nome_usuario,
-                }
-                let emailEnvidado = await enviarEmail.validarEntradoFamilia(objUser, contentType)
-                if(emailEnvidado){
-                    let result = await usuario_familiaDAO
-                        .setInsertUsersFamilyByUserEmail(usuario, usuarioFamilia.id_familia)
-                    
-        
-                    if (result == null) {
-                        return {
-                            status: 404,
-                            message: "Usuário não encontrado."
-                        }
+                let emailValidado = await usuarioDAO.getUserByEmail(usuario)
+                if(emailValidado == true){
+                    let objUser = {
+                        "email" : usuario,
+                        "remetente" : remetente[0].nome_usuario,
                     }
-        
-                    if (result == "duplicado") {
-                        return {
-                            status: 409,
-                            message: "Usuário já pertence à família."
-                        }
-                    }
-        
-                    if (result) {
-                        return mensagensDefault.SUCCESS_CREATED_ITEM
-                    } else {
-                        return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
-                    }
+                    let emailEnvidado = await enviarEmail.validarEntradoFamilia(objUser, contentType, usuarioFamilia.id_familia)
+                }else{
+                    return false
                 }
             });
         }else{
@@ -125,7 +105,44 @@ const criarUsuarioFamiliaPorEmail = async function (usuarioFamilia, contentType)
         return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+const criarUsuarioFamiliaPorEmail = async function (usuarioFamilia, contentType) {
+    try {
 
+        if (!validarAtributos.validarContentType(contentType))
+            return mensagensDefault.ERRO_CONTENT_TYPE
+
+        if (!validarDados.validarUsuarioFamiliaPorEmail(usuarioFamilia))
+            return mensagensDefault.ERRO_REQUIRED_FIELDS
+
+        let result = await usuario_familiaDAO
+            .setInsertUsersFamilyByUserEmail(usuarioFamilia)
+        
+
+        if (result == null) {
+            return {
+                status: 404,
+                message: "Usuário não encontrado."
+            }
+        }
+
+        if (result == "duplicado") {
+            return {
+                status: 409,
+                message: "Usuário já pertence à família."
+            }
+        }
+
+        if (result) {
+            return mensagensDefault.SUCCESS_CREATED_ITEM
+        } else {
+            return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+        }
+                    
+    } catch (error) {
+
+        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }
+}
 const atualizarUsuarioFamilia = async function (usuarioFamilia, contentType, id) {
     try {
         if (!validarAtributos.validarId(id))
@@ -187,5 +204,6 @@ module.exports = {
     criarUsuarioFamilia,
     criarUsuarioFamiliaPorEmail,
     atualizarUsuarioFamilia,
-    excluirUsuarioFamilia
+    excluirUsuarioFamilia,
+    enviarEmailUsuarioFamiliaPorEmail
 }

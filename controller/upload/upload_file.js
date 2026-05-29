@@ -17,21 +17,15 @@ const AZURE = {
 }
 
 const uploadFiles = async function (file) {
-    // console.log(file)
     if (!file || !file.mimetype || !file.size) return null
-    // console.log(file)
     let allowedFileTypes = ['JPG', 'PNG', 'JPEG']
     let mimeType = String(file.mimetype).split('/')[1].toUpperCase()
-    console.log(mimeType)
     let lengthFile = Number(file.size) / 1024 
 
     if (allowedFileTypes.indexOf(mimeType)) {
         let fileName = Date.now() + '-' + file.originalname
-        console.log(fileName)
         let urlFile = `https://${AZURE.ACCOUNT}.blob.core.windows.net/${AZURE.CONTAINER}/${fileName}`
-        console.log(urlFile)
         let urlFileToken = `${urlFile}?${AZURE.TOKEN}`
-        console.log(urlFileToken)
 
         try {
             let response = await fetch(urlFileToken, {
@@ -42,7 +36,6 @@ const uploadFiles = async function (file) {
                 },
                 body: file.buffer
             })
-            console.log(response)
 
             if (response.status == 201) {
                 return urlFile

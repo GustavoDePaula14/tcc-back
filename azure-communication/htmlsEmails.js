@@ -5,9 +5,9 @@
  * Versão: 1.0
  ************************************************/
 
-const joinFamilyHTML = function(dono_familia){
-    const token_family = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c3VhcmlvIjo3LCJlbWFpbCI6InZpdG9yQGdtYWlsLmNvbSIsIm5vbWUiOiJWaXRvciBNaWd1ZWwiLCJpYXQiOjE3NzkxNTAzNzksImV4cCI6MTc3OTE1Mzk3OX0.g7LHXhMcqKSrNP0V1dUwZrm_PZnT_M-fWMC4ZgYHx-M";
-    const url = `http://localhost:5173/auth/start/${token_family}`;
+const joinFamilyHTML = function(to_email, dono_familia, id){
+    const router = `/v1/familysync/usuario-familia/emailEnviado?email=${to_email}&id_fmailia=${id}`;
+    const url = `https://tcc-back-q3kw.onrender.com${router}`;
 
     let html = `<!doctype html>
 <html lang="pt-br">

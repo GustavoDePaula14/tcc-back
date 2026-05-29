@@ -12,6 +12,7 @@ const bodyParser = require('body-parser')
 const bodyParserJSON = bodyParser.json()
 
 const controller = require('../../controller/usuario/controller_usuario_familia')
+const { EmailClient } = require('@azure/communication-email')
 const router = express.Router()
 
 router.use((request, response, next) =>{
@@ -47,11 +48,24 @@ router.post("/usuario-familia", cors(), bodyParserJSON, async function(request, 
     let result = await controller.criarUsuarioFamilia(dadosBody, contentType)
     response.json(result)
 })
+router.post("usuario-familia/emailEnviado", cors(), bodyParserJSON, async function(request, response) {
+    let email = request.query.email
+    let id_familia = request.query.id_familia
+    let dadosBody = {
+        "email" : email,
+        "id_familia" : id_familia
+    }
+    let contentType = request.headers["content-type"]
+
+    let result = await controller.criarUsuarioFamiliaPorEmail(dadosBody, contentType )
+    console.log(result)
+    response.json(result)
+})
 router.post("/usuario-familia/email", cors(), bodyParserJSON, async function(request, response) {
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
 
-    let result = await controller.criarUsuarioFamiliaPorEmail(dadosBody, contentType )
+    let result = await controller.enviarEmailUsuarioFamiliaPorEmail(dadosBody, contentType )
     console.log(result)
     response.json(result)
 })

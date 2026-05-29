@@ -42,7 +42,7 @@ const getUserById = async function (id) {
 }
 const getUserByEmail = async function (email) {
     try {
-        let sql = `select * from tb_usuario where email = ${email}`
+        let sql = `select * from tb_usuario where email = "${email}"`
         let result = await knexDatabase.raw(sql)
         // console.log(result)
         if (Array.isArray(result)) {
