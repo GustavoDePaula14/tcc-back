@@ -6,7 +6,7 @@
  ************************************************/
 
 const joinFamilyHTML = function(to_email, dono_familia, id){
-    const router = `/v1/familysync/usuario-familia/emailEnviado?email=${to_email}&id_fmailia=${id}`;
+    const router = `/v1/familysync/usuario-familia/emailEnviado?email=${to_email}&id_familia=${id}`;
     const url = `https://tcc-back-q3kw.onrender.com${router}`;
 
     let html = `<!doctype html>
