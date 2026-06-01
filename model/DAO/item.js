@@ -84,7 +84,7 @@ const setUpdateIten = async function (item) {
             item.id_item
         ])
 
-        return !!result
+        return result
     } catch (error) {
         console.log(error)
         return false
@@ -97,7 +97,7 @@ const setDeleteIten = async function (id) {
         let sql = `DELETE FROM tb_item WHERE id_item = ?`
         let result = await knexDatabase.raw(sql, [id])
 
-        return !!result
+        return result
     } catch (error) {
         console.log(error)
         return false

@@ -33,15 +33,23 @@ const validarLogin = async function(login, contentType) {
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }    
 }
+const criarCodigoSenha = function() {
+    const codigo = crypto.randomInt(0, 1000000);
+    const result = codigo.toString().padStart(6, '0');
+    // console.log(result)
+    return result
+}
 
 const validarTrocaSenha = async function (email, contentType) {
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
+    let code = criarCodigoSenha()
     try {
         if(contentTypeValidado){
-            let emailEnvidado = await emails.enviarNovaSenha(email.email)
+            let emailEnvidado = await emails.enviarNovaSenha(email, code)
             if(emailEnvidado == true){
                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
                 mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_REQUEST.message
+                mesagensDefault.HEADER.code = code
                 return mesagensDefault.HEADER
             }else{
                 mesagensDefault.HEADER.StatusCode = mesagensDefault.ERRO_RELATION_TABLE.StatusCode

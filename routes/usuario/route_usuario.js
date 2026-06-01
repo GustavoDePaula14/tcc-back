@@ -12,6 +12,7 @@ const bodyParser = require('body-parser')
 const bodyParserJSON = bodyParser.json()
 
 const controller = require('../../controller/usuario/controller_usuario.js')
+const controllerLogin = require('../../controller/login/controller_login.js');
 const jwt = require('jsonwebtoken');
 const router = express.Router()
 const token = require('../login/router_login.js')
@@ -47,10 +48,19 @@ router.get("/usuarios", cors(), async function(request, response) {
     let result = await controller.listarUsuarios()
     response.json(result)
 })
+
+router.get("/senha-nova/code", cors(),bodyParserJSON, async function(request, response) {
+    let email = request.query.email
+
+    let result = await controllerLogin.validarTrocaSenha(email)
+    response.json(result)
+})
+
 router.put("/usuario/trocar-senha", cors(), async function(request, response) {
+    let code = request.query.code
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
-    let result = await controller.atulizarSenhaUsuario(dadosBody, contentType)
+    let result = await controller.atulizarSenhaUsuario(dadosBody, code, contentType)
 })
 
 router.get("/usuario/:id", cors(), async function(request, response) {

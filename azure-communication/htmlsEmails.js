@@ -107,8 +107,8 @@ const joinFamilyHTML = function(to_email, dono_familia, id){
     return html;
 }
 
-const newPasswordHTML = function(){
-    let html = ``;
+const newPasswordHTML = function(code){
+    let html = `${code}`;
     return html;
 }
 
