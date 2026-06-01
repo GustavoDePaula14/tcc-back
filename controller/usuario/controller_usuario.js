@@ -11,6 +11,7 @@ const mesagensDefault = require("../modulo/config_messages.js")
 const validarDados = require("../modulo/validar_dados.js")
 const validarAtributos = require("../modulo/validar_atributos.js")
 const jwt = require('../../jwt/jwt_service.js')
+const bcrypt = require('bcryptjs');
 const { json } = require("express")
 const crypto = require('crypto');
 // GET +
