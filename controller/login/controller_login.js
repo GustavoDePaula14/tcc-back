@@ -15,7 +15,7 @@ const emails = require('../../azure-communication/enviarEmails.js')
 
 const validarLogin = async function(login, contentType) {
     let result = await loginDAO.getAutentication(login.email)    
-    let senhaComparada = bcrypt.compareSync(login.senha, result[0][0].senha);    
+    let senhaComparada = bcrypt.compareSync(login.senha, result.senha);    
     try {
         if(senhaComparada == true){
             if (result && result.length > 0) {
