@@ -34,14 +34,15 @@ const listarFamiliaID = async function (id) {
     try {
         if (idValidado) {
             let result = await familiaDAO.getFamilyById(id)
+            console.log(result)
             if (result) {
-                if (result.length > 0) {
+                // if (result.length > 0) {
                     mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                    mesagensDefault.HEADER.Response = result[0]
+                    mesagensDefault.HEADER.Response = result
                     return mesagensDefault.HEADER
-                } else {
-                    return mesagensDefault.ERRO_NOT_FOUND
-                }
+                // } else {
+                //     return mesagensDefault.ERRO_NOT_FOUND
+                // }
             } else {
                 return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
             }

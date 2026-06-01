@@ -26,12 +26,20 @@ const getAllFamilys = async function () {
 //GET por id
 const getFamilyById = async function (id) {
     try {
-        let sql = `select * from tb_familia where id_familia = ${id}`
-        let result = await knexDatabase.raw(sql)
-        if (Array.isArray(result)) {
-            return result
-        } else {
-            return false
+        let sqlFamilia = `select * from tb_familia where id_familia = ${id}`
+        let sqlEndereco = `SELECT * FROM tb_endereco WHERE id_familia = ${id}`
+        let sqlUsuarios = `SELECT u.*, uf.is_admin FROM tb_usuario u INNER JOIN tb_usuario_familia uf ON u.id_usuario = uf.id_usuario WHERE uf.id_familia = ${id}`
+
+        let familia = await knexDatabase.raw(sqlFamilia)
+        // console.log(familia)
+        let endereco = await knexDatabase.raw(sqlEndereco)
+        // console.log(endereco)
+        let usuarios = await knexDatabase.raw(sqlUsuarios)
+        // console.log(usuarios)
+        return {
+            familia: familia[0],
+            endereco: endereco[0],
+            usuarios: usuarios[0]
         }
     } catch (error) {
         console.log(error)

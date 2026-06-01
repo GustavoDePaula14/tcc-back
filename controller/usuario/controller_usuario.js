@@ -10,7 +10,7 @@ const uploadDAO = require("../upload/upload_file.js")
 const mesagensDefault = require("../modulo/config_messages.js")
 const validarDados = require("../modulo/validar_dados.js")
 const validarAtributos = require("../modulo/validar_atributos.js")
-const bcrypt = require('bcryptjs');
+const jwt = require('../../jwt/jwt_service.js')
 const { json } = require("express")
 const crypto = require('crypto');
 // GET +
@@ -155,14 +155,15 @@ const atulizarUsuario = async function (usuario, foto, contentType, id) {
     }
 }
 
-const atulizarSenhaUsuario = async function(usuario, code, contentType) {
+const atulizarSenhaUsuario = async function(usuario, token, contentType) {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(usuario.senha, salt); 
     let emailValidado = await usuarioDAO.getUserByEmail(usuario.email)
+    let codeParametro = jwt.getDecodedToken(token)
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
     try {
         if(emailValidado == true){
-            if(usuario.code == code){
+            if(codeParametro = usuario.code){
                 if(contentType){
                     usuario.senha = hash
                     let result = await usuarioDAO.setUpdadeUserPasswordByEmail(usuario)

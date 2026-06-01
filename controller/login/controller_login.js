@@ -9,7 +9,7 @@ const loginDAO = require("../../model/DAO/login.js")
 const mesagensDefault = require("../modulo/config_messages.js")
 const validarDados = require("../modulo/validar_dados.js")
 const validarAtributos = require("../modulo/validar_atributos.js")
-const bcrypt = require('bcryptjs');
+const jwt = require('../../jwt/jwt_service.js')
 const emails = require('../../azure-communication/enviarEmails.js')
 
 const validarLogin = async function(login, contentType) {
@@ -43,13 +43,14 @@ const criarCodigoSenha = function() {
 const validarTrocaSenha = async function (email, contentType) {
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
     let code = criarCodigoSenha()
+    let tokenCode = jwt.getToken(code)
     try {
         if(contentTypeValidado){
             let emailEnvidado = await emails.enviarNovaSenha(email, code)
             if(emailEnvidado == true){
                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
                 mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_REQUEST.message
-                mesagensDefault.HEADER.code = code
+                mesagensDefault.HEADER.code = tokenCode
                 return mesagensDefault.HEADER
             }else{
                 mesagensDefault.HEADER.StatusCode = mesagensDefault.ERRO_RELATION_TABLE.StatusCode
