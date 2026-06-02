@@ -14,6 +14,9 @@ const bodyParserJSON = bodyParser.json()
 const controller = require('../../controller/familia/controller_familia.js')
 const router = express.Router()
 
+const multer = require('multer');
+const upload = multer();
+
 router.use((request, response, next) =>{
     response.header('Access-Control-Allow-Origin', '*')
     response.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
@@ -43,11 +46,11 @@ router.delete("/familia/:id", cors(), async function(request, response) {
     response.json(result)
 })
 
-router.post("/familia", cors(), bodyParserJSON, async function(request, response) {
+router.post("/familia", cors(), upload.single('foto'), async function(request, response) {
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
-
-    let result = await controller.criarFamilia(dadosBody, contentType)
+    let file = request.file
+    let result = await controller.criarFamilia(dadosBody, file, contentType)
     response.json(result)
 })
 router.post("/familia/endereco", cors(), bodyParserJSON, async function(request, response) {
@@ -57,20 +60,20 @@ router.post("/familia/endereco", cors(), bodyParserJSON, async function(request,
     let result = await controller.criarFamiliaEndereco(dadosBody,contentType)
     response.json(result)
 })
-router.put("/familia/:id", cors(), async function(request, response) {
+router.put("/familia/:id", cors(), upload.single('foto'), async function(request, response) {
     let id = request.params.id
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
-
-    let result = await controller.atulizarFamilia(dadosBody, contentType, id)
+    let file = request.file
+    let result = await controller.atulizarFamilia(dadosBody, file, contentType, id)
     response.json(result)
 })
-router.put("/familia/endereco/:id", cors(), bodyParserJSON, async function(request, response) {
+router.put("/familia/endereco/:id", cors(), async function(request, response) {
     let id = request.params.id
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
 
-    let result = await controller.atualizarFamiliaEndereco(dadosBody,contentType,id)
+    let result = await controller.atualizarFamiliaEndereco(dadosBody, contentType, id)
     response.json(result)
 })
 

@@ -13,6 +13,7 @@ const getAllFamilys = async function () {
     try {
         let sql = "select * from tb_familia"
         let result = await knexDatabase.raw(sql)
+        console.log(result)
         if (Array.isArray(result)) {
             return result
         } else {
@@ -84,10 +85,12 @@ const setInsertFamily = async function (familia) {
     try {
         let sql = `insert into tb_familia(
                         nome,
-                        telefone_residencial
+                        telefone_residencial,
+                        foto
                     )values(
                         '${familia.nome}',
-                        '${familia.telefone_residencial}'
+                        '${familia.telefone_residencial}',
+                        '${familia.foto}'
                     )`
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {
@@ -133,7 +136,8 @@ const setUpdateFamily = async function (familia) {
     try {
         let sql = `update tb_familia set
                         nome = '${familia.nome}',
-                        telefone_residencial = '${familia.telefone_residencial}'
+                        telefone_residencial = '${familia.telefone_residencial}',
+                        foto = '${familia.foto}'
                     where id_familia = ${familia.id_familia}`
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {

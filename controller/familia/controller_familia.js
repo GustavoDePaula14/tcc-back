@@ -8,7 +8,7 @@ const familiaDAO = require("../../model/DAO/familia.js")
 const mesagensDefault = require("../modulo/config_messages.js")
 const validarDados = require("../modulo/validar_dados.js")
 const validarAtributos = require("../modulo/validar_atributos.js")
-
+const uploadDAO = require("../upload/upload_file.js")
 //GET
 const listarFamilias = async function () {
     try {
@@ -78,25 +78,29 @@ const listarFamiliaCompleta = async function(id) {
     }
 }
 //POST
-const criarFamilia = async function (familia, contentType) {
+const criarFamilia = async function (familia, foto, contentType) {
     try {
         let dadosValidados = await validarDados.validarDadosFamilia(familia)
-        let contentTypeValidado = validarAtributos.validarContentType(contentType)
+        let contentTypeValidado = validarAtributos.validarContentTypeFormData(contentType)
         if (contentTypeValidado) {
             if (dadosValidados == true) {
-                let result = await familiaDAO.setInsertFamily(familia)
-                if (result) {
-                    // console.log(result)
-                    if (result.length > 0) {
-                        mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
-                        mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.message
-                        return mesagensDefault.HEADER
-                    } else {
-                        return mesagensDefault.ERRO_NOT_FOUND
+                let imagemEnvida = await uploadDAO.uploadFiles(foto)
+                    if(typeof(imagemEnvida) != false){
+                        familia.foto = imagemEnvida
+                        let result = await familiaDAO.setInsertFamily(familia)
+                        if (result) {
+                            // console.log(result)
+                            if (result.length > 0) {
+                                mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
+                                mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.message
+                                return mesagensDefault.HEADER
+                            } else {
+                                return mesagensDefault.ERRO_NOT_FOUND
+                            }
+                        } else {
+                            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                        }
                     }
-                } else {
-                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
-                }
             } else {
                 return dadosValidados
             }
@@ -154,26 +158,30 @@ const criarFamiliaEndereco = async function(familia, contentType) {
 }
 
 //PUT
-const atulizarFamilia = async function (familia, contentType, id) {
+const atulizarFamilia = async function (familia, foto, contentType, id) {
     let dadosValidados = await validarDados.validarDadosFamilia(familia)
-    let contentTypeValidado = validarAtributos.validarContentType(contentType)
+    let contentTypeValidado = validarAtributos.validarContentTypeFormData(contentType)
     let idValidado = validarAtributos.validarValorId(id)
+    let imagemEnvida = await uploadDAO.uploadFiles(foto)
     try {
         if (idValidado) {
             let buscarId = familiaDAO.getFamilyById(id)
             if (contentTypeValidado) {
                 if (dadosValidados == true) {
                     if (buscarId || buscarId.length !== 0) {
-                        familia.id_familia = parseInt(id)
-                        let result = await familiaDAO.setUpdateFamily(familia)
-                        if (result) {
-                            if (result.length > 0) {
-                                mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
-                                mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
-                                return mesagensDefault.HEADER
+                        if(typeof(imagemEnvida) != false){
+                            familia.id_familia = parseInt(id)
+                            familia.foto = imagemEnvida
+                            let result = await familiaDAO.setUpdateFamily(familia)
+                            if (result) {
+                                if (result.length > 0) {
+                                    mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
+                                    mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
+                                    return mesagensDefault.HEADER
+                                }
+                            } else {
+                                return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                             }
-                        } else {
-                            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                         }
                     } else {
                         return mesagensDefault.ERRO_INVALID_ID
