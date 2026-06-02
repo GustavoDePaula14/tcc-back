@@ -105,6 +105,7 @@ const listarListaCompletaPorFamilia = async function (idFamilia) {
 
                 if (item.id_item) {
                     lista.itens.push({
+                        id_lista: item.id_lista,
                         id_item: item.id_item,
                         nome_item: item.nome_item,
                         quantidade: item.quantidade,

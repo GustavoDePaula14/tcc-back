@@ -10,6 +10,7 @@ const mesagensDefault = require("../modulo/config_messages.js")
 const validarDados = require("../modulo/validar_dados.js")
 const validarAtributos = require("../modulo/validar_atributos.js")
 const bcrypt = require('bcryptjs');
+const crypto = require("crypto")
 const jwt = require('../../jwt/jwt_service.js')
 const emails = require('../../azure-communication/enviarEmails.js')
 
@@ -46,7 +47,7 @@ const criarCodigoSenha = function() {
 const validarTrocaSenha = async function (email, contentType) {
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
     let code = criarCodigoSenha()
-    let tokenCode = jwt.getToken(code)
+    let tokenCode = jwt.getTokenString(code)
     try {
         if(contentTypeValidado){
             let emailEnvidado = await emails.enviarNovaSenha(email, code)

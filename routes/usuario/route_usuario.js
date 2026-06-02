@@ -49,17 +49,18 @@ router.get("/usuarios", cors(), async function(request, response) {
     response.json(result)
 })
 
-router.get("/senha-nova/code", cors(),bodyParserJSON, async function(request, response) {
+router.get("/senha-nova/code", cors(), async function(request, response) {
     let email = request.query.email
     let result = await controllerLogin.validarTrocaSenha(email)
     response.json(result)
 })
 
-router.put("/usuario/trocar-senha", cors(), async function(request, response) {
+router.put("/usuario/trocar-senha", bodyParserJSON, cors(), async function(request, response) {
     let token = request.query.token
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
     let result = await controller.atulizarSenhaUsuario(dadosBody, token, contentType)
+    response.json(result)
 })
 
 router.get("/usuario/:id", cors(), async function(request, response) {

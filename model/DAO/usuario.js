@@ -110,10 +110,10 @@ const setUpdadeUserPasswordByEmail = async function(usuario) {
     try {
         let sql = `update tb_usuario set
                         senha = '${usuario.senha}'
-                    where email = ${usuario.email}`
+                    where email = '${usuario.email}'`
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {
-            return result
+            return true
         } else {
             return false
         }

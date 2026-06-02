@@ -40,6 +40,7 @@ const getAllItensListsByFamily = async function(idFamilia) {
                 l.nome AS nome_lista,
                 l.favorita,
 
+                i.id_lista,
                 i.id_item,
                 i.nome_item,
                 i.quantidade,
@@ -97,6 +98,7 @@ const getFavoriteItensListsByFamily = async function(idFamilia) {
                 l.nome AS nome_lista,
                 l.favorita,
 
+                i.id_lista,
                 i.id_item,
                 i.nome_item,
                 i.quantidade,

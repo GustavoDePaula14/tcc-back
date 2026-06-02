@@ -164,11 +164,11 @@ const atulizarSenhaUsuario = async function(usuario, token, contentType) {
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
     try {
         if(emailValidado == true){
-            if(codeParametro = usuario.code){
-                if(contentType){
+            if(codeParametro.code == usuario.code){
+                if(contentTypeValidado){
                     usuario.senha = hash
                     let result = await usuarioDAO.setUpdadeUserPasswordByEmail(usuario)
-                    if(result){
+                    if(result ==true){
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
                         mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
                         return mesagensDefault.HEADER

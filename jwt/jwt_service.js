@@ -11,7 +11,9 @@ require('dotenv').config()
 const getToken = (usuario) => {
     return jwt.sign(usuario, process.env.JWT_SECRET, { expiresIn: '168h' })
 };
-
+const getTokenString = (code) => {
+    return jwt.sign({"code":code}, process.env.JWT_SECRET, { expiresIn: '168h' })
+};
 const getDecodedToken = (token) => {
     return jwt.decode(token)
 };
@@ -47,5 +49,6 @@ const verificarToken = function(request, response, next) {
 module.exports={
     getToken,
     getDecodedToken,
-    verificarToken
+    verificarToken,
+    getTokenString
 }
