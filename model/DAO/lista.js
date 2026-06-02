@@ -14,7 +14,7 @@ const getAllLists = async function () {
     try {
         let sql = `select * from tb_lista`
         let result = await knexDatabase.raw(sql)
-
+        console.log(result)
         if (Array.isArray(result)) {
             return result
         } else {
@@ -24,6 +24,7 @@ const getAllLists = async function () {
         return error
     }
 }
+
 const getAllItensListsByFamily = async function(idFamilia) {
     try {
         let sql = `
@@ -40,7 +41,6 @@ const getAllItensListsByFamily = async function(idFamilia) {
                 l.nome AS nome_lista,
                 l.favorita,
 
-                i.id_lista,
                 i.id_item,
                 i.nome_item,
                 i.quantidade,
@@ -149,14 +149,12 @@ const getListById = async function (id) {
         let lista = await knexDatabase.raw(sqlListas, [id])
         let itens = await knexDatabase.raw(sqlItens, [id])
 
-        if (Array.isArray(result)) {
+
             return {
                 lista: lista[0],
                 itens: itens[0]
             }
-        } else {
-            return false
-        }
+     
     } catch (error) {
         return error
     }
@@ -243,7 +241,7 @@ const setDeleteList = async function (id) {
         let = sql = `delete from tb_lista where id_lista = ${id}`
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {
-            return result
+            return true
         } else {
             return false
         }

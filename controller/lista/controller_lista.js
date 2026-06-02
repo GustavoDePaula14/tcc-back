@@ -275,9 +275,10 @@ const excluirLista = async function (id) {
     try {
         if (idValidado) {
             let buscarId = await listaDAO.getListById(id)
+            console.log(buscarId)
             if (buscarId) {
                 let result = await listaDAO.setDeleteList(id)
-
+                
                 if (result) {
                     if (result.length > 0) {
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_DELETED_ITEM.StatusCode
