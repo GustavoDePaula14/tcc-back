@@ -221,7 +221,20 @@ const setFavoriteList = async function(id, favorita) {
         return false
     }
 }
-
+const getLastList = async function() {
+    try {
+        let sql = `select * from tb_lista order by id_lista desc limit 1`
+        let result = await knexDatabase.raw(sql)
+        console.log(result)
+        if (Array.isArray(result)) {
+            return result
+        } else {
+            return false
+        }
+    } catch (error) {
+        return error
+    }
+}
 //DELETE
 const setDeleteList = async function (id) {
     try {
@@ -243,6 +256,7 @@ module.exports = {
     setUpdateList,
     setFavoriteList,
     setInsertList,
+    getLastList,
     getAllItensListsByFamily,
     getFavoriteItensListsByFamily
 }

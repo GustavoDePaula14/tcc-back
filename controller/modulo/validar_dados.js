@@ -82,10 +82,6 @@ const validarDadosItens = async function (item) {
         } else if (item.quantidade == null || item.quantidade == "" || item.quantidade == undefined || isNaN(item.quantidade)) {
             mesagensDefault.ERRO_NOT_FOUND.campo = "quantidade"
             return mesagensDefault.ERRO_NOT_FOUND
-        } else if (item.valor_unitario == null || item.valor_unitario == "" || item.valor_unitario == undefined || isNaN(item.valor_unitario)) {
-            console.log(item.valor_unitario)
-            mesagensDefault.ERRO_NOT_FOUND.campo = "valor_unitario"
-            return mesagensDefault.ERRO_NOT_FOUND          
         } else if (item.comprado == null || item.comprado == undefined || typeof item.comprado !== "boolean") {
             mesagensDefault.ERRO_NOT_FOUND.campo = "comprado"
             return mesagensDefault.ERRO_NOT_FOUND
