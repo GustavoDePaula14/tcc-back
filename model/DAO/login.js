@@ -14,11 +14,14 @@ const getAutentication = async function(email) {
     try {
         let sql = `select id_usuario, email, senha, nome from tb_usuario where email = '${email}'`
         let result = await knexDatabase.raw(sql)
-
-        if (Array.isArray(result)) {
-            return result
-        } else {
+        if(result == [] || result == null || result == ""){
             return false
+        } else{
+            if (Array.isArray(result)) {
+                return result
+            } else {
+                return false
+            }
         }
     } catch (error) {
         return error

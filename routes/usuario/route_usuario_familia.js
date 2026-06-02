@@ -49,14 +49,9 @@ router.post("/usuario-familia", cors(), bodyParserJSON, async function(request, 
     response.json(result)
 })
 router.post("/usuario-familia/emailEnviado", cors(), bodyParserJSON, async function(request, response) {
-    let email = request.query.email
-    let id_familia = request.query.id_familia
-    let dadosBody = {
-        "email" : email,
-        "id_familia" : id_familia
-    }
+    let token = request.query.token
     let contentType = request.headers["content-type"]
-    let result = await controller.criarUsuarioFamiliaPorEmail(dadosBody, contentType)
+    let result = await controller.criarUsuarioFamiliaPorEmail(token, contentType)
     console.log(result)
     response.json(result)
 })

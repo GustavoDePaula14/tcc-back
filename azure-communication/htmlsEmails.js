@@ -5,9 +5,9 @@
  * Versão: 1.0
  ************************************************/
 
-const joinFamilyHTML = function(to_email, dono_familia, id){
-    const router = `/v1/familysync/usuario-familia/emailEnviado?email=${to_email}&id_familia=${id}`;
-    const url = `https://tcc-back-q3kw.onrender.com${router}`;
+const joinFamilyHTML = function(to_email, dono_familia, token){
+    const router = ``;
+    const url = `https://gustavodepaula14.github.io/pagina-login-usuarioFamilia?token=${token}`;
 
     let html = `<!doctype html>
 <html lang="pt-br">

@@ -11,6 +11,9 @@ const validarDados = require("../modulo/validar_dados.js")
 const validarAtributos = require("../modulo/validar_atributos.js")
 const enviarEmail = require("../login/controller_login.js")
 const usuarioDAO = require('../../model/DAO/usuario.js')
+const jwt = require('../../jwt/jwt_service.js')
+
+
 const listarUsuarioFamilia = async function () {
     try {
         let result = await usuario_familiaDAO.getAllUsersFamily()
@@ -105,17 +108,18 @@ const enviarEmailUsuarioFamiliaPorEmail = async function (usuarioFamilia, conten
         return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
-const criarUsuarioFamiliaPorEmail = async function (usuarioFamilia, contentType) {
+const criarUsuarioFamiliaPorEmail = async function (token, contentType) {
     try {
-        console.log(usuarioFamilia)
+        let usuario = jwt.getDecodedToken(token)
+        // console.log(usuario)
         if (!validarAtributos.validarContentType(contentType))
             return mensagensDefault.ERRO_CONTENT_TYPE
 
-        if (!validarDados.validarUsuarioFamiliaPorEmail(usuarioFamilia))
+        if (!validarDados.validarUsuarioFamiliaPorEmail(usuario))
             return mensagensDefault.ERRO_REQUIRED_FIELDS
-
+        console.log(usuario)
         let result = await usuario_familiaDAO
-            .setInsertUsersFamilyByUserEmail(usuarioFamilia)
+            .setInsertUsersFamilyByUserEmail(usuario)
         console.log(result)
 
         if (result == null) {

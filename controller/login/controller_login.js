@@ -14,14 +14,16 @@ const jwt = require('../../jwt/jwt_service.js')
 const emails = require('../../azure-communication/enviarEmails.js')
 
 const validarLogin = async function(login, contentType) {
-    let result = await loginDAO.getAutentication(login.email)    
-    let senhaComparada = bcrypt.compareSync(login.senha, result[0][0].senha);    
+    let result = await loginDAO.getAutentication(login.email)  
+    let senhaComparada = bcrypt.compareSync(login.senha, result[0][0].senha); 
+    console.log(senhaComparada)   
     try {
         if(senhaComparada == true){
             if (result && result.length > 0) {
                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
                 mesagensDefault.HEADER.Status = senhaComparada
                 mesagensDefault.HEADER.Response = result[0][0]
+                
                 return mesagensDefault.HEADER
             } else {
                 return mesagensDefault.ERRO_NOT_FOUND
@@ -65,11 +67,13 @@ const validarTrocaSenha = async function (email, contentType) {
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }  
 }
-const validarEntradoFamilia = async function (email, contentType,id) {
+const validarEntradoFamilia = async function (email, contentType, id) {
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
     try {
         if(contentTypeValidado){
-            let emailEnvidado = await emails.enviarLoginUsuarioFamila(email.email, email.remetente, id)
+            let objToken = {"email": email.email, "id_familia":id}
+            let token = jwt.getToken(objToken)
+            let emailEnvidado = await emails.enviarLoginUsuarioFamila(email.email, email.remetente, token)
             if(emailEnvidado == true){
                 mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
                 mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_REQUEST.message

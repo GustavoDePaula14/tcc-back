@@ -202,7 +202,7 @@ const setInsertUsersFamily = async function (usuarioFamilia) {
 
 const setInsertUsersFamilyByUserEmail = async function (usuarioFamilia) {
     try {
-
+        console.log(usuarioFamilia)
         let sqlSearch = `
             SELECT id_usuario 
             FROM tb_usuario 
