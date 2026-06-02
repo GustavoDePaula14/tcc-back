@@ -241,7 +241,7 @@ const setDeleteList = async function (id) {
         let = sql = `delete from tb_lista where id_lista = ${id}`
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {
-            return true
+            return result
         } else {
             return false
         }
