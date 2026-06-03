@@ -127,11 +127,17 @@ const setUpdateUsersInformation = async function (usuarioInformacao) {
 // DELETE
 const setDeleteUsersInformation = async function (id) {
     try {
-        let sql = `delete from tb_usuario_informacao where id_usuario_informacao = ?`
+        let sql = `
+            DELETE FROM tb_usuario_informacao 
+            WHERE id_usuario_informacao = ?
+        `
+
         let result = await knexDatabase.raw(sql, [id])
 
-        return !!result
+        return result[0].affectedRows > 0
+
     } catch (error) {
+        console.log(error)
         return false
     }
 }
