@@ -58,7 +58,7 @@ const validarTrocaSenha = async function (email, contentType) {
         console.log(emailEnvidado)
         if(emailEnvidado == true){
             mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-            mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_REQUEST.message
+            mesagensDefault.HEADER.Response.message = mesagensDefault.SUCCESS_REQUEST.message
             mesagensDefault.HEADER.Response.code = tokenCode
             return mesagensDefault.HEADER
         }else{

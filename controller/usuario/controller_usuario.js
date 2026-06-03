@@ -156,6 +156,11 @@ const atulizarUsuario = async function (usuario, foto, contentType, id) {
     }
 }
 
+const  atulizarSenhaUsuarioCadastrado = async function(usuario, contentType) {
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(usuario.senha, salt); 
+
+}
 const  atulizarSenhaUsuario = async function(usuario, token, contentType) {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(usuario.senha, salt); 
