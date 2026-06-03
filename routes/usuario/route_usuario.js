@@ -62,6 +62,12 @@ router.put("/usuario/trocar-senha", bodyParserJSON, cors(), async function(reque
     let result = await controller.atulizarSenhaUsuario(dadosBody, token, contentType)
     response.json(result)
 })
+router.put("/usuario-cadastrado/trocar-senha", bodyParserJSON, cors(), async function(request, response) {
+    let dadosBody = request.body
+    let contentType = request.headers["content-type"]
+    let result = await controller.atulizarSenhaUsuarioCadastrado(dadosBody, contentType)
+    response.json(result)
+})
 
 router.get("/usuario/:id", cors(), async function(request, response) {
     let id = request.params.id

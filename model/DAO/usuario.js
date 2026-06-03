@@ -55,6 +55,21 @@ const getUserByEmail = async function (email) {
         return error
     }
 }
+const getUserPasswordByEmail = async function (email) {
+    try {
+        let sql = `select senha from tb_usuario where email = "${email}"`
+        let result = await knexDatabase.raw(sql)
+        // console.log(result)
+        if (Array.isArray(result)) {
+            return true
+        } else {
+            return false
+        }
+    } catch (error) {
+        console.log(error)
+        return error
+    }
+}
 //POST 
 const setInsertUser = async function (usuario) {
     try {
@@ -144,5 +159,6 @@ module.exports = {
     setInsertUser,
     setUpdateUser,
     setDeleteUser,
+    getUserPasswordByEmail,
     setUpdadeUserPasswordByEmail
 }

@@ -158,8 +158,32 @@ const atulizarUsuario = async function (usuario, foto, contentType, id) {
 
 const  atulizarSenhaUsuarioCadastrado = async function(usuario, contentType) {
     const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(usuario.senha, salt); 
+    const hash = bcrypt.hashSync(usuario.senhaNova, salt); 
+    const hash2 = bcrypt.hashSync(usuario.senhaAtual, salt); 
+    let emailValidado = await usuarioDAO.getUserByEmail(usuario.email)
+    let contentTypeValidado = validarAtributos.validarContentType(contentType)
+    try {
+        if(emailValidado == true){
+            let senhaAntiga = await usuarioDAO.getUserPasswordByEmail(usuario.email)
+            let senhaComparada = bcrypt.compare()
+            if(senhaComparada == true){
+                let obj = {
+                    "senha": hash,
+                    "email": usuario.email
+                }
+                let result = await usuarioDAO.getUserPasswordByEmail(obj)
+                if(result == true){
+                    mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
+                    mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
+                    return mesagensDefault.HEADER
+                }
+            }
+        }else{
 
+        }
+    } catch (error) {
+        
+    }
 }
 const  atulizarSenhaUsuario = async function(usuario, token, contentType) {
     const salt = bcrypt.genSaltSync(10);
@@ -226,5 +250,6 @@ module.exports = {
     excluirUsuario,
     atulizarUsuario,
     criarUsuario,
+    atulizarSenhaUsuarioCadastrado,
     atulizarSenhaUsuario
 }

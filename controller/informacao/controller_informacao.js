@@ -17,7 +17,7 @@ const listarInformacao = async function () {
         if (result) {
             if (result.length > 0) {
                 mensagensDefault.HEADER.StatusCode = mensagensDefault.SUCCESS_REQUEST.StatusCode
-                mensagensDefault.HEADER.Response = result[0]
+                mensagensDefault.HEADER.Response = result
                 return mensagensDefault.HEADER
             } else {
                 return mensagensDefault.ERRO_NOT_FOUND
@@ -36,11 +36,12 @@ const listarInformacaoID = async function (id) {
 
     try {
         if (idValidado) {
+            console.log(idValidado)
             let result = await informacaoDAO.getInformationById(id)
 
             if (result && result.length > 0) {
                 mensagensDefault.HEADER.StatusCode = mensagensDefault.SUCCESS_REQUEST.StatusCode
-                mensagensDefault.HEADER.Response = result[0]
+                mensagensDefault.HEADER.Response = result
                 return mensagensDefault.HEADER
             } else {
                 return mensagensDefault.ERRO_NOT_FOUND
@@ -105,13 +106,13 @@ const atualizarInformacao = async function (informacao, contentType, id) {
         let contentTypeValidado = validarAtributos.validarContentType(contentType)
         let idValidado = validarAtributos.validarValorId(id)
 
-        if (idValidado)
+        if (idValidado == false)
             return mensagensDefault.ERRO_INVALID_ID
 
         if (!contentTypeValidado)
             return mensagensDefault.ERRO_CONTENT_TYPE
 
-        if (!dadosValidados == false)
+        if (dadosValidados == false)
             return dadosValidados
         let buscarId = await informacaoDAO.getInformationById(id)
 
