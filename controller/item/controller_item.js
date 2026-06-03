@@ -93,7 +93,7 @@ const editarItemLote = async function (items, contentType) {
         if (contentTypeValidado) {
             if (dadosValidados == true) {
 
-                let result = await itemDAO.setUpdateIten(item)
+                let result = await itemDAO.setUpdateItenStatus(item)
 
                 if (result) {
                     mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
@@ -182,7 +182,7 @@ module.exports = {
     listarItemID,
     listarItens,
     criarItem,
-    // criarItemLote, 
+    editarItemLote, 
     atulizarItem,
     excluirItem
 }

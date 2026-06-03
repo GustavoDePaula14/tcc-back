@@ -138,6 +138,7 @@ module.exports = {
     getAllItens,
     getItenById,
     setInsertIten,
+    setUpdateItenStatus,
     setUpdateIten,
     setDeleteIten
 }
