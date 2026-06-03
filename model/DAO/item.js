@@ -55,14 +55,23 @@ const setInsertIten = async function (item) {
             item.valor_unitario,
             item.comprado
         ])
-        console.log(result)
 
-        return result
+        let idItemCriado = result[0].insertId
+
+        let itemCriado = await getItenById(idItemCriado)
+
+        if (itemCriado && itemCriado.length > 0) {
+            return itemCriado[0]
+        } else {
+            return false
+        }
+
     } catch (error) {
         console.log(error)
         return false
     }
 }
+
 
 // PUT sem id_lista
 const setUpdateIten = async function (item) {

@@ -59,7 +59,7 @@ const validarTrocaSenha = async function (email, contentType) {
         if(emailEnvidado == true){
             mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
             mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_REQUEST.message
-            mesagensDefault.HEADER.code = tokenCode
+            mesagensDefault.HEADER.Response.code = tokenCode
             return mesagensDefault.HEADER
         }else{
             mesagensDefault.HEADER.StatusCode = mesagensDefault.ERRO_RELATION_TABLE.StatusCode

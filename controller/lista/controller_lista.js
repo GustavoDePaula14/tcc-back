@@ -212,7 +212,7 @@ const criarLista = async function (lista, contentType) {
                     if (result.length > 0) {
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
                         mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.message
-                        mesagensDefault.HEADER.lista = listaCriada[0][0]
+                        mesagensDefault.HEADER.Response.lista = listaCriada[0][0]
                         return mesagensDefault.HEADER
                     } else {
                         return mesagensDefault.ERRO_NOT_FOUND

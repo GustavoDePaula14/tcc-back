@@ -57,21 +57,24 @@ const listarItemID = async function (id) {
 const criarItem = async function (item, contentType) {
     let dadosValidados = await validarDados.validarDadosItens(item)
     let contentTypeValidado = await validarAtributos.validarContentType(contentType)
+
     try {
         if (contentTypeValidado) {
             if (dadosValidados == true) {
-                let result = await itemDAO.setInsertIten(item)
-                if (result) {
-                    if (result.length > 0) {
-                        mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
-                        mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.message
-                        return mesagensDefault.HEADER
-                    } else {
-                        return mesagensDefault.ERRO_NOT_FOUND
-                    }
+
+                let itemCriado = await itemDAO.setInsertIten(item)
+
+                if (itemCriado) {
+                    mesagensDefault.HEADER.StatusCode =
+                        mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
+
+                    mesagensDefault.HEADER.Response = itemCriado
+
+                    return mesagensDefault.HEADER
                 } else {
                     return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
+
             } else {
                 return dadosValidados
             }
@@ -81,6 +84,33 @@ const criarItem = async function (item, contentType) {
     } catch (error) {
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
+}
+const criarItemLote = async function (items, contentType) {
+    let dadosValidados = await validarDados.validarDadosItens(items)
+    let contentTypeValidado = await validarAtributos.validarContentType(contentType)
+
+    items.forEach(async item => {
+        if (contentTypeValidado) {
+            if (dadosValidados == true) {
+
+                let result = await itemDAO.setInsertIten(item)
+
+                if (result) {
+                    mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
+                    mesagensDefault.HEADER.Response = result
+                    return mesagensDefault.HEADER
+                } else {
+                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                }
+
+            } else {
+                return dadosValidados
+            }
+        } else {
+            return mesagensDefault.ERRO_CONTENT_TYPE
+        }
+
+    });
 }
 // PUT
 const atulizarItem = async function (item, contentType, id) {
