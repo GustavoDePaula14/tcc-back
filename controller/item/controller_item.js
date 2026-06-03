@@ -182,6 +182,7 @@ module.exports = {
     listarItemID,
     listarItens,
     criarItem,
+    criarItemLote,
     atulizarItem,
     excluirItem
 }
