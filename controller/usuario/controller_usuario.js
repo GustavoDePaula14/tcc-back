@@ -156,30 +156,35 @@ const atulizarUsuario = async function (usuario, foto, contentType, id) {
     }
 }
 
-const  atulizarSenhaUsuarioCadastrado = async function(usuario, contentType) {
+const atulizarSenhaUsuarioCadastrado = async function(usuario, contentType) {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(usuario.senhaNova, salt); 
-    const hash2 = bcrypt.hashSync(usuario.senhaAtual, salt); 
     let emailValidado = await usuarioDAO.getUserByEmail(usuario.email)
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
     try {
         if(emailValidado == true){
             let senhaAntiga = await usuarioDAO.getUserPasswordByEmail(usuario.email)
-            let senhaComparada = bcrypt.compare()
+            let senhaComparada = bcrypt.compareSync(usuario.senhaAtual, senhaAntiga[0][0].senha)
+            console.log(senhaComparada)
             if(senhaComparada == true){
                 let obj = {
                     "senha": hash,
                     "email": usuario.email
                 }
-                let result = await usuarioDAO.getUserPasswordByEmail(obj)
+                let result = await usuarioDAO.setUpdadeUserPasswordByEmail(obj)
+
                 if(result == true){
                     mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
                     mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
                     return mesagensDefault.HEADER
+                }else{
+                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
                 }
+            }else{
+                return mesagensDefault.ERRO_NOT_FOUND
             }
         }else{
-
+            return mesagensDefault.ERRO_NOT_FOUND
         }
     } catch (error) {
         
