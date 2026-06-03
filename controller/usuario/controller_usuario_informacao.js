@@ -250,21 +250,24 @@ const atualizarUsuarioInformacao = async function (usuarioInformacao, contentTyp
         return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
-
 const excluirUsuarioInformacao = async function (id) {
     try {
-        if (!validarAtributos.validarId(id))
+        if (!validarAtributos.validarId(id)) {
             return mensagensDefault.ERRO_INVALID_ID
+        }
 
         let buscarId = await usuario_informacaoDAO.getUsersInformationById(id)
 
-        if (!buscarId || buscarId.length === 0)
+        if (!buscarId || buscarId.length === 0) {
             return mensagensDefault.ERRO_NOT_FOUND
+        }
 
         let result = await usuario_informacaoDAO.setDeleteUsersInformation(id)
 
         if (result) {
-            return mensagensDefault.SUCCESS_DELETED_ITEM
+            mensagensDefault.HEADER.StatusCode = mensagensDefault.SUCCESS_DELETED_ITEM.StatusCode
+            mensagensDefault.HEADER.Response = mensagensDefault.SUCCESS_DELETED_ITEM.message
+            return mensagensDefault.HEADER
         } else {
             return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
         }

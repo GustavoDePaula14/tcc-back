@@ -118,7 +118,7 @@ const atulizarUsuario = async function (usuario, foto, contentType, id) {
             if (contentTypeValidado) {
                 if (dadosValidados == true) {
                     if (buscarId) {
-                        if(ypeof(imagemEnvida) != false){
+                        if(typeof(imagemEnvida) != false){
                             usuario.senha = hash
                             usuario.id_usuario = parseInt(id)
                             usuario.foto = imagemEnvida
