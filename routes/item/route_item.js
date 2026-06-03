@@ -45,7 +45,7 @@ router.post("/item", cors(), bodyParserJSON, async function(request, response) {
     let result = await controller.criarItem(dadosBody, contentType)
     response.json(result)
 })
-router.post("/item/lote", cors(), bodyParserJSON, async function(request, response) {
+router.put("/item/lote", cors(), bodyParserJSON, async function(request, response) {
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
 

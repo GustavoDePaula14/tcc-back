@@ -85,7 +85,7 @@ const criarItem = async function (item, contentType) {
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
-const criarItemLote = async function (items, contentType) {
+const editarItemLote = async function (items, contentType) {
     let dadosValidados = await validarDados.validarDadosItens(items)
     let contentTypeValidado = await validarAtributos.validarContentType(contentType)
 
@@ -93,7 +93,7 @@ const criarItemLote = async function (items, contentType) {
         if (contentTypeValidado) {
             if (dadosValidados == true) {
 
-                let result = await itemDAO.setInsertIten(item)
+                let result = await itemDAO.setUpdateIten(item)
 
                 if (result) {
                     mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
@@ -182,7 +182,7 @@ module.exports = {
     listarItemID,
     listarItens,
     criarItem,
-    criarItemLote,
+    // criarItemLote, 
     atulizarItem,
     excluirItem
 }

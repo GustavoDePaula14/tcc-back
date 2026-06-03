@@ -99,7 +99,28 @@ const setUpdateIten = async function (item) {
         return false
     }
 }
+const setUpdateItenStatus = async function (item) {
+    try {
+        let sql = `
+            UPDATE tb_item SET
+                comprado = ?
+            WHERE id_item = ?
+        `
 
+        let result = await knexDatabase.raw(sql, [
+            item.nome_item,
+            item.quantidade,
+            item.valor_unitario,
+            item.comprado,
+            item.id_item
+        ])
+
+        return result
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
 // DELETE
 const setDeleteIten = async function (id) {
     try {
