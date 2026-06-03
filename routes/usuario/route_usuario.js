@@ -49,7 +49,7 @@ router.get("/usuarios", cors(), async function(request, response) {
     response.json(result)
 })
 
-router.get("/senha-nova/code", cors(), async function(request, response) {
+router.get("/senha-nova/code", cors(),bodyParserJSON, async function(request, response) {
     let email = request.query.email
     let result = await controllerLogin.validarTrocaSenha(email)
     response.json(result)

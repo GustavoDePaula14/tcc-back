@@ -45,23 +45,23 @@ const criarCodigoSenha = function() {
 }
 
 const validarTrocaSenha = async function (email, contentType) {
-    let contentTypeValidado = validarAtributos.validarContentType(contentType)
+
     let code = criarCodigoSenha()
+
     let tokenCode = jwt.getTokenString(code)
     try {
-        if(contentTypeValidado){
-            let emailEnvidado = await emails.enviarNovaSenha(email, code)
-            if(emailEnvidado == true){
-                mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_REQUEST.message
-                mesagensDefault.HEADER.code = tokenCode
-                return mesagensDefault.HEADER
-            }else{
-                mesagensDefault.HEADER.StatusCode = mesagensDefault.ERRO_RELATION_TABLE.StatusCode
-                mesagensDefault.HEADER.Response = mesagensDefault.ERRO_RELATION_TABLE.message
+        let emailEnvidado = await emails.enviarNovaSenha(email, code)
+        console.log(emailEnvidado)
+        if(emailEnvidado == true){
+            mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
+            mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_REQUEST.message
+            mesagensDefault.HEADER.code = tokenCode
+            return mesagensDefault.HEADER
+        }else{
+            mesagensDefault.HEADER.StatusCode = mesagensDefault.ERRO_RELATION_TABLE.StatusCode
+            mesagensDefault.HEADER.Response = mesagensDefault.ERRO_RELATION_TABLE.message
 
-                return mesagensDefault.HEADER
-            }
+            return mesagensDefault.HEADER
         }
     } catch (error) {
         console.log(error)
