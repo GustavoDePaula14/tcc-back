@@ -156,18 +156,18 @@ const atulizarUsuario = async function (usuario, foto, contentType, id) {
     }
 }
 
-const atulizarSenhaUsuario = async function(usuario, token, contentType) {
+const  atulizarSenhaUsuario = async function(usuario, token, contentType) {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(usuario.senha, salt); 
-    let emailValidado = await usuarioDAO.getUserByEmail(usuario.email)
     let codeParametro = jwt.getDecodedToken(token)
+    let emailValidado = await usuarioDAO.getUserByEmail(codeParametro.email)
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
     try {
         if(emailValidado == true){
             if(codeParametro.code == usuario.code){
                 if(contentTypeValidado){
                     usuario.senha = hash
-                    let result = await usuarioDAO.setUpdadeUserPasswordByEmail(usuario)
+                    let result = await usuarioDAO.setUpdadeUserPasswordByEmail(usuario, codeParametro.email)
                     if(result ==true){
                         mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
                         mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message

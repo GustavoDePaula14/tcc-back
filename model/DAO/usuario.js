@@ -106,11 +106,11 @@ const setUpdateUser = async function (usuario) {
         return error
     }
 }
-const setUpdadeUserPasswordByEmail = async function(usuario) {
+const setUpdadeUserPasswordByEmail = async function(usuario, email) {
     try {
         let sql = `update tb_usuario set
                         senha = '${usuario.senha}'
-                    where email = '${usuario.email}'`
+                    where email = '${email}'`
         let result = await knexDatabase.raw(sql)
         if (Array.isArray(result)) {
             return true

@@ -47,8 +47,12 @@ const criarCodigoSenha = function() {
 const validarTrocaSenha = async function (email, contentType) {
 
     let code = criarCodigoSenha()
-
-    let tokenCode = jwt.getTokenString(code)
+    let obj ={
+        "code": code,
+        "email": email
+    }
+    let tokenCode = jwt.getToken(obj)
+    console.log(tokenCode)
     try {
         let emailEnvidado = await emails.enviarNovaSenha(email, code)
         console.log(emailEnvidado)
