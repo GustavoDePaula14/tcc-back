@@ -324,12 +324,43 @@ const favoritarLista = async function(id, favorita) {
         return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+const favoritarListaLote = async function (listas, contentType) {
+    let contentTypeValidado = await validarAtributos.validarContentType(contentType)
+    try {
+        if (contentTypeValidado == true) {
+            listas.forEach(async lista => {
+                // let idValidado = validarAtributos.validarId(lista.id_lista)
+
+                // if (!idValidado)
+                //     return mesagensDefault.ERRO_INVALID_ID
+
+                let result = await listaDAO.setFavoriteList(lista.id_lista, lista.favorita)
+
+                if (result) {
+
+                    mesagensDefault.HEADER.StatusCode = 200
+                    mesagensDefault.HEADER.Response = "Favorito atualizado"
+
+                    return mesagensDefault.HEADER
+
+                } else {
+                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                }
+            });
+        }
+
+
+    } catch (error) {
+        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }
+}
 module.exports = {
     listarListas,
     listarListaID,
     criarLista,
     atulizarLista,
     excluirLista,
+    favoritarListaLote,
     listarListaCompletaPorFamilia,
     favoritarLista,
     listarListaFavoritaCompletaPorFamilia
