@@ -86,26 +86,23 @@ const criarItem = async function (item, contentType) {
     }
 }
 const editarItemLote = async function (items, contentType) {
-    let dadosValidados = await validarDados.validarDadosItens(items)
     let contentTypeValidado = await validarAtributos.validarContentType(contentType)
 
     items.forEach(async item => {
         if (contentTypeValidado) {
-            if (dadosValidados == true) {
+            console.log(item)
 
-                let result = await itemDAO.setUpdateItenStatus(item)
+            let result = await itemDAO.setUpdateItenStatus(item)
 
-                if (result) {
-                    mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
-                    mesagensDefault.HEADER.Response = result
-                    return mesagensDefault.HEADER
-                } else {
-                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
-                }
-
+            if (result) {
+                mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
+                mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
+                return mesagensDefault.HEADER
             } else {
-                return dadosValidados
+                return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
             }
+
+
         } else {
             return mesagensDefault.ERRO_CONTENT_TYPE
         }
