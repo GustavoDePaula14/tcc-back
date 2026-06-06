@@ -108,13 +108,10 @@ const setUpdateItenStatus = async function (item) {
         `
 
         let result = await knexDatabase.raw(sql, [
-            item.nome_item,
-            item.quantidade,
-            item.valor_unitario,
             item.comprado,
             item.id_item
         ])
-
+        console.log(result)
         return result
     } catch (error) {
         console.log(error)
