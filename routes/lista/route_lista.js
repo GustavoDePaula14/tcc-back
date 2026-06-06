@@ -74,4 +74,10 @@ router.put("/lista/favorita/:id", cors(), bodyParserJSON, async function(request
     let result = await controller.favoritarLista(id, favorita)
     response.json(result)
 })
+router.put("/lista-favorita-lote", cors(), bodyParserJSON, async function (request, response) {
+    let dadosBody = request.body
+    let contentType = request.headers["content-type"]
+    let result = await controller.favoritarListaLote(dadosBody, contentType)
+    response.json(result)
+})
 module.exports = router;
