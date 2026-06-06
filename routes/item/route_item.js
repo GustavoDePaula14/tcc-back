@@ -45,11 +45,11 @@ router.post("/item", cors(), bodyParserJSON, async function(request, response) {
     let result = await controller.criarItem(dadosBody, contentType)
     response.json(result)
 })
-router.put("/item/lote", cors(), bodyParserJSON, async function(request, response) {
+router.put("/item/lote", cors(), bodyParserJSON, async function (request, response) {
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
 
-    let result = await controller.criarItemLote(dadosBody, contentType)
+    let result = await controller.editarItemLote(dadosBody, contentType)
     response.json(result)
 })
 router.put("/item/:id", cors(), async function(request, response) {
