@@ -38,7 +38,12 @@ router.delete("/usuario-familia/:id", cors(), async function(request, response) 
     let result = await controller.excluirUsuarioFamilia(id)
     response.json(result)
 })
-
+router.delete("/usuario-familia", cors(), async function(request, response) {
+    let id_familia = request.query.id_familia
+    let id_usuario = request.query.id_usuario
+    let result = await controller.excluirUsuarioFamiliaIdFamiliaIdUsuario(id_familia, id_usuario)
+    response.json(result)
+})
 router.post("/usuario-familia", cors(), bodyParserJSON, async function(request, response) {
     console.log("BODY:", request.body)
     

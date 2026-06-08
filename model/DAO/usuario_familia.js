@@ -168,7 +168,55 @@ const getUsersFamilyById = async function (id) {
         return false;
     }
 };
+const getUserFamilyByIdUserIdFamily = async function (id_familia, id_usuario) {
+    try {
 
+        let sql = `
+            SELECT
+                f.id_familia,
+                f.nome AS nome_familia,
+                u.id_usuario,
+                u.nome AS nome_usuario,
+                u.email,
+                uf.is_admin
+            FROM tb_usuario_familia uf
+            INNER JOIN tb_usuario u
+                ON u.id_usuario = uf.id_usuario
+            INNER JOIN tb_familia f
+                ON f.id_familia = uf.id_familia
+            WHERE f.id_familia = ? 
+            AND u.id_usuario = ?
+            ORDER BY u.nome
+        `;
+
+        let result = await knexDatabase.raw(sql, [id_familia, id_usuario]);
+        let dados = result[0];
+
+        if (dados.length == 0)
+            return false;
+
+        let familia = {
+            id_familia: dados[0].id_familia,
+            nome_familia: dados[0].nome_familia,
+            membros: []
+        };
+
+        dados.forEach(item => {
+            familia.membros.push({
+                id_usuario: item.id_usuario,
+                nome_usuario: item.nome_usuario,
+                email: item.email,
+                is_admin: item.is_admin
+            });
+        });
+
+        return familia;
+
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+};
 
 // INSERT (ID)
 
@@ -292,12 +340,30 @@ const setDeleteUsersFamily = async function (id) {
     }
 };
 
+const setDeleteUserFamilyIdUserIdFamily = async function (id_familia, id_usuario) {
+    try {
 
+        let sql = `
+            DELETE FROM tb_usuario_familia 
+            WHERE id_usuario = ? AND id_familia = ?
+        `;
+
+        let result = await knexDatabase.raw(sql, [id_usuario, id_familia]);
+        console.log(result)
+        return !!result;
+
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+};
 module.exports = {
     getAllUsersFamily,
     getUsersFamilyById,
     setInsertUsersFamily,
     setInsertUsersFamilyByUserEmail,
+    getUserFamilyByIdUserIdFamily,
+    setDeleteUserFamilyIdUserIdFamily,
     setUpdateUsersFamily,
     setDeleteUsersFamily,
     getUserAdmFamilyById

@@ -201,7 +201,26 @@ const excluirUsuarioFamilia = async function (id) {
         return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+const excluirUsuarioFamiliaIdFamiliaIdUsuario = async function (id_familia, id_usuario) {
+    try {
 
+        let buscarId = await usuario_familiaDAO.getUserFamilyByIdUserIdFamily(id_familia, id_usuario)
+
+        if (!buscarId)
+            return mensagensDefault.ERRO_NOT_FOUND
+
+        let result = await usuario_familiaDAO.setDeleteUserFamilyIdUserIdFamily(id_familia, id_usuario)
+
+        if (result) {
+            return mensagensDefault.SUCCESS_DELETED_ITEM
+        } else {
+            return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+        }
+
+    } catch (error) {
+        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+    }
+}
 module.exports = {
     listarUsuarioFamilia,
     listarUsuarioFamiliaID,
@@ -209,5 +228,6 @@ module.exports = {
     criarUsuarioFamiliaPorEmail,
     atualizarUsuarioFamilia,
     excluirUsuarioFamilia,
+    excluirUsuarioFamiliaIdFamiliaIdUsuario,
     enviarEmailUsuarioFamiliaPorEmail
 }
