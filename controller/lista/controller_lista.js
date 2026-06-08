@@ -11,58 +11,57 @@ const validarAtributos = require("../modulo/validar_atributos.js")
 
 //GET
 const listarListas = async function () {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     try {
         let result = await listaDAO.getAllLists()
         if (result) {
             if (result.length > 0) {
-                mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                mesagensDefault.HEADER.Response = result[0]
-                return mesagensDefault.HEADER
+                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+                MESSAGE.HEADER.Response = result[0]
+                return MESSAGE.HEADER
             } else {
-                return mesagensDefault.ERRO_NOT_FOUND
+                return MESSAGE.ERRO_NOT_FOUND
             }
         } else {
-            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 //GET id
 const listarListaID = async function (id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let idValidado = await validarAtributos.validarValorId(id)
     try {
         if (idValidado) {
             let result = await listaDAO.getListById(id)
             if (result) {
-                // if (result.length > 0) {
-                    mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                    mesagensDefault.HEADER.Response = result
-                    return mesagensDefault.HEADER
-                // } else {
-                //     return mesagensDefault.ERRO_NOT_FOUND
-                // }
+                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+                MESSAGE.HEADER.Response = result
+                return MESSAGE.HEADER
             } else {
-                return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
             }
         } else {
-            return mesagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 const listarListaCompletaPorFamilia = async function (idFamilia) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     try {
         let idValidado = validarAtributos.validarId(idFamilia)
 
         if (!idValidado)
-            return mesagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
 
         let dados = await listaDAO.getAllItensListsByFamily(idFamilia)
 
         if (!dados || dados.length === 0)
-            return mesagensDefault.ERRO_NOT_FOUND
+            return MESSAGE.ERRO_NOT_FOUND
 
         const familia = {
             id_familia: dados[0].id_familia,
@@ -117,26 +116,27 @@ const listarListaCompletaPorFamilia = async function (idFamilia) {
             }
         })
 
-        mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-        mesagensDefault.HEADER.Response = familia
+        MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+        MESSAGE.HEADER.Response = familia
 
-        return mesagensDefault.HEADER
+        return MESSAGE.HEADER
 
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 const listarListaFavoritaCompletaPorFamilia = async function (idFamilia) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     try {
         let idValidado = validarAtributos.validarId(idFamilia)
 
         if (!idValidado)
-            return mesagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
 
         let dados = await listaDAO.getFavoriteItensListsByFamily(idFamilia)
 
         if (!dados || dados.length === 0)
-            return mesagensDefault.ERRO_NOT_FOUND
+            return MESSAGE.ERRO_NOT_FOUND
 
         const familia = {
             id_familia: dados[0].id_familia,
@@ -189,17 +189,18 @@ const listarListaFavoritaCompletaPorFamilia = async function (idFamilia) {
             }
         })
 
-        mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-        mesagensDefault.HEADER.Response = familia
+        MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+        MESSAGE.HEADER.Response = familia
 
-        return mesagensDefault.HEADER
+        return MESSAGE.HEADER
 
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 // POST
 const criarLista = async function (lista, contentType) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let dadosValidados = await validarDados.validarDadosLista(lista)
     let contentTypeValidado = await validarAtributos.validarContentType(contentType)
     try {
@@ -210,28 +211,30 @@ const criarLista = async function (lista, contentType) {
                 console.log(listaCriada)
                 if (result) {
                     if (result.length > 0) {
-                        mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
-                        mesagensDefault.HEADER.Response.message = mesagensDefault.SUCCESS_CREATED_ITEM.message
-                        mesagensDefault.HEADER.Response.lista = listaCriada[0][0]
-                        return mesagensDefault.HEADER
+                        MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_CREATED_ITEM.StatusCode
+                        if (!MESSAGE.HEADER.Response) MESSAGE.HEADER.Response = {}
+                        MESSAGE.HEADER.Response.message = MESSAGE.SUCCESS_CREATED_ITEM.message
+                        MESSAGE.HEADER.Response.lista = listaCriada[0][0]
+                        return MESSAGE.HEADER
                     } else {
-                        return mesagensDefault.ERRO_NOT_FOUND
+                        return MESSAGE.ERRO_NOT_FOUND
                     }
                 } else {
-                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                    return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
                 }
             } else {
                 return dadosValidados
             }
         } else {
-            return mesagensDefault.ERRO_CONTENT_TYPE
+            return MESSAGE.ERRO_CONTENT_TYPE
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 // PUT
 const atulizarLista = async function (lista, contentType, id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let dadosValidados = await validarDados.validarDadosLista(lista)
     let contentTypeValidado = await validarAtributos.validarContentType(contentType)
     let idValidado = validarAtributos.validarValorId(id)
@@ -246,12 +249,12 @@ const atulizarLista = async function (lista, contentType, id) {
                         let result = await listaDAO.setUpdateList(lista)
                         if (result) {
                             if (result.length > 0) {
-                                mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
-                                mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
-                                return mesagensDefault.HEADER
+                                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_UPDATED_ITEM.StatusCode
+                                MESSAGE.HEADER.Response = MESSAGE.SUCCESS_UPDATED_ITEM.message
+                                return MESSAGE.HEADER
                             }
                         } else {
-                            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
                         }
                     } else {
                         return buscarId
@@ -260,17 +263,18 @@ const atulizarLista = async function (lista, contentType, id) {
                     return dadosValidados
                 }
             } else {
-                return mesagensDefault.ERRO_CONTENT_TYPE
+                return MESSAGE.ERRO_CONTENT_TYPE
             }
         } else {
-            return mesagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 // DELETE
 const excluirLista = async function (id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let idValidado = await validarAtributos.validarValorId(id)
     try {
         if (idValidado) {
@@ -280,78 +284,74 @@ const excluirLista = async function (id) {
 
                 if (result) {
                     if (result.length > 0) {
-                        mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_DELETED_ITEM.StatusCode
-                        mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_DELETED_ITEM.message
-                        return mesagensDefault.HEADER
+                        MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_DELETED_ITEM.StatusCode
+                        MESSAGE.HEADER.Response = MESSAGE.SUCCESS_DELETED_ITEM.message
+                        return MESSAGE.HEADER
                     }
                 } else {
-                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                    return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
                 }
             } else {
                 return buscarId
             }
         } else {
-            return mesagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
 const favoritarLista = async function(id, favorita) {
-
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     try {
 
         let idValidado = validarAtributos.validarId(id)
 
         if(!idValidado)
-            return mesagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
 
         let result = await listaDAO.setFavoriteList(id, favorita)
 
         if(result){
 
-            mesagensDefault.HEADER.StatusCode = 200
-            mesagensDefault.HEADER.Response = "Favorito atualizado"
+            MESSAGE.HEADER.StatusCode = 200
+            MESSAGE.HEADER.Response = "Favorito atualizado"
 
-            return mesagensDefault.HEADER
+            return MESSAGE.HEADER
 
         }else{
-            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
         }
 
     } catch(error){
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 const favoritarListaLote = async function (listas, contentType) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let contentTypeValidado = await validarAtributos.validarContentType(contentType)
     try {
         if (contentTypeValidado == true) {
             listas.forEach(async lista => {
-                // let idValidado = validarAtributos.validarId(lista.id_lista)
-
-                // if (!idValidado)
-                //     return mesagensDefault.ERRO_INVALID_ID
-
                 let result = await listaDAO.setFavoriteList(lista.id_lista, lista.favorita)
 
                 if (result) {
 
-                    mesagensDefault.HEADER.StatusCode = 200
-                    mesagensDefault.HEADER.Response = "Favorito atualizado"
+                    MESSAGE.HEADER.StatusCode = 200
+                    MESSAGE.HEADER.Response = "Favorito atualizado"
 
-                    return mesagensDefault.HEADER
+                    return MESSAGE.HEADER
 
                 } else {
-                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                    return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
                 }
             });
         }
 
 
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 module.exports = {

@@ -16,96 +16,97 @@ const { json } = require("express")
 const crypto = require('crypto');
 // GET +
 const listarUsuarios = async function () {
+    // Cria a cópia local do objeto de mensagens
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
+    
     try {
         let result = await usuarioDAO.getAllUsers()
         if (result) {
             if (result.length > 0) {
                 // console.log(result.length)
-                mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                mesagensDefault.HEADER.Response = result[0]
-                return mesagensDefault.HEADER
+                // Alterado de mesagensDefault para MESSAGE
+                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+                MESSAGE.HEADER.Response = result[0] 
+                return MESSAGE.HEADER
             } else {
-                return mesagensDefault.ERRO_NOT_FOUND
+                return MESSAGE.ERRO_NOT_FOUND
             }
         } else {
-            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
 // GET id + 
 const listarUsuarioID = async function (id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let idValidado = validarAtributos.validarValorId(id)
-    // console.log(idValidado)
     try {
         if (idValidado) {
             let result = await usuarioDAO.getUserById(id)
-            // console.log(result)
             if (result) {
                 if (result.length > 0) {
-                    mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                    mesagensDefault.HEADER.Response = result[0]
-                    return mesagensDefault.HEADER
+                    MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+                    MESSAGE.HEADER.Response = result[0]
+                    return MESSAGE.HEADER
                 } else {
-                    return mesagensDefault.ERRO_NOT_FOUND
+                    return MESSAGE.ERRO_NOT_FOUND
                 }
             } else {
-                return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
             }
         } else {
-            return mesagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+        return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
     }
 }
-// POST
+
 const criarUsuario = async function (usuario, foto, contentType) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(usuario.senha, salt)
     try {
         let dadosValidados = await validarDados.validarDadosUsuario(usuario)
         let contentTypeValidado = validarAtributos.validarContentTypeFormData(contentType)
         let imagemEnvida = await uploadDAO.uploadFiles(foto)
-        console.log(imagemEnvida)
         if (contentTypeValidado) {
             if (dadosValidados == true) {
                 if(typeof(imagemEnvida) != false){
                     usuario.senha = hash
                     usuario.foto = imagemEnvida
-                    console.log(usuario)
                     let result = await usuarioDAO.setInsertUser(usuario)
                     if (result) {
                         if (result.length > 0) {
-                            mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
-                            mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.message
-                            return mesagensDefault.HEADER
+                            MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_CREATED_ITEM.StatusCode
+                            MESSAGE.HEADER.Response = MESSAGE.SUCCESS_CREATED_ITEM.message
+                            return MESSAGE.HEADER
                         } else {
-                            return mesagensDefault.ERRO_NOT_FOUND
+                            return MESSAGE.ERRO_NOT_FOUND
                         }
                     } else {
-                        return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                        return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
                     }
                 }else{
-                    mesagensDefault.HEADER.Response = mesagensDefault.ERRO_REQUIRED_FIELDS
-                    return mesagensDefault.HEADER
+                    MESSAGE.HEADER.Response = MESSAGE.ERRO_REQUIRED_FIELDS
+                    return MESSAGE.HEADER
                 }
             } else {
                 return dadosValidados
             }
         } else {
-            return mesagensDefault.ERRO_CONTENT_TYPE
+            return MESSAGE.ERRO_CONTENT_TYPE
         }
-
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
-// PUT
 const atulizarUsuario = async function (usuario, foto, contentType, id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     try {
         let dadosValidados = await validarDados.validarDadosUsuario(usuario)
         let contentTypeValidado = validarAtributos.validarContentTypeFormData(contentType)
@@ -120,40 +121,40 @@ const atulizarUsuario = async function (usuario, foto, contentType, id) {
                             usuario.id_usuario = parseInt(id)
                             usuario.foto = imagemEnvida
                             let result = await usuarioDAO.setUpdateUser(usuario)
-                            console.log(result)
                             if (result) {
                                 if (result.length > 0) {
-                                    mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
-                                    mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
-                                    return mesagensDefault.HEADER
+                                    MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_UPDATED_ITEM.StatusCode
+                                    MESSAGE.HEADER.Response = MESSAGE.SUCCESS_UPDATED_ITEM.message
+                                    return MESSAGE.HEADER
                                 } else {
-                                    return mesagensDefault.ERRO_NOT_FOUND
+                                    return MESSAGE.ERRO_NOT_FOUND
                                 }
                             } else {
-                                return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                                return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
                             }
                         }else{
-                            mesagensDefault.HEADER.Response = mesagensDefault.ERRO_REQUIRED_FIELDS
-                            return mesagensDefault.HEADER
+                            MESSAGE.HEADER.Response = MESSAGE.ERRO_REQUIRED_FIELDS
+                            return MESSAGE.HEADER
                         }
                     } else {
-                        return mesagensDefault.ERRO_INVALID_ID
+                        return MESSAGE.ERRO_INVALID_ID
                     }
                 } else {
                     return dadosValidados
                 }
             } else {
-                return mesagensDefault.ERRO_CONTENT_TYPE
+                return MESSAGE.ERRO_CONTENT_TYPE
             }
         } else {
-            return mesagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
 const atulizarSenhaUsuarioCadastrado = async function(usuario, contentType) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(usuario.senhaNova, salt); 
     let emailValidado = await usuarioDAO.getUserByEmail(usuario.email)
@@ -162,32 +163,32 @@ const atulizarSenhaUsuarioCadastrado = async function(usuario, contentType) {
         if(emailValidado == true){
             let senhaAntiga = await usuarioDAO.getUserPasswordByEmail(usuario.email)
             let senhaComparada = bcrypt.compareSync(usuario.senhaAtual, senhaAntiga[0][0].senha)
-            console.log(senhaComparada)
             if(senhaComparada == true){
                 let obj = {
                     "senha": hash,
                     "email": usuario.email
                 }
                 let result = await usuarioDAO.setUpdadeUserPasswordByEmail(obj)
-
                 if(result == true){
-                    mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
-                    mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
-                    return mesagensDefault.HEADER
+                    MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_UPDATED_ITEM.StatusCode
+                    MESSAGE.HEADER.Response = MESSAGE.SUCCESS_UPDATED_ITEM.message
+                    return MESSAGE.HEADER
                 }else{
-                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                    return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
                 }
             }else{
-                return mesagensDefault.ERRO_NOT_FOUND
+                return MESSAGE.ERRO_NOT_FOUND
             }
         }else{
-            return mesagensDefault.ERRO_NOT_FOUND
+            return MESSAGE.ERRO_NOT_FOUND
         }
     } catch (error) {
-        
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
-const  atulizarSenhaUsuario = async function(usuario, token, contentType) {
+
+const atulizarSenhaUsuario = async function(usuario, token, contentType) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(usuario.senha, salt); 
     let codeParametro = jwt.getDecodedToken(token)
@@ -199,12 +200,12 @@ const  atulizarSenhaUsuario = async function(usuario, token, contentType) {
                 if(contentTypeValidado){
                     usuario.senha = hash
                     let result = await usuarioDAO.setUpdadeUserPasswordByEmail(usuario, codeParametro.email)
-                    if(result ==true){
-                        mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
-                        mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
-                        return mesagensDefault.HEADER
+                    if(result == true){
+                        MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_UPDATED_ITEM.StatusCode
+                        MESSAGE.HEADER.Response = MESSAGE.SUCCESS_UPDATED_ITEM.message
+                        return MESSAGE.HEADER
                     }else{
-                        return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                        return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
                     }
                 }else{
                     return contentTypeValidado
@@ -213,14 +214,15 @@ const  atulizarSenhaUsuario = async function(usuario, token, contentType) {
                 return false
             }
         }else{
-            return mesagensDefault.ERRO_NOT_FOUND
+            return MESSAGE.ERRO_NOT_FOUND
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
-// DELETE
+
 const excluirUsuario = async function (id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let idValidado = validarAtributos.validarValorId(id)
     try {
         if (idValidado) {
@@ -229,21 +231,21 @@ const excluirUsuario = async function (id) {
                 let result = await usuarioDAO.setDeleteUser(id)
                 if (result) {
                     if (result.length > 0) {
-                        mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_DELETED_ITEM.StatusCode
-                        mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_DELETED_ITEM.message
-                        return mesagensDefault.HEADER
+                        MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_DELETED_ITEM.StatusCode
+                        MESSAGE.HEADER.Response = MESSAGE.SUCCESS_DELETED_ITEM.message
+                        return MESSAGE.HEADER
                     }
                 } else {
-                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                    return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
                 }
             } else {
                 return buscarId
             }
         } else {
-            return mesagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 module.exports = {

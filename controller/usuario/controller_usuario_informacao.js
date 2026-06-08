@@ -9,31 +9,32 @@ const usuario_informacaoDAO = require("../../model/DAO/usuario_informacao.js")
 const mensagensDefault = require("../modulo/config_messages.js")
 const validarDados = require("../modulo/validar_dados.js")
 const validarAtributos = require("../modulo/validar_atributos.js")
-
 const listarUsuarioInformacao = async function () {
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
         let result = await usuario_informacaoDAO.getAllUsersInformation()
 
         if (result && result.length > 0) {
             return {
-                status_code: mensagensDefault.SUCCESS_REQUEST.StatusCode,
+                status_code: MESSAGE.SUCCESS_REQUEST.StatusCode,
                 dados: result 
             }
         } else {
-            return mensagensDefault.ERRO_NOT_FOUND
+            return MESSAGE.ERRO_NOT_FOUND
         }
 
     } catch (error) {
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
 const listarUsuarioInformacaoPorFamilias = async function () {
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
         let dados = await usuario_informacaoDAO.getAllUsersInformationByFamilies();
 
         if (!dados || dados.length === 0)
-            return mensagensDefault.ERRO_NOT_FOUND;
+            return MESSAGE.ERRO_NOT_FOUND;
 
         const familias = [];
 
@@ -76,24 +77,25 @@ const listarUsuarioInformacaoPorFamilias = async function () {
         });
 
         return {
-            status_code: mensagensDefault.SUCCESS_REQUEST.StatusCode,
+            status_code: MESSAGE.SUCCESS_REQUEST.StatusCode,
             dados: familias
         };
 
     } catch (error) {
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER;
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER;
     }
 };
 
 const listarUsuarioInformacaoPorFamilia = async function (idFamilia) {
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
         if (!validarAtributos.validarId(idFamilia))
-            return mensagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
 
         let dados = await usuario_informacaoDAO.getUsersInformationByFamily(idFamilia)
 
         if (!dados || dados.length === 0)
-            return mensagensDefault.ERRO_NOT_FOUND
+            return MESSAGE.ERRO_NOT_FOUND
 
         const familia = {
             id_familia: dados[0].id_familia,
@@ -127,49 +129,49 @@ const listarUsuarioInformacaoPorFamilia = async function (idFamilia) {
         })
 
         return {
-            status_code: mensagensDefault.SUCCESS_REQUEST.StatusCode,
+            status_code: MESSAGE.SUCCESS_REQUEST.StatusCode,
             dados: familia
         }
 
     } catch (error) {
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
-
 const listarUsuarioInformacaoID = async function (id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
         if (!validarAtributos.validarId(id))
-            return mensagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
 
         let result = await usuario_informacaoDAO.getUsersInformationById(id)
         
         if (result && result.length > 0) {
             return {
-                status_code: mensagensDefault.SUCCESS_REQUEST.StatusCode,
+                status_code: MESSAGE.SUCCESS_REQUEST.StatusCode,
                 dados: result[0]
             }
         } else {
-            return mensagensDefault.ERRO_NOT_FOUND
+            return MESSAGE.ERRO_NOT_FOUND
         }
 
     } catch (error) {
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
 const listarUsuarioInformacaoPorUsuario = async function (idUsuario) {
-
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
 
         if (!validarAtributos.validarId(idUsuario))
-            return mensagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
 
         let dados =
             await usuario_informacaoDAO.getUsersInformationByUser(idUsuario)
 
         if (!dados || dados.length === 0)
-            return mensagensDefault.ERRO_NOT_FOUND
+            return MESSAGE.ERRO_NOT_FOUND
 
         const usuario = {
             id_usuario: dados[0].id_usuario,
@@ -186,94 +188,94 @@ const listarUsuarioInformacaoPorUsuario = async function (idUsuario) {
         })
 
         return {
-            status_code: mensagensDefault.SUCCESS_REQUEST.StatusCode,
+            status_code: MESSAGE.SUCCESS_REQUEST.StatusCode,
             dados: usuario
         }
 
     } catch (error) {
-
-        console.log(error)
-
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
 const criarUsuarioInformacao = async function (usuarioInformacao, contentType) {
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
         if (!validarAtributos.validarContentType(contentType))
-            return mensagensDefault.ERRO_CONTENT_TYPE
+            return MESSAGE.ERRO_CONTENT_TYPE
 
         if (!validarDados.validarUsuarioInformacao(usuarioInformacao))
-            return mensagensDefault.ERRO_REQUIRED_FIELDS
+            return MESSAGE.ERRO_REQUIRED_FIELDS
 
         let result = await usuario_informacaoDAO.setInsertUsersInformation(usuarioInformacao)
 
         if (result) {
-            return mensagensDefault.SUCCESS_CREATED_ITEM
+            return MESSAGE.SUCCESS_CREATED_ITEM
         } else {
-            return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
         }
 
     } catch (error) {
-      
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
 const atualizarUsuarioInformacao = async function (usuarioInformacao, contentType, id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
         if (!validarAtributos.validarId(id))
-            return mensagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
 
         if (!validarAtributos.validarContentType(contentType))
-            return mensagensDefault.ERRO_CONTENT_TYPE
+            return MESSAGE.ERRO_CONTENT_TYPE
 
         if (!validarDados.validarUsuarioInformacao(usuarioInformacao))
-            return mensagensDefault.ERRO_REQUIRED_FIELDS
+            return MESSAGE.ERRO_REQUIRED_FIELDS
 
         let buscarId = await usuario_informacaoDAO.getUsersInformationById(id)
 
         if (!buscarId || buscarId.length === 0)
-            return mensagensDefault.ERRO_NOT_FOUND
+            return MESSAGE.ERRO_NOT_FOUND
 
         usuarioInformacao.id_usuario_informacao = parseInt(id)
 
         let result = await usuario_informacaoDAO.setUpdateUsersInformation(usuarioInformacao)
 
         if (result) {
-            return mensagensDefault.SUCCESS_UPDATED_ITEM
+            return MESSAGE.SUCCESS_UPDATED_ITEM
         } else {
-            return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
         }
 
     } catch (error) {
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+
 const excluirUsuarioInformacao = async function (id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
         if (!validarAtributos.validarId(id)) {
-            return mensagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
 
         let buscarId = await usuario_informacaoDAO.getUsersInformationById(id)
 
         if (!buscarId || buscarId.length === 0) {
-            return mensagensDefault.ERRO_NOT_FOUND
+            return MESSAGE.ERRO_NOT_FOUND
         }
 
         let result = await usuario_informacaoDAO.setDeleteUsersInformation(id)
 
         if (result) {
-            mensagensDefault.HEADER.StatusCode = mensagensDefault.SUCCESS_DELETED_ITEM.StatusCode
-            mensagensDefault.HEADER.Response = mensagensDefault.SUCCESS_DELETED_ITEM.message
-            return mensagensDefault.HEADER
+            MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_DELETED_ITEM.StatusCode
+            MESSAGE.HEADER.Response = MESSAGE.SUCCESS_DELETED_ITEM.message
+            return MESSAGE.HEADER
         } else {
-            return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
         }
 
     } catch (error) {
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 

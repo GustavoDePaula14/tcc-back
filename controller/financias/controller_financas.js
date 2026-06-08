@@ -10,353 +10,249 @@ const mensagensDefault = require("../modulo/config_messages.js")
 const validarDados = require("../modulo/validar_dados.js")
 const validarAtributos = require("../modulo/validar_atributos.js")
 
+//GET
 const listarFinancas = async function () {
-
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
-
         let result = await financasDAO.getAllFinances()
 
         if (result) {
-
             if (result.length > 0) {
-
-                mensagensDefault.HEADER.StatusCode =
-                    mensagensDefault.SUCCESS_REQUEST.StatusCode
-
-                mensagensDefault.HEADER.Response = result[0]
-
-                return mensagensDefault.HEADER
-
+                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+                MESSAGE.HEADER.Response = result[0]
+                return MESSAGE.HEADER
             } else {
-
-                return mensagensDefault.ERRO_NOT_FOUND
+                return MESSAGE.ERRO_NOT_FOUND
             }
-
         } else {
-
-            return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
         }
 
     } catch (error) {
-
-        console.log(error)
-
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
+//GET ID
 const listarFinancasID = async function (id) {
-
-    let idValidado =
-        validarAtributos.validarId(id)
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
+    let idValidado = validarAtributos.validarId(id)
 
     try {
-
         if (idValidado) {
-
-            let result =
-                await financasDAO.getFinanceById(id)
+            let result = await financasDAO.getFinanceById(id)
 
             if (result && result.length > 0) {
-
-                mensagensDefault.HEADER.StatusCode =
-                    mensagensDefault.SUCCESS_REQUEST.StatusCode
-
-                mensagensDefault.HEADER.Response =
-                    result[0]
-
-                return mensagensDefault.HEADER
-
+                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+                MESSAGE.HEADER.Response = result[0]
+                return MESSAGE.HEADER
             } else {
-
-                return mensagensDefault.ERRO_NOT_FOUND
+                return MESSAGE.ERRO_NOT_FOUND
             }
-
         } else {
-
-            return mensagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
 
     } catch (error) {
-
-        console.log(error)
-
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
+//GET DIARIAS
 const listarFinancasDiarias = async function (idFamilia) {
-
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     let idValidado = validarAtributos.validarId(idFamilia)
 
     try {
-
         if (idValidado) {
-
             let result = await financasDAO.getDailyFinances(idFamilia)
 
             if (result && result.financas && result.financas.length > 0) {
-
-                mensagensDefault.HEADER.StatusCode =
-                    mensagensDefault.SUCCESS_REQUEST.StatusCode
-
-                mensagensDefault.HEADER.Response = result
-
-                return mensagensDefault.HEADER
-
+                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+                MESSAGE.HEADER.Response = result
+                return MESSAGE.HEADER
             } else {
-                return mensagensDefault.ERRO_NOT_FOUND
+                return MESSAGE.ERRO_NOT_FOUND
             }
-
         } else {
-            return mensagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
 
     } catch (error) {
-        console.log(error)
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
+//GET SEMANAIS
 const listarFinancasSemanais = async function (idFamilia) {
-
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     let idValidado = validarAtributos.validarId(idFamilia)
 
     try {
-
         if (idValidado) {
-
             let result = await financasDAO.getWeekFinances(idFamilia)
 
             if (result && result.financas && result.financas.length > 0) {
-
-                mensagensDefault.HEADER.StatusCode =
-                    mensagensDefault.SUCCESS_REQUEST.StatusCode
-
-                mensagensDefault.HEADER.Response = result
-
-                return mensagensDefault.HEADER
-
+                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+                MESSAGE.HEADER.Response = result
+                return MESSAGE.HEADER
             } else {
-                return mensagensDefault.ERRO_NOT_FOUND
+                return MESSAGE.ERRO_NOT_FOUND
             }
-
         } else {
-            return mensagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
 
     } catch (error) {
-        console.log(error)
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
+//GET MENSAIS
 const listarFinancasMensais = async function (idFamilia) {
-
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     let idValidado = validarAtributos.validarId(idFamilia)
 
     try {
-
         if (idValidado) {
-
             let result = await financasDAO.getMonthFinances(idFamilia)
 
             if (result && result.financas && result.financas.length > 0) {
-
-                mensagensDefault.HEADER.StatusCode =
-                    mensagensDefault.SUCCESS_REQUEST.StatusCode
-
-                mensagensDefault.HEADER.Response = result
-
-                return mensagensDefault.HEADER
-
+                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+                MESSAGE.HEADER.Response = result
+                return MESSAGE.HEADER
             } else {
-                return mensagensDefault.ERRO_NOT_FOUND
+                return MESSAGE.ERRO_NOT_FOUND
             }
-
         } else {
-            return mensagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
 
     } catch (error) {
-        console.log(error)
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
+//GET ANUAIS
 const listarFinancasAnuais = async function (idFamilia) {
-
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     let idValidado = validarAtributos.validarId(idFamilia)
 
     try {
-
         if (idValidado) {
-
             let result = await financasDAO.getYearFinances(idFamilia)
 
             if (result && result.financas && result.financas.length > 0) {
-
-                mensagensDefault.HEADER.StatusCode =
-                    mensagensDefault.SUCCESS_REQUEST.StatusCode
-
-                mensagensDefault.HEADER.Response = result
-
-                return mensagensDefault.HEADER
-
+                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+                MESSAGE.HEADER.Response = result
+                return MESSAGE.HEADER
             } else {
-                return mensagensDefault.ERRO_NOT_FOUND
+                return MESSAGE.ERRO_NOT_FOUND
             }
-
         } else {
-            return mensagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
 
     } catch (error) {
-        console.log(error)
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
+// POST
 const criarFinancas = async function (financas, contentType) {
-
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
-
-        let dadosValidados =
-            await validarDados.validarDadosFinancia(financas)
-
-        let contentTypeValidado =
-            validarAtributos.validarContentType(contentType)
+        let dadosValidados = await validarDados.validarDadosFinancia(financas)
+        let contentTypeValidado = validarAtributos.validarContentType(contentType)
 
         if (!contentTypeValidado)
-            return mensagensDefault.ERRO_CONTENT_TYPE
+            return MESSAGE.ERRO_CONTENT_TYPE
 
         if (!dadosValidados)
-            return mensagensDefault.ERRO_REQUIRED_FIELDS
+            return MESSAGE.ERRO_REQUIRED_FIELDS
 
-        let result =
-            await financasDAO.setInsertFinance(financas)
+        let result = await financasDAO.setInsertFinance(financas)
 
         if (result) {
-
-            mensagensDefault.HEADER.StatusCode =
-                mensagensDefault.SUCCESS_CREATED_ITEM.StatusCode
-
-            mensagensDefault.HEADER.Response =
-                mensagensDefault.SUCCESS_CREATED_ITEM.message
-
-            return mensagensDefault.HEADER
-
+            MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_CREATED_ITEM.StatusCode
+            MESSAGE.HEADER.Response = MESSAGE.SUCCESS_CREATED_ITEM.message
+            return MESSAGE.HEADER
         } else {
-
-            return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
         }
 
     } catch (error) {
-
-        console.log(error)
-
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
+// PUT
 const atualizarFinancas = async function (financas, contentType, id) {
-
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
-
-        let dadosValidados =
-            await validarDados.validarDadosFinancia(financas)
-
-        let contentTypeValidado =
-            validarAtributos.validarContentType(contentType)
-
-        let idValidado =
-            validarAtributos.validarValorId(id)
+        let dadosValidados = await validarDados.validarDadosFinancia(financas)
+        let contentTypeValidado = validarAtributos.validarContentType(contentType)
+        let idValidado = validarAtributos.validarValorId(id)
 
         if (!idValidado)
-            return mensagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
 
         if (!contentTypeValidado)
-            return mensagensDefault.ERRO_CONTENT_TYPE
+            return MESSAGE.ERRO_CONTENT_TYPE
 
         if (!dadosValidados)
-            return mensagensDefault.ERRO_REQUIRED_FIELDS
+            return MESSAGE.ERRO_REQUIRED_FIELDS
 
-        let buscarId =
-            await financasDAO.getFinanceById(id)
+        let buscarId = await financasDAO.getFinanceById(id)
 
         if (!buscarId || buscarId.length === 0)
-            return mensagensDefault.ERRO_NOT_FOUND
+            return MESSAGE.ERRO_NOT_FOUND
 
         financas.id_financas = parseInt(id)
 
-        let result =
-            await financasDAO.setUpdateFinance(financas)
+        let result = await financasDAO.setUpdateFinance(financas)
 
         if (result) {
-
-            mensagensDefault.HEADER.StatusCode =
-                mensagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
-
-            mensagensDefault.HEADER.Response =
-                mensagensDefault.SUCCESS_UPDATED_ITEM.message
-
-            return mensagensDefault.HEADER
-
+            MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_UPDATED_ITEM.StatusCode
+            MESSAGE.HEADER.Response = MESSAGE.SUCCESS_UPDATED_ITEM.message
+            return MESSAGE.HEADER
         } else {
-
-            return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
         }
 
     } catch (error) {
-
-        console.log(error)
-
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
+// DELETE
 const excluirFinancas = async function (id) {
-
-    let idValidado =
-        validarAtributos.validarValorId(id)
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
+    let idValidado = validarAtributos.validarValorId(id)
 
     try {
-
         if (!idValidado)
-            return mensagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
 
-        let buscarId =
-            await financasDAO.getFinanceById(id)
+        let buscarId = await financasDAO.getFinanceById(id)
 
         if (!buscarId || buscarId.length === 0)
-            return mensagensDefault.ERRO_NOT_FOUND
+            return MESSAGE.ERRO_NOT_FOUND
 
-        let result =
-            await financasDAO.setDeleteFinance(id)
+        let result = await financasDAO.setDeleteFinance(id)
 
         if (result) {
-
-            mensagensDefault.HEADER.StatusCode =
-                mensagensDefault.SUCCESS_DELETED_ITEM.StatusCode
-
-            mensagensDefault.HEADER.Response =
-                mensagensDefault.SUCCESS_DELETED_ITEM.message
-
-            return mensagensDefault.HEADER
-
+            MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_DELETED_ITEM.StatusCode
+            MESSAGE.HEADER.Response = MESSAGE.SUCCESS_DELETED_ITEM.message
+            return MESSAGE.HEADER
         } else {
-
-            return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
         }
 
     } catch (error) {
-
-        console.log(error)
-
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
-
 module.exports = {
     listarFinancas,
     listarFinancasID,

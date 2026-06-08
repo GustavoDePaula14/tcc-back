@@ -15,63 +15,61 @@ const jwt = require('../../jwt/jwt_service.js')
 const emails = require('../../azure-communication/enviarEmails.js')
 
 const validarLogin = async function(login, contentType) {
-    let result = await loginDAO.getAutentication(login.email)  
-    let senhaComparada = bcrypt.compareSync(login.senha, result[0][0].senha); 
-    console.log(senhaComparada)   
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     try {
+        let result = await loginDAO.getAutentication(login.email)  
+        let senhaComparada = bcrypt.compareSync(login.senha, result[0][0].senha); 
         if(senhaComparada == true){
             if (result && result.length > 0) {
-                mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                mesagensDefault.HEADER.Status = senhaComparada
-                mesagensDefault.HEADER.Response = result[0][0]
+                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+                MESSAGE.HEADER.Status = senhaComparada
+                MESSAGE.HEADER.Response = result[0][0]
                 
-                return mesagensDefault.HEADER
+                return MESSAGE.HEADER
             } else {
-                return mesagensDefault.ERRO_NOT_FOUND
+                return MESSAGE.ERRO_NOT_FOUND
             }
         }else{
-            return mesagensDefault.ERRO_INVALID_PASSWORD
+            return MESSAGE.ERRO_INVALID_PASSWORD
         }
     } catch (error) {
-        console.log(error)
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }    
 }
+
 const criarCodigoSenha = function() {
     const codigo = crypto.randomInt(0, 1000000);
     const result = codigo.toString().padStart(6, '0');
-    // console.log(result)
     return result
 }
 
 const validarTrocaSenha = async function (email, contentType) {
-
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let code = criarCodigoSenha()
     let obj ={
         "code": code,
         "email": email
     }
     let tokenCode = jwt.getToken(obj)
-    console.log(tokenCode)
     try {
         let emailEnvidado = await emails.enviarNovaSenha(email, code)
-        console.log(emailEnvidado)
         if(emailEnvidado == true){
-            mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-            mesagensDefault.HEADER.Response = tokenCode
-            return mesagensDefault.HEADER
+            MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+            MESSAGE.HEADER.Response = tokenCode
+            return MESSAGE.HEADER
         }else{
-            mesagensDefault.HEADER.StatusCode = mesagensDefault.ERRO_RELATION_TABLE.StatusCode
-            mesagensDefault.HEADER.Response = mesagensDefault.ERRO_RELATION_TABLE.message
+            MESSAGE.HEADER.StatusCode = MESSAGE.ERRO_RELATION_TABLE.StatusCode
+            MESSAGE.HEADER.Response = MESSAGE.ERRO_RELATION_TABLE.message
 
-            return mesagensDefault.HEADER
+            return MESSAGE.HEADER
         }
     } catch (error) {
-        console.log(error)
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }  
 }
+
 const validarEntradoFamilia = async function (email, contentType, id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let contentTypeValidado = validarAtributos.validarContentType(contentType)
     try {
         if(contentTypeValidado){
@@ -79,19 +77,18 @@ const validarEntradoFamilia = async function (email, contentType, id) {
             let token = jwt.getToken(objToken)
             let emailEnvidado = await emails.enviarLoginUsuarioFamila(email.email, email.remetente, token)
             if(emailEnvidado == true){
-                mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_REQUEST.message
-                return mesagensDefault.HEADER
+                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+                MESSAGE.HEADER.Response = MESSAGE.SUCCESS_REQUEST.message
+                return MESSAGE.HEADER
             }else{
-                mesagensDefault.HEADER.StatusCode = mesagensDefault.ERRO_RELATION_TABLE.StatusCode
-                mesagensDefault.HEADER.Response = mesagensDefault.ERRO_RELATION_TABLE.message
+                MESSAGE.HEADER.StatusCode = MESSAGE.ERRO_RELATION_TABLE.StatusCode
+                MESSAGE.HEADER.Response = MESSAGE.ERRO_RELATION_TABLE.message
 
-                return mesagensDefault.HEADER
+                return MESSAGE.HEADER
             }
         }
     } catch (error) {
-        console.log(error)
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }  
 }
 module.exports = {

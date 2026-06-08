@@ -11,50 +11,54 @@ const validarAtributos = require("../modulo/validar_atributos.js")
 
 //GET
 const listarItens = async function () {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     try {
         let result = await itemDAO.getAllItens()
         if (result) {
             if (result.length > 0) {
-                mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                mesagensDefault.HEADER.Response = result[0]
-                return mesagensDefault.HEADER
+                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+                MESSAGE.HEADER.Response = result[0]
+                return MESSAGE.HEADER
             } else {
-                return mesagensDefault.ERRO_NOT_FOUND
+                return MESSAGE.ERRO_NOT_FOUND
             }
         } else {
-            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+
 //GET id
 const listarItemID = async function (id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let idValidado = validarAtributos.validarId(id)
     try {
         if (idValidado) {
             let result = await itemDAO.getItenById(id)
             if (result) {
                 if (result.length > 0) {
-                    mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                    mesagensDefault.HEADER.Response = result[0]
-                    return mesagensDefault.HEADER
+                    MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+                    MESSAGE.HEADER.Response = result[0]
+                    return MESSAGE.HEADER
                 } else {
-                    return mesagensDefault.ERRO_NOT_FOUND
+                    return MESSAGE.ERRO_NOT_FOUND
                 }
             } else {
-                return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
             }
         } else {
-            return mesagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
 // POST
 const criarItem = async function (item, contentType) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let dadosValidados = await validarDados.validarDadosItens(item)
     let contentTypeValidado = await validarAtributos.validarContentType(contentType)
 
@@ -65,27 +69,26 @@ const criarItem = async function (item, contentType) {
                 let itemCriado = await itemDAO.setInsertIten(item)
 
                 if (itemCriado) {
-                    mesagensDefault.HEADER.StatusCode =
-                        mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
-
-                    mesagensDefault.HEADER.Response = itemCriado
-
-                    return mesagensDefault.HEADER
+                    MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_CREATED_ITEM.StatusCode
+                    MESSAGE.HEADER.Response = itemCriado
+                    return MESSAGE.HEADER
                 } else {
-                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                    return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
                 }
 
             } else {
                 return dadosValidados
             }
         } else {
-            return mesagensDefault.ERRO_CONTENT_TYPE
+            return MESSAGE.ERRO_CONTENT_TYPE
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+
 const editarItemLote = async function (items, contentType) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let contentTypeValidado = await validarAtributos.validarContentType(contentType)
 
     items.forEach(async item => {
@@ -95,22 +98,22 @@ const editarItemLote = async function (items, contentType) {
             let result = await itemDAO.setUpdateItenStatus(item)
 
             if (result) {
-                mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
-                mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
-                return mesagensDefault.HEADER
+                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_CREATED_ITEM.StatusCode
+                MESSAGE.HEADER.Response = MESSAGE.SUCCESS_CREATED_ITEM.StatusCode
+                return MESSAGE.HEADER
             } else {
-                return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
             }
 
-
         } else {
-            return mesagensDefault.ERRO_CONTENT_TYPE
+            return MESSAGE.ERRO_CONTENT_TYPE
         }
-
     });
 }
+
 // PUT
 const atulizarItem = async function (item, contentType, id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let dadosValidados = await validarDados.validarDadosItens(item)
     let contentTypeValidado = await validarAtributos.validarContentType(contentType)
     let idValidado = validarAtributos.validarId(id)
@@ -125,12 +128,12 @@ const atulizarItem = async function (item, contentType, id) {
                         let result = await itemDAO.setUpdateIten(item)
                         if (result) {
                             if (result.length > 0) {
-                                mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
-                                mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
-                                return mesagensDefault.HEADER
+                                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_UPDATED_ITEM.StatusCode
+                                MESSAGE.HEADER.Response = MESSAGE.SUCCESS_UPDATED_ITEM.message
+                                return MESSAGE.HEADER
                             }
                         } else {
-                            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
                         }
                     } else {
                         return buscarId
@@ -139,17 +142,19 @@ const atulizarItem = async function (item, contentType, id) {
                     return dadosValidados
                 }
             } else {
-                return mesagensDefault.ERRO_CONTENT_TYPE
+                return MESSAGE.ERRO_CONTENT_TYPE
             }
         } else {
-            return mesagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+
 // DELETE
 const excluirItem = async function (id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let idValidado = validarAtributos.validarId(id)
     try {
         if (idValidado) {
@@ -158,21 +163,21 @@ const excluirItem = async function (id) {
                 let result = await itemDAO.setDeleteIten(id)
                 if (result) {
                     if (result.length > 0) {
-                        mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_DELETED_ITEM.StatusCode
-                        mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_DELETED_ITEM.message
-                        return mesagensDefault.HEADER
+                        MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_DELETED_ITEM.StatusCode
+                        MESSAGE.HEADER.Response = MESSAGE.SUCCESS_DELETED_ITEM.message
+                        return MESSAGE.HEADER
                     }
                 } else {
-                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                    return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
                 }
             } else {
                 return buscarId
             }
         } else {
-            return mesagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 module.exports = {

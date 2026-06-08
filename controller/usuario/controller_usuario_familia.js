@@ -14,113 +14,119 @@ const usuarioDAO = require('../../model/DAO/usuario.js')
 const jwt = require('../../jwt/jwt_service.js')
 
 
+//GET
 const listarUsuarioFamilia = async function () {
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
         let result = await usuario_familiaDAO.getAllUsersFamily()
 
         if (result) {
             return {
-                status_code: mensagensDefault.SUCCESS_REQUEST.StatusCode,
+                status_code: MESSAGE.SUCCESS_REQUEST.StatusCode,
                 dados: result 
             }
         } else {
-            return mensagensDefault.ERRO_NOT_FOUND
+            return MESSAGE.ERRO_NOT_FOUND
         }
 
     } catch (error) {
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
+//GET ID
 const listarUsuarioFamiliaID = async function (id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
         if (!validarAtributos.validarId(id))
-            return mensagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
 
         let result = await usuario_familiaDAO.getUsersFamilyById(id)
 
         if (result) {
             return {
-                status_code: mensagensDefault.SUCCESS_REQUEST.StatusCode,
+                status_code: MESSAGE.SUCCESS_REQUEST.StatusCode,
                 dados: result
             }
         } else {
-            return mensagensDefault.ERRO_NOT_FOUND
+            return MESSAGE.ERRO_NOT_FOUND
         }
 
     } catch (error) {
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
+//POST
 const criarUsuarioFamilia = async function (usuarioFamilia, contentType) {
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
         if (!validarAtributos.validarContentType(contentType))
-            return mensagensDefault.ERRO_CONTENT_TYPE
+            return MESSAGE.ERRO_CONTENT_TYPE
 
         if (!validarDados.validarUsuarioFamilia(usuarioFamilia))
-            return mensagensDefault.ERRO_REQUIRED_FIELDS
+            return MESSAGE.ERRO_REQUIRED_FIELDS
 
         let result = await usuario_familiaDAO.setInsertUsersFamily(usuarioFamilia)
 
         if (result) {
-            return mensagensDefault.SUCCESS_CREATED_ITEM
+            return MESSAGE.SUCCESS_CREATED_ITEM
         } else {
-            return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
         }
 
     } catch (error) {
-      
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
-
+//POST EMAIL (CONVITE)
 const enviarEmailUsuarioFamiliaPorEmail = async function (usuarioFamilia, contentType) {
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
-
         if (!validarAtributos.validarContentType(contentType))
-            return mensagensDefault.ERRO_CONTENT_TYPE
+            return MESSAGE.ERRO_CONTENT_TYPE
 
         if (!validarDados.validarUsuarioFamiliaPorEmail(usuarioFamilia))
-            return mensagensDefault.ERRO_REQUIRED_FIELDS
+            return MESSAGE.ERRO_REQUIRED_FIELDS
 
         let remetente = await usuario_familiaDAO.getUserAdmFamilyById(usuarioFamilia.id_familia)
-        // console.log(remetente)
-        if(remetente != ""){
-            usuarioFamilia.email.forEach(async usuario => {
+        
+        if (remetente && remetente !== "") {
+            // Alterado de .forEach para for...of para tratar corretamente o fluxo de promises assíncronas
+            for (const usuario of usuarioFamilia.email) {
                 let emailValidado = await usuarioDAO.getUserByEmail(usuario)
-                if(emailValidado == true){
+                
+                if (emailValidado === true) {
                     let objUser = {
-                        "email" : usuario,
-                        "remetente" : remetente[0].nome_usuario,
+                        "email": usuario,
+                        "remetente": remetente[0].nome_usuario,
                     }
-                    let emailEnvidado = await enviarEmail.validarEntradoFamilia(objUser, contentType, usuarioFamilia.id_familia)
-                }else{
-                    return false
+                    await enviarEmail.validarEntradoFamilia(objUser, contentType, usuarioFamilia.id_familia)
                 }
-            });
-        }else{
-            return mensagensDefault.ERRO_ADM_NOT_FOUND
+            }
+            return MESSAGE.SUCCESS_REQUEST
+        } else {
+            return MESSAGE.ERRO_ADM_NOT_FOUND
         }
     } catch (error) {
-
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+
+//POST TOKEN (CONFIRMAÇÃO)
 const criarUsuarioFamiliaPorEmail = async function (token, contentType) {
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
         let usuario = jwt.getDecodedToken(token)
-        // console.log(usuario)
+        
         if (!validarAtributos.validarContentType(contentType))
-            return mensagensDefault.ERRO_CONTENT_TYPE
+            return MESSAGE.ERRO_CONTENT_TYPE
 
         if (!validarDados.validarUsuarioFamiliaPorEmail(usuario))
-            return mensagensDefault.ERRO_REQUIRED_FIELDS
-        console.log(usuario)
-        let result = await usuario_familiaDAO
-            .setInsertUsersFamilyByUserEmail(usuario)
-        console.log(result)
+            return MESSAGE.ERRO_REQUIRED_FIELDS
+            
+        let result = await usuario_familiaDAO.setInsertUsersFamilyByUserEmail(usuario)
 
         if (result == null) {
             return {
@@ -137,88 +143,92 @@ const criarUsuarioFamiliaPorEmail = async function (token, contentType) {
         }
 
         if (result) {
-            return mensagensDefault.SUCCESS_CREATED_ITEM
+            return MESSAGE.SUCCESS_CREATED_ITEM
         } else {
-            return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
         }
                     
     } catch (error) {
-
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+
+//PUT
 const atualizarUsuarioFamilia = async function (usuarioFamilia, contentType, id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
         if (!validarAtributos.validarId(id))
-            return mensagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
 
         if (!validarAtributos.validarContentType(contentType))
-            return mensagensDefault.ERRO_CONTENT_TYPE
+            return MESSAGE.ERRO_CONTENT_TYPE
 
         if (!validarDados.validarUsuarioFamilia(usuarioFamilia))
-            return mensagensDefault.ERRO_REQUIRED_FIELDS
+            return MESSAGE.ERRO_REQUIRED_FIELDS
 
         let buscarId = await usuario_familiaDAO.getUsersFamilyById(id)
 
         if (!buscarId)
-            return mensagensDefault.ERRO_NOT_FOUND
-
+            return MESSAGE.ERRO_NOT_FOUND
 
         usuarioFamilia.id_usuario_familia = parseInt(id)
-
         let result = await usuario_familiaDAO.setUpdateUsersFamily(usuarioFamilia)
 
         if (result) {
-            return mensagensDefault.SUCCESS_UPDATED_ITEM
+            return MESSAGE.SUCCESS_UPDATED_ITEM
         } else {
-            return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
         }
 
     } catch (error) {
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
+//DELETE BY ID
 const excluirUsuarioFamilia = async function (id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
     try {
         if (!validarAtributos.validarId(id))
-            return mensagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
 
         let buscarId = await usuario_familiaDAO.getUsersFamilyById(id)
 
         if (!buscarId)
-            return mensagensDefault.ERRO_NOT_FOUND
+            return MESSAGE.ERRO_NOT_FOUND
 
         let result = await usuario_familiaDAO.setDeleteUsersFamily(id)
 
         if (result) {
-            return mensagensDefault.SUCCESS_DELETED_ITEM
+            return MESSAGE.SUCCESS_DELETED_ITEM
         } else {
-            return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
         }
 
     } catch (error) {
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
-const excluirUsuarioFamiliaIdFamiliaIdUsuario = async function (id_familia, id_usuario) {
-    try {
 
+
+const excluirUsuarioFamiliaIdFamiliaIdUsuario = async function (id_familia, id_usuario) {
+    let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
+    try {
         let buscarId = await usuario_familiaDAO.getUserFamilyByIdUserIdFamily(id_familia, id_usuario)
 
         if (!buscarId)
-            return mensagensDefault.ERRO_NOT_FOUND
+            return MESSAGE.ERRO_NOT_FOUND
 
         let result = await usuario_familiaDAO.setDeleteUserFamilyIdUserIdFamily(id_familia, id_usuario)
 
         if (result) {
-            return mensagensDefault.SUCCESS_DELETED_ITEM
+            return MESSAGE.SUCCESS_DELETED_ITEM
         } else {
-            return mensagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
         }
 
     } catch (error) {
-        return mensagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 module.exports = {

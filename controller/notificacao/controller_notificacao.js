@@ -12,51 +12,54 @@ const validarAtributos = require("../modulo/validar_atributos.js")
 
 // GET
 const listarNotificacoes = async function () {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     try {
         let result = await notificacaoDAO.getAllNotifications()
         if (result) {
             if (result.length > 0) {
-                mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                mesagensDefault.HEADER.Response = result[0]
-                return mesagensDefault.HEADER
+                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+                MESSAGE.HEADER.Response = result[0]
+                return MESSAGE.HEADER
             } else {
-                return mesagensDefault.ERRO_NOT_FOUND
+                return MESSAGE.ERRO_NOT_FOUND
             }
         } else {
-            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
 // GET id
 const listarNotificacaoID = async function (id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let idValidado = validarAtributos.validarValorId(id)
     try {
         if (idValidado) {
             let result = await notificacaoDAO.getNotificationById(id)
             if (result) {
                 if (result.length > 0) {
-                    mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_REQUEST.StatusCode
-                    mesagensDefault.HEADER.Response = result[0]
-                    return mesagensDefault.HEADER
+                    MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_REQUEST.StatusCode
+                    MESSAGE.HEADER.Response = result[0]
+                    return MESSAGE.HEADER
                 } else {
-                    return mesagensDefault.ERRO_NOT_FOUND
+                    return MESSAGE.ERRO_NOT_FOUND
                 }
             } else {
-                return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
             }
         } else {
-            return mesagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
 // POST
 const criarNotificacao = async function (notificacao, contentType) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let dadosValidados = await validarDados.validarDadosNotificacao(notificacao)
     let contentTypeValidado = await validarAtributos.validarContentType(contentType)
     try {
@@ -65,28 +68,29 @@ const criarNotificacao = async function (notificacao, contentType) {
                 let result = await notificacaoDAO.setInsertNotification(notificacao)
                 if (result) {
                     if (result.length > 0) {
-                        mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_CREATED_ITEM.StatusCode
-                        mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_CREATED_ITEM.message
-                        return mesagensDefault.HEADER
+                        MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_CREATED_ITEM.StatusCode
+                        MESSAGE.HEADER.Response = MESSAGE.SUCCESS_CREATED_ITEM.message
+                        return MESSAGE.HEADER
                     } else {
-                        return mesagensDefault.ERRO_NOT_FOUND
+                        return MESSAGE.ERRO_NOT_FOUND
                     }
                 } else {
-                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                    return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
                 }
             } else {
                 return dadosValidados
             }
         } else {
-            return mesagensDefault.ERRO_CONTENT_TYPE
+            return MESSAGE.ERRO_CONTENT_TYPE
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 
 // PUT
 const atulizarNotificacao = async function (notificacao, contentType, id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let dadosValidados = await validarDados.validarDadosNotificacao(notificacao)
     let contentTypeValidado = await validarAtributos.validarContentType(contentType)
     let idValidado = validarAtributos.validarValorId(id)
@@ -101,12 +105,12 @@ const atulizarNotificacao = async function (notificacao, contentType, id) {
                         console.log(result)
                         if (result) {
                             if (result.length > 0) {
-                                mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_UPDATED_ITEM.StatusCode
-                                mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_UPDATED_ITEM.message
-                                return mesagensDefault.HEADER
+                                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_UPDATED_ITEM.StatusCode
+                                MESSAGE.HEADER.Response = MESSAGE.SUCCESS_UPDATED_ITEM.message
+                                return MESSAGE.HEADER
                             }
                         } else {
-                            return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
                         }
                     } else {
                         return buscarId
@@ -115,17 +119,19 @@ const atulizarNotificacao = async function (notificacao, contentType, id) {
                     return dadosValidados
                 }
             } else {
-                return mesagensDefault.ERRO_CONTENT_TYPE
+                return MESSAGE.ERRO_CONTENT_TYPE
             }
         } else {
-            return mesagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+
 // DELETE
 const excluirNotificacao = async function (id) {
+    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let idValidado = await validarAtributos.validarValorId(id)
     try {
         if (idValidado) {
@@ -135,23 +141,23 @@ const excluirNotificacao = async function (id) {
                 console.log(result)
                 if (result) {
                     if (result.length > 0) {
-                        mesagensDefault.HEADER.StatusCode = mesagensDefault.SUCCESS_DELETED_ITEM.StatusCode
-                        mesagensDefault.HEADER.Response = mesagensDefault.SUCCESS_DELETED_ITEM.message
-                        return mesagensDefault.HEADER
+                        MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_DELETED_ITEM.StatusCode
+                        MESSAGE.HEADER.Response = MESSAGE.SUCCESS_DELETED_ITEM.message
+                        return MESSAGE.HEADER
                     }else{
-                        return mesagensDefault.ERRO_NOT_FOUND
+                        return MESSAGE.ERRO_NOT_FOUND
                     }
                 } else {
-                    return mesagensDefault.ERRO_INTERNAL_SERVER_MODEL
+                    return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
                 }
             } else {
                 return buscarId
             }
         } else {
-            return mesagensDefault.ERRO_INVALID_ID
+            return MESSAGE.ERRO_INVALID_ID
         }
     } catch (error) {
-        return mesagensDefault.ERRO_INTERNAL_SERVER_CONTROLLER
+        return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
 module.exports = {
