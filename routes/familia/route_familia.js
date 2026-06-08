@@ -53,11 +53,11 @@ router.post("/familia", cors(), upload.single('foto'), async function(request, r
     let result = await controller.criarFamilia(dadosBody, file, contentType)
     response.json(result)
 })
-router.post("/familia/endereco", cors(), bodyParserJSON, async function(request, response) {
+router.post("/familia/endereco", cors(), upload.single('foto'), bodyParserJSON, async function(request, response) {
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
-
-    let result = await controller.criarFamiliaEndereco(dadosBody,contentType)
+    let file = request.file
+    let result = await controller.criarFamiliaEndereco(dadosBody, file, contentType)
     response.json(result)
 })
 router.put("/familia/:id", cors(), upload.single('foto'), async function(request, response) {
@@ -68,12 +68,12 @@ router.put("/familia/:id", cors(), upload.single('foto'), async function(request
     let result = await controller.atulizarFamilia(dadosBody, file, contentType, id)
     response.json(result)
 })
-router.put("/familia/endereco/:id", cors(), async function(request, response) {
+router.put("/familia/endereco/:id", cors(), upload.single('foto'), async function(request, response) {
     let id = request.params.id
     let dadosBody = request.body
     let contentType = request.headers["content-type"]
-
-    let result = await controller.atualizarFamiliaEndereco(dadosBody, contentType, id)
+    let file = request.file
+    let result = await controller.atualizarFamiliaEndereco(dadosBody,file, contentType, id)
     response.json(result)
 })
 

@@ -256,34 +256,42 @@ const validarDadosFamiliaEndereco = async function(familia) {
         if (
             familia.nome == null || familia.nome == "" || familia.nome == undefined || familia.nome.length > 255
         ) {
+            console.log("nome")
             return false
         } else if (
             familia.telefone == null || familia.telefone == "" || familia.telefone == undefined || familia.telefone.length > 20
         ) {
+            console.log("telefone")
             return false
         } else if (
             familia.cep == null || familia.cep == "" || familia.cep == undefined || familia.cep.length > 9
         ) {
+            console.log(cep)
             return false
         } else if (
             familia.logradouro == null || familia.logradouro == "" || familia.logradouro == undefined || familia.logradouro.length > 255
         ) {
+            console.log("logradouro")
             return false
         } else if (
             familia.bairro == null || familia.bairro == "" || familia.bairro == undefined || familia.bairro.length > 100
         ) {
+            console.log("bairro")
             return false
         } else if (
             familia.cidade == null || familia.cidade == "" || familia.cidade == undefined || familia.cidade.length > 100
         ) {
+            console.log("cidade")
             return false
         } else if (
             familia.estado == null || familia.estado == "" || familia.estado == undefined || familia.estado.length > 2
         ) {
+            console.log("estado")
             return false
         } else if (
             familia.numero == null || familia.numero == "" || familia.numero == undefined || familia.numero.length > 10
         ) {
+            console.log("numero")
             return false
         } else {
             return true

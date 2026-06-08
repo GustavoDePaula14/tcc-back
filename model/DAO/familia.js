@@ -106,11 +106,10 @@ const setInsertFamily = async function (familia) {
 
 const setInsertFamilyAddress = async function (familia) {
     try {
-
-        let sql = 'CALL sp_cadastrar_familia_endereco(?,?,?,?,?,?,?,?,?)'
-
+        let sql = 'CALL sp_cadastrar_familia_endereco(?,?,?,?,?,?,?,?,?,?)'
         let result = await knexDatabase.raw(sql, [
             familia.nome,
+            familia.foto,
             familia.telefone,
             familia.cep,
             familia.logradouro,
@@ -120,7 +119,7 @@ const setInsertFamilyAddress = async function (familia) {
             familia.estado,
             familia.numero
         ])
-
+        console.log(result)
         return result
 
     } catch (error) {
@@ -159,6 +158,7 @@ const setUpdateFamilyAddress = async function (familia) {
         let result = await knexDatabase.raw(sql, [
             familia.id_familia,
             familia.nome,
+            familia.foto,
             familia.telefone,
             familia.cep,
             familia.logradouro,

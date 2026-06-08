@@ -105,14 +105,16 @@ const criarFamilia = async function (familia, foto, contentType) {
 }
 
 // POST PROCEDURE
-const criarFamiliaEndereco = async function(familia, contentType) {
+const criarFamiliaEndereco = async function(familia, foto, contentType) {
     let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
     let dadosValidados = await validarDados.validarDadosFamiliaEndereco(familia)
-    let contentTypeValidado = validarAtributos.validarContentType(contentType)
-
+    console.log(dadosValidados)
+    let contentTypeValidado = validarAtributos.validarContentTypeFormData(contentType)
+    let imagemEnvida = await uploadDAO.uploadFiles(foto)
     try {
         if(contentTypeValidado){
-            if(dadosValidados){
+            if(dadosValidados == true){
+                familia.foto = imagemEnvida
                 let result = await familiaDAO.setInsertFamilyAddress(familia)
                 if(result){
                     MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_CREATED_ITEM.StatusCode
@@ -178,11 +180,12 @@ const atulizarFamilia = async function (familia, foto, contentType, id) {
     }
 }
 
-const atualizarFamiliaEndereco = async function (familia, contentType, id) {
-    let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
+const atualizarFamiliaEndereco = async function (familia, foto, contentType, id) {
     try {
+        let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
+        let imagemEnvida = await uploadDAO.uploadFiles(foto)
         let dadosValidados = await validarDados.validarDadosFamiliaEndereco(familia)
-        let contentTypeValidado = validarAtributos.validarContentType(contentType)
+        let contentTypeValidado = validarAtributos.validarContentTypeFormData(contentType)
         let idValidado = validarAtributos.validarId(id)
 
         if (!idValidado)
@@ -195,6 +198,7 @@ const atualizarFamiliaEndereco = async function (familia, contentType, id) {
             return MESSAGE.ERRO_REQUIRED_FIELDS
 
         familia.id_familia = parseInt(id)
+        familia.foto = imagemEnvida
         let result = await familiaDAO.setUpdateFamilyAddress(familia)
 
         if (result) {

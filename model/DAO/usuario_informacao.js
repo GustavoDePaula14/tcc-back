@@ -5,7 +5,7 @@
  * Versão: 1.0
  ************************************************/
 const knex = require("knex");
-const knexConfig = require("../database_config/azure/knexfile");
+const knexConfig = require("../database_config/knexfile");
 
 const knexDatabase = knex(knexConfig.development);
 
@@ -91,14 +91,24 @@ const getUsersInformationByFamily = async function (idFamilia) {
 // POST
 const setInsertUsersInformation = async function (usuarioInformacao) {
     try {
-        let sql = `insert into tb_usuario_informacao (id_usuario, id_info) values (?, ?)`
+        let sql = `
+            INSERT INTO tb_usuario_informacao (
+                id_usuario,
+                id_familia,
+                id_info
+            ) VALUES (?, ?, ?)
+        `
+
         let result = await knexDatabase.raw(sql, [
             usuarioInformacao.id_usuario,
+            usuarioInformacao.id_familia,
             usuarioInformacao.id_info
         ])
 
-        return !!result
+        return result[0].affectedRows > 0
+
     } catch (error) {
+        console.log(error)
         return false
     }
 }
@@ -107,19 +117,24 @@ const setInsertUsersInformation = async function (usuarioInformacao) {
 const setUpdateUsersInformation = async function (usuarioInformacao) {
     try {
         let sql = `
-            update tb_usuario_informacao set
+            UPDATE tb_usuario_informacao SET
                 id_usuario = ?,
+                id_familia = ?,
                 id_info = ?
-            where id_usuario_informacao = ?
+            WHERE id_usuario_informacao = ?
         `
+
         let result = await knexDatabase.raw(sql, [
             usuarioInformacao.id_usuario,
+            usuarioInformacao.id_familia,
             usuarioInformacao.id_info,
             usuarioInformacao.id_usuario_informacao
         ])
 
-        return !!result
+        return result[0].affectedRows > 0
+
     } catch (error) {
+        console.log(error)
         return false
     }
 }

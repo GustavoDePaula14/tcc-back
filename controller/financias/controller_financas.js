@@ -228,7 +228,7 @@ const atualizarFinancas = async function (financas, contentType, id) {
 // DELETE
 const excluirFinancas = async function (id) {
     let MESSAGE = JSON.parse(JSON.stringify(mensagensDefault))
-    let idValidado = validarAtributos.validarValorId(id)
+    let idValidado = validarAtributos.validarId(id)
 
     try {
         if (!idValidado)
