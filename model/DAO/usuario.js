@@ -106,7 +106,6 @@ const setUpdateUser = async function (usuario) {
                         nome = '${usuario.nome}',
                         cpf = '${usuario.cpf}',
                         data_nascimento = '${usuario.data_nascimento}',
-                        senha = '${usuario.senha}',
                         email = '${usuario.email}',
                         foto = '${usuario.foto}'
                     where id_usuario = ${usuario.id_usuario}`

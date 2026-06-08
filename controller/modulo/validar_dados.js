@@ -23,10 +23,6 @@ const validarDadosUsuario = async function (usuario) {
             mesagensDefault.ERRO_NOT_FOUND.campo = "data_nascimento"
             return mesagensDefault.ERRO_NOT_FOUND
 
-        } else if (usuario.senha == null || usuario.senha == "" || usuario.senha == undefined || usuario.senha.length > 100) {
-            mesagensDefault.ERRO_NOT_FOUND.campo = "senha"
-            return mesagensDefault.ERRO_NOT_FOUND
-
         } else if (usuario.email == null || usuario.email == "" || usuario.email == undefined || usuario.email.length > 100) {
             mesagensDefault.ERRO_NOT_FOUND.campo = "email"
             return mesagensDefault.ERRO_NOT_FOUND
