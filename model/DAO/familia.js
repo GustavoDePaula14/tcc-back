@@ -109,8 +109,8 @@ const setInsertFamilyAddress = async function (familia) {
         let sql = 'CALL sp_cadastrar_familia_endereco(?,?,?,?,?,?,?,?,?,?)'
         let result = await knexDatabase.raw(sql, [
             familia.nome,
-            familia.foto,
             familia.telefone,
+            familia.foto,
             familia.cep,
             familia.logradouro,
             familia.bairro,
@@ -153,13 +153,13 @@ const setUpdateFamily = async function (familia) {
 const setUpdateFamilyAddress = async function (familia) {
     try {
 
-        let sql = 'CALL sp_atualizar_familia_endereco(?,?,?,?,?,?,?,?,?,?)'
+        let sql = 'CALL sp_atualizar_familia_endereco(?,?,?,?,?,?,?,?,?,?,?)'
 
         let result = await knexDatabase.raw(sql, [
             familia.id_familia,
             familia.nome,
-            familia.foto,
             familia.telefone,
+            familia.foto,
             familia.cep,
             familia.logradouro,
             familia.bairro,
