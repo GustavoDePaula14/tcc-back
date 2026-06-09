@@ -235,32 +235,31 @@ const criarLista = async function (lista, contentType) {
 // PUT
 const atulizarLista = async function (lista, contentType, id) {
     let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
-    let dadosValidados = await validarDados.validarDadosLista(lista)
     let contentTypeValidado = await validarAtributos.validarContentType(contentType)
+    console.log(contentTypeValidado)
     let idValidado = validarAtributos.validarValorId(id)
+    console.log(idValidado)
     try {
-
         if (idValidado) {
             let buscarId = await listaDAO.getListById(id)
             if (contentTypeValidado) {
-                if (dadosValidados == true) {
-                    if (buscarId) {
-                        lista.id_lista = parseInt(id)
-                        let result = await listaDAO.setUpdateList(lista)
-                        if (result) {
-                            if (result.length > 0) {
-                                MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_UPDATED_ITEM.StatusCode
-                                MESSAGE.HEADER.Response = MESSAGE.SUCCESS_UPDATED_ITEM.message
-                                return MESSAGE.HEADER
-                            }
-                        } else {
-                            return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
+                console.log(lista.nome)
+                if (buscarId) {
+                    lista.id_lista = parseInt(id)
+                    console.log(lista)
+                    let result = await listaDAO.setUpdateList(lista)
+                    console.log(result)
+                    if (result) {
+                        if (result.length > 0) {
+                            MESSAGE.HEADER.StatusCode = MESSAGE.SUCCESS_UPDATED_ITEM.StatusCode
+                            MESSAGE.HEADER.Response = MESSAGE.SUCCESS_UPDATED_ITEM.message
+                            return MESSAGE.HEADER
                         }
                     } else {
-                        return buscarId
+                        return MESSAGE.ERRO_INTERNAL_SERVER_MODEL
                     }
                 } else {
-                    return dadosValidados
+                    return buscarId
                 }
             } else {
                 return MESSAGE.ERRO_CONTENT_TYPE
@@ -272,6 +271,7 @@ const atulizarLista = async function (lista, contentType, id) {
         return MESSAGE.ERRO_INTERNAL_SERVER_CONTROLLER
     }
 }
+
 // DELETE
 const excluirLista = async function (id) {
     let MESSAGE = JSON.parse(JSON.stringify(mesagensDefault))
