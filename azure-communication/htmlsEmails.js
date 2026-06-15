@@ -7,7 +7,7 @@
 
 const joinFamilyHTML = function(to_email, dono_familia, token){
     const router = ``;
-    const url = `https://gustavodepaula14.github.io/pagina-login-usuarioFamilia?token=${token}`;
+    const url = `https://convite-email-familysync.vercel.app/?token=${token}`;
 
     let html = `<!doctype html>
 <html lang="pt-br">
